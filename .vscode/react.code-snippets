@@ -1,0 +1,109 @@
+{
+  "Import css module": {
+    "scope": "javascript,typescriptreact",
+    "prefix": "cssm",
+    "body": ["import styles from \"./${1:$TM_FILENAME_BASE}.module.css\";"]
+  },
+  "Classname from css module": {
+    "scope": "javascript,typescriptreact",
+    "prefix": "cn",
+    "body": ["className={styles.${1:className}}"]
+  },
+  "Create class component": {
+    "scope": "javascript",
+    "prefix": "cc",
+    "body": [
+      "import * as React from \"react\";",
+      "",
+      "export default class ${1:$TM_FILENAME_BASE} extends React.Component {",
+      "	state = {};",
+      "	render() {",
+      "		return (",
+      "			$2",
+      "		);",
+      "	}",
+      "}"
+    ]
+  },
+  "Class component": {
+    "scope": "typescriptreact",
+    "prefix": "cc",
+    "body": [
+      "import React from \"react\";",
+      "",
+      "interface ${1:$TM_FILENAME_BASE}Props {}",
+      "interface ${1:$TM_FILENAME_BASE}State {}",
+      "",
+      "export default class ${1:$TM_FILENAME_BASE} extends React.Component<${1:$TM_FILENAME_BASE}Props, ${1:$TM_FILENAME_BASE}State> {",
+      "	state: ${1:$TM_FILENAME_BASE}State = {};",
+      "	render() {",
+      "		return (",
+      "			$2",
+      "		);",
+      "	}",
+      "}"
+    ]
+  },
+  "Class component with children": {
+    "scope": "typescriptreact",
+    "prefix": "ccc",
+    "body": [
+      "import React, {PropsWithChildren} from \"react\";",
+      "",
+      "interface ${1:$TM_FILENAME_BASE}Props {}",
+      "interface ${1:$TM_FILENAME_BASE}State {}",
+      "",
+      "export default class ${1:$TM_FILENAME_BASE} extends React.Component<PropsWithChildren<${1:$TM_FILENAME_BASE}Props>, ${1:$TM_FILENAME_BASE}State> {",
+      "	state: ${1:$TM_FILENAME_BASE}State = {};",
+      "	render() {",
+      "		return (",
+      "			$2",
+      "		);",
+      "	}",
+      "}"
+    ]
+  },
+  "Create functional component": {
+    "scope": "javascript",
+    "prefix": "fc",
+    "body": [
+      "import * as React from \"react\";",
+      "",
+      "export default function ${1:$TM_FILENAME_BASE}(props) {",
+      "	return (",
+      "		$2",
+      "	);",
+      "}"
+    ]
+  },
+  "Functional component": {
+    "scope": "typescriptreact",
+    "prefix": "fc",
+    "body": [
+      "import React from \"react\";",
+      "",
+      "interface ${1:$TM_FILENAME_BASE}Props {}",
+      "",
+      "export default function ${1:$TM_FILENAME_BASE}(props: ${1:$TM_FILENAME_BASE}Props) {",
+      "	return (",
+      "		$2",
+      "	);",
+      "}"
+    ]
+  },
+  "Functional component with children": {
+    "scope": "typescriptreact",
+    "prefix": "fcc",
+    "body": [
+      "import React, {PropsWithChildren} from \"react\";",
+      "",
+      "interface ${1:$TM_FILENAME_BASE}Props {}",
+      "",
+      "export default function ${1:$TM_FILENAME_BASE}(props: PropsWithChildren<${1:$TM_FILENAME_BASE}Props>) {",
+      "	return (",
+      "		$2",
+      "	);",
+      "}"
+    ]
+  }
+}

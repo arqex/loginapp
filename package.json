@@ -1,0 +1,19 @@
+{
+  "name": "loginapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend:serve": "cd backend && npm run start:dev",
+    "frontend:serve": "cd frontend && npm run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/cli": "^10.2.1",
+    "express": "^4.18.2",
+    "passport": "^0.6.0",
+    "serverless": "^3.36.0"
+  }
+}

@@ -1,0 +1,15 @@
+import ReactDOM from "react-dom/client";
+import { initApp } from "./application/init/initialization.service.ts";
+import Root from "./Root.tsx";
+
+const { router, authRouter, apiCacher, uiStore, ls } = initApp();
+console.log("Creating root!");
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <Root
+    router={router}
+    authRouter={authRouter}
+    apiCacher={apiCacher}
+    uiStore={uiStore}
+    ls={ls}
+  />
+);

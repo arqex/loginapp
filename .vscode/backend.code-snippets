@@ -1,0 +1,14 @@
+{
+  "Create controller": {
+    "scope": "typescript",
+    "prefix": "controller",
+    "body": [
+      "import { Response } from 'express';",
+      "import { AuthRequest } from 'src/auth/auth.types';"
+      "",
+      "export async function ${1:controllerName}Controller(req: AuthRequest, res: Response) {", 
+      "  res.json({ message: '${1:controllerName}' });",
+      "}",
+    ]
+  }
+}

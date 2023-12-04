@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+  relationMode = "foreignKeys"
+}
+
+enum AuthTokenType {
+  EMAIL_LOGIN // email + password, email validation, password recovery, login token
+  API_KEY
+  OTT
+}
+
+model AuthToken {
+  key       String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  expiresAt DateTime? 
+  type      AuthTokenType
+  userId    String
+  owner     User     @relation(fields: [userId], references: [id])
+  meta      Json
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  meta      Json
+  tokens    AuthToken[]
+}
