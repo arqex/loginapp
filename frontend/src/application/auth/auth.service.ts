@@ -1,6 +1,6 @@
 import { loadUser } from "../../business/user/user.service";
 import { LoginResponse, ResponseWithData } from "../api/api.types";
-import { api } from "../api/apiClient";
+import { api, getApiUrl } from "../api/apiClient";
 import { getRouter } from "../routing/router";
 import { ApiUser } from "../stores/apiCacher";
 import { getLS } from "../stores/localStorage";
@@ -60,9 +60,9 @@ export function requestEmailLogin(email: string) {
   return api.post("/auth/request_email_login", { email });
 }
 
-export async function loginByOTT(email: string, ott: string) {
+export async function loginByOTT(key: string, ott: string) {
   const { data } = (await api.post("/auth/login_by_ott", {
-    email,
+    key,
     ott,
   })) as ResponseWithData<LoginResponse>;
   await updateAuthenticatedUser(data.authenticatedId);
@@ -89,4 +89,11 @@ export async function resetPassword(
 export function goToAuthenticatedApp() {
   getRouter()?.replace("/");
   window.location.reload();
+}
+
+export function redirectToOauth(provider: string) {
+  const returnTo = encodeURIComponent(`${window.location.origin}/#/ott_login`);
+  window.location.href = getApiUrl(
+    `/auth/oauth_start?provider=${provider}&returnTo=${returnTo}`
+  );
 }

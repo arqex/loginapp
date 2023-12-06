@@ -64,7 +64,7 @@ export default class RequestEmailLoginScreen extends React.Component<
           Send login email
         </Button>
         <div className="fs-sm mt-2 text-center">
-          <Link href="/email-login">Login with password</Link>
+          <Link href="/login">Login with password</Link>
         </div>
       </>
     );

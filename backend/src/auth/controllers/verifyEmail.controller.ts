@@ -12,14 +12,11 @@ import { JsonObject } from '@prisma/client/runtime/library';
 export async function verifyEmailController(req: Request, res: Response) {
   const { vc, email } = req.body;
 
-  console.log('vc', vc, 'email', email);
   if (!vc) return resError(res, 'missing_verification_token');
   if (!isValidEmailAddress(email)) return resInvalidEmail(res);
 
   const auth = await findAuth(email);
   if (!auth) return resUnauthorized(res);
-
-  console.log('auth', auth);
 
   const { vc: storedVC } = auth.meta as JsonObject;
   if (storedVC !== vc) return resUnauthorized(res);

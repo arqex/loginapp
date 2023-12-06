@@ -1,7 +1,7 @@
 import { ApiError } from "./ApiError";
 import { ResponseWithData } from "./api.types";
 
-function getApiUrl(route: string) {
+export function getApiUrl(route: string) {
   return `http://localhost:3000${route}`;
 }
 

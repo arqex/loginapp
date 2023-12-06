@@ -18,7 +18,6 @@ export async function resetPasswordController(req: AuthRequest, res: Response) {
   if (!ott || !password) return resError(res, 'missing_ott_or_password', 400);
 
   const auth = await findAuth(email);
-  console.log('auth', auth);
   if (!auth || !isValidOTT(auth, ott)) return resUnauthorized(res);
 
   const updatedMeta = {

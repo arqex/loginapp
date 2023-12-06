@@ -19,6 +19,14 @@ export interface AuthRequest extends Request {
   };
 }
 
+export interface OauthRequest extends Request {
+  user: {
+    id: string;
+    ott: string;
+  };
+  returnTo: string;
+}
+
 export interface StoredOTT {
   token: string;
   expiresAt: number;

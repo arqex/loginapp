@@ -4,6 +4,7 @@ import Button from "../../../components/Button/Button";
 import {
   goToAuthenticatedApp,
   login,
+  redirectToOauth,
 } from "../../../application/auth/auth.service";
 import { ApiError } from "../../../application/api/ApiError";
 import Link from "../../../components/Link/Link";
@@ -35,6 +36,11 @@ export default class LoginScreen extends React.Component<
         <CCard className="width">
           <CCardBody className="column">
             <h4>Login</h4>
+            <div className="mb-3 column">
+              <Button onClick={this._startGoogleOauth}>
+                Login with Google
+              </Button>
+            </div>
             <div className="mb-3">
               <CFormInput
                 name="email"
@@ -97,5 +103,8 @@ export default class LoginScreen extends React.Component<
         this.setState({ loading: false });
       }
     }
+  };
+  _startGoogleOauth = async () => {
+    redirectToOauth("google");
   };
 }

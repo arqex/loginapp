@@ -14,7 +14,7 @@ datasource db {
 enum AuthTokenType {
   EMAIL_LOGIN // email + password, email validation, password recovery, login token
   API_KEY
-  OTT
+  OAUTH20
 }
 
 model AuthToken {

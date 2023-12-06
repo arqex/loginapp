@@ -7,6 +7,9 @@ import { requestEmailLoginController } from './controllers/requestEmailLogin.con
 import { loginByOTTController } from './controllers/loginByOtt.controller';
 import { requestPasswordRecoveryController } from './controllers/requestPasswordRecovery';
 import { resetPasswordController } from './controllers/resetPassword.controller';
+import { oauthCallbackController } from './controllers/oauthCallback.controller';
+import { oauthStartController } from './controllers/oauthStart.controller';
+import { oauthCallback, oauthStart } from './strategies/oauth.strategy';
 
 const authRouter = Router();
 
@@ -15,6 +18,8 @@ authRouter
   .post('/logout', logoutController)
   .post('/signup', signupController)
   .post('/login_by_ott', loginByOTTController)
+  .get('/oauth_callback', oauthCallback, oauthCallbackController)
+  .get('/oauth_start', oauthStart, oauthStartController)
   .post('/reset_password', resetPasswordController)
   .post('/verify_email', verifyEmailController)
   .post('/request_email_login', requestEmailLoginController)

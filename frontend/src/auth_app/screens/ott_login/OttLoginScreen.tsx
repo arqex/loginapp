@@ -6,13 +6,11 @@ import {
   goToAuthenticatedApp,
   loginByOTT,
 } from "../../../application/auth/auth.service";
-import { isValidEmailAddress } from "../../../application/validation/validation.utils";
 import Link from "../../../components/Link/Link";
 
 interface OttLoginScreenProps {}
 interface OttLoginScreenState {
   isVerifiying: boolean;
-  isSuccess: boolean;
 }
 
 export default class OttLoginScreen extends React.Component<
@@ -21,7 +19,6 @@ export default class OttLoginScreen extends React.Component<
 > {
   state: OttLoginScreenState = {
     isVerifiying: this.validateUrlParams(),
-    isSuccess: false,
   };
   render() {
     return (
@@ -34,19 +31,11 @@ export default class OttLoginScreen extends React.Component<
   }
 
   renderContent() {
-    const { isVerifiying, isSuccess } = this.state;
+    const { isVerifiying } = this.state;
     if (isVerifiying) {
       return (
         <>
           <h4>Verifying...</h4>
-        </>
-      );
-    } else if (isSuccess) {
-      return (
-        <>
-          <h4>Success!</h4>
-          <p>Your email has been verified.</p>
-          <p>Redirecting...</p>
         </>
       );
     } else {
@@ -54,31 +43,51 @@ export default class OttLoginScreen extends React.Component<
         <>
           <h4>Oops!</h4>
           <p>
-            Sorry the link you followed is not valid anymore. Try to{" "}
-            <Link href="/request_email_login">create a new login link</Link>.
+            Sorry the link you followed is not valid anymore.{" "}
+            {this.renderExtraInstructions()}
           </p>
         </>
       );
     }
   }
 
+  renderExtraInstructions() {
+    const { source } = getParams();
+    switch (source) {
+      case "email":
+        return (
+          <>
+            Try to{" "}
+            <Link href="/request_email_login">create a new login link</Link>.
+          </>
+        );
+      case "oauth":
+        return (
+          <>
+            <Link href="/login">Try to login again</Link>.
+          </>
+        );
+      default:
+        return null;
+    }
+  }
+
   validateUrlParams() {
-    const { ott, email } = getParams();
-    return (ott && isValidEmailAddress(email)) || false;
+    const { ott, key } = getParams();
+    return !!(ott && key);
   }
 
   async componentDidMount() {
     if (this.state.isVerifiying) {
       try {
-        const { ott, email } = getParams();
-        await loginByOTT(email, ott);
-        this.setState({ isVerifiying: false, isSuccess: true });
+        const { ott, key } = getParams();
+        await loginByOTT(key, ott);
         goToAuthenticatedApp();
       } catch (err: any) {
-        this.setState({ isVerifiying: false, isSuccess: false });
+        this.setState({ isVerifiying: false });
       }
     } else {
-      this.setState({ isVerifiying: false, isSuccess: false });
+      this.setState({ isVerifiying: false });
     }
   }
 
@@ -91,6 +100,7 @@ function getParams() {
   const query = getAuthRouter()?.location.query;
   return {
     ott: typeof query?.ott === "string" ? query.ott : "",
-    email: typeof query?.email === "string" ? query.email : "",
+    key: typeof query?.key === "string" ? query.key : "",
+    source: typeof query?.source === "string" ? query.source : "",
   };
 }

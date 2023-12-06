@@ -8,8 +8,6 @@ export async function getUserController(req: AuthRequest, res: Response) {
   const { id: authenticatedUserId } = req.user!;
   const userId = req.params.id;
 
-  console.log('authenticatedUserId', authenticatedUserId, 'userId', userId);
-
   if (userId !== authenticatedUserId) {
     return resForbidden(res);
   }

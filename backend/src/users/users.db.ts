@@ -11,6 +11,11 @@ export async function getUserById(id: string): Promise<User | null> {
   return await prisma.user.findUnique({ where: { id } });
 }
 
+export async function getUserByEmail(email: string): Promise<User | null> {
+  const prisma = new PrismaClient();
+  return await prisma.user.findUnique({ where: { email } });
+}
+
 export async function updateUser(id: string, user: Prisma.UserUpdateInput) {
   const prisma = new PrismaClient();
   return await prisma.user.update({ where: { id }, data: user });
