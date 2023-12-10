@@ -5,15 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "backend:serve": "cd backend && npm run start:dev",
-    "webapp:serve": "cd webapp && npm run dev"
+    "backend:serve": "cd apps/backend && npm run start:dev",
+    "webapp:serve": "cd apps/webapp && npm run dev",
+    "android": "cd apps/mobileapp && npm run android",
+    "ios": "cd apps/mobileapp && npm run ios",
+    "postinstall": "npm run apps:install && npm run packages:install",
+    "apps:install": "cd apps/webapp && npm install && cd ../backend && npm install && cd ../mobileapp",
+    "packages:install": "cd packages/api-client && npm install"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@nestjs/cli": "^10.2.1",
-    "express": "^4.18.2",
-    "passport": "^0.6.0",
-    "serverless": "^3.36.0"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/runtime": "^7.23.5"
   }
 }
