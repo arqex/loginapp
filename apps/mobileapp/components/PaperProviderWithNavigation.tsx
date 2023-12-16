@@ -20,8 +20,6 @@ export default function PaperProviderWithNavigation(
 ) {
   const colorScheme = useColorScheme();
   const { theme } = useMaterial3Theme();
-
-  console.log("colorScheme", colorScheme);
   const isDark = colorScheme === "dark";
   const appTheme = getTheme(isDark, theme);
 

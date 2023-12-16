@@ -1,6 +1,6 @@
 import React from "react";
 import ScreenLayout from "../../components/ScreenLayout";
-import { Button, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
 import Column from "../../components/Column";
 import { ParamListBase } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";

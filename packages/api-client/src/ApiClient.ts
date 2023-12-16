@@ -1,27 +1,40 @@
+import { ApiClientBase } from "./ApiClientBase";
 import { apiRequester } from "./ApiRequester";
-import { AuthApiMixin } from "./methods/auth.api";
-import { UserApiMixin } from "./methods/user.api";
+import { ApiClientConfig } from "./api.types";
 
-export class ApiClient {
+export class ApiClient implements ApiClientBase {
   requester: typeof apiRequester;
-  constructor(apiUrl: string) {
-    this.requester = apiRequester.withHeaders({});
-    this.requester.apiUrl = apiUrl;
+  constructor(config: ApiClientConfig) {
+    const headers = config.headers || {};
+    if (config.authToken) {
+      headers[AUTH_HEADER] = getBearer(config.authToken);
+    }
+
+    this.requester = apiRequester.withHeaders(headers);
+    this.requester.apiUrl = config.apiURL;
+  }
+
+  authenticate(authToken: string) {
+    this.requester = this.requester.withHeaders({ [AUTH_HEADER]: authToken });
+  }
+
+  unauthenticate() {
+    const headers = { ...this.requester.headers } as any;
+    delete headers[AUTH_HEADER];
+    this.requester.headers = headers;
+  }
+
+  withHeaders(headers: { [headerName: string]: string }) {
+    const allHeaders = { ...this.requester.headers, ...headers };
+    return new ApiClient({
+      apiURL: this.requester.apiUrl,
+      authToken: allHeaders[AUTH_HEADER],
+      headers: allHeaders,
+    });
   }
 }
 
-export interface ApiClient extends AuthApiMixin, UserApiMixin {}
-applyMixins(ApiClient, [AuthApiMixin, UserApiMixin]);
-
-function applyMixins(derivedCtor: any, constructors: any[]) {
-  constructors.forEach((baseCtor) => {
-    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
-      Object.defineProperty(
-        derivedCtor.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
-          Object.create(null)
-      );
-    });
-  });
+const AUTH_HEADER = "Authorization";
+function getBearer(authToken: string) {
+  return `Bearer ${authToken}`;
 }

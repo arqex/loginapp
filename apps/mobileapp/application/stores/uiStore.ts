@@ -1,54 +1,33 @@
-import EventEmitter from "eventemitter3";
+import SecureStore from "expo-secure-store";
+import { UIStore } from "@loginapp/api-cacher";
 
-export interface UiStoreData {
+interface AppStoreData {
+  isAppInitialized: boolean;
   authenticatedUserId: string | null;
+  authenticationToken: string | null;
 }
 
-export const emptyStore: UiStoreData = {
-  authenticatedUserId: "",
-};
-
-export class UIStore {
-  #emitter = new EventEmitter();
-  data = { ...emptyStore };
-  emitTimeout: NodeJS.Timeout | undefined;
-
-  addChangeListener(clbk: () => void) {
-    this.#emitter.on("change", clbk);
-  }
-  removeChangeListener(clbk: () => void) {
-    this.#emitter.removeListener("change", clbk);
-  }
-  emitChange() {
-    // wait one cycle to batch multiple changes in one re-render
-    if (!this.emitTimeout) {
-      this.emitTimeout = setTimeout(() => {
-        delete this.emitTimeout;
-        this.#emitter.emit("change");
-      });
-    }
-  }
-}
+export type AppStore = UIStore<AppStoreData>;
 
 // A singleton that might be updated
 // by different calls and render in the server
-let uiStore: UIStore | undefined;
-export function createUIStore(initialData?: Partial<UiStoreData>) {
-  const store = new UIStore();
-  if (initialData) {
-    store.data = {
-      ...emptyStore,
-      ...initialData,
-    };
-  }
-  return store;
+let uiStore: AppStore | undefined;
+
+export function createUIStore(initialData?: Partial<AppStoreData>) {
+  const data = {
+    isAppInitialized: false,
+    authenticatedUserId: null,
+    authenticationToken: null,
+    ...(initialData || {}),
+  };
+  return new UIStore<AppStoreData>(data);
 }
 
-export function setUIStore(nextStore: UIStore) {
+export function setUIStore(nextStore: AppStore) {
   uiStore = nextStore;
 }
 
-export function getUIStore(): UIStore {
+export function getUIStore(): AppStore {
   if (!uiStore) throw new Error("Api Cacher not initialized");
   return uiStore;
 }

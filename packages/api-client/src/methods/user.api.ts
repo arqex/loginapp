@@ -1,26 +1,25 @@
 import { ApiClientBase } from "../ApiClientBase";
-import { apiRequester } from "../ApiRequester";
-import { ApiUser, ResponseWithData } from "../api.types";
+import { ApiUser, CachedResponse, ResponseWithData } from "../api.types";
 
-export class UserApiMixin {
-  requester: typeof apiRequester;
+export function loadUser(apiClient: ApiClientBase, id: string) {
+  return apiClient.requester.getCached(
+    `/users/${id}`
+  ) as CachedResponse<ApiUser>;
+}
 
-  async loadUser(id: string) {
-    return (await this.requester.get(
-      `/users/${id}`
-    )) as ResponseWithData<ApiUser>;
-  }
+export async function updateUser(
+  apiClient: ApiClientBase,
+  id: string,
+  data: Partial<ApiUser>
+) {
+  return (await apiClient.requester.patch(
+    `/users/${id}`,
+    data
+  )) as ResponseWithData<{}>;
+}
 
-  async updateUser(id: string, data: Partial<ApiUser>) {
-    return (await this.requester.patch(
-      `/users/${id}`,
-      data
-    )) as ResponseWithData<{}>;
-  }
-
-  async deleteUser(id: string) {
-    return (await this.requester.delete(
-      `/users/${id}`
-    )) as ResponseWithData<{}>;
-  }
+export async function deleteUser(apiClient: ApiClientBase, id: string) {
+  return (await apiClient.requester.delete(
+    `/users/${id}`
+  )) as ResponseWithData<{}>;
 }

@@ -105,5 +105,30 @@
       "	);",
       "}"
     ]
+  },
+  "Create react native screen": {
+    "scope": "typescriptreact",
+    "prefix": "rns",
+
+    "body": [
+      "import React from \"react\";",
+      "import { StackScreenProps } from \"@react-navigation/stack\";",
+      "import { ParamListBase } from \"@react-navigation/native\";",
+      "import ScreenLayout from \"../../components/ScreenLayout\";",
+      "",
+      "type ${1:$TM_FILENAME_BASE}Props = StackScreenProps<ParamListBase, \"${1:$TM_FILENAME_BASE}\">",
+      "interface ${1:$TM_FILENAME_BASE}State {}",
+      "",
+      "export default class ${1:$TM_FILENAME_BASE} extends React.Component<${1:$TM_FILENAME_BASE}Props, ${1:$TM_FILENAME_BASE}State> {",
+      "	state: ${1:$TM_FILENAME_BASE}State = {};",
+      "	render() {",
+      "		return (",
+      "      <ScreenLayout>",
+      "			   $2",
+      "			 </ScreenLayout>",
+      "		);",
+      "	}",
+      "}"
+    ]
   }
 }

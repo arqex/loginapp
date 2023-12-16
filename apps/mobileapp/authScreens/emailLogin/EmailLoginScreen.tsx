@@ -4,7 +4,9 @@ import { Button, TextInput } from "react-native-paper";
 import Column from "../../components/Column";
 import { ParamListBase } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { api } from "../../application/stores/apiClient";
+import { apiClient } from "../../application/stores/apiClient";
+import { getAuthenticationToken } from "@loginapp/api-client";
+import { onAuthenticate } from "../../application/authentication/authentication.service";
 
 type EmailLoginScreenProps = StackScreenProps<ParamListBase, "EmailLogin">;
 interface EmailLoginScreenState {
@@ -67,11 +69,11 @@ export default class EmailLoginScreen extends React.Component<
   _go = async () => {
     this.setState({ isSending: true });
     const { email, password } = this.state;
-    api
-      .getAuthenticationToken(email, password)
+
+    getAuthenticationToken(apiClient, email, password)
       .then(({ data }) => {
         const { authenticatedId, token } = data;
-        console.log("authenticatedId", authenticatedId);
+        onAuthenticate(authenticatedId, token);
       })
       .catch((error) => {
         console.error("error", error);

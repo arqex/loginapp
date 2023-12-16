@@ -1,0 +1,16 @@
+{
+  "name": "@loginapp/api-cacher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@loginapp/api-client": "file:../api-client",
+    "eventemitter3": "^5.0.1",
+    "lorese": "^1.0.0"
+  }
+}

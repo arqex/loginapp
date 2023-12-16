@@ -12,6 +12,16 @@ import { TopBar } from "./components/TopBar";
 import LoginScreen from "./authScreens/login/LoginScreen";
 import SignupScreen from "./authScreens/signup/SignupScreen";
 import EmailLoginScreen from "./authScreens/emailLogin/EmailLoginScreen";
+import {
+  initApp,
+  initStores,
+} from "./application/initialization/initialization.service";
+import { isAppInitialized } from "./application/initialization/initialization.accessors";
+import { getUIStore } from "./application/stores/uiStore";
+import { getApiCacher } from "./application/stores/apiCacher";
+import { isAuthenticated } from "./application/authentication/authentication.accessors";
+
+initStores();
 
 function Home({ navigation }) {
   return (
@@ -48,47 +58,58 @@ function EmptyScreen() {
 
 const Stack = createStackNavigator();
 
-function App() {
-  const isLoggedIn = false;
+export default class App extends React.Component {
+  render() {
+    const isLoggedIn = isAuthenticated();
 
-  return (
-    <PaperProviderWithNavigation>
-      <Stack.Navigator
-        screenOptions={{
-          header: (props) => <TopBar {...props} />,
-        }}
-      >
-        {isLoggedIn ? (
-          // Screens for logged in users
-          <Stack.Group>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={EmptyScreen} />
+    return (
+      <PaperProviderWithNavigation>
+        <Stack.Navigator
+          screenOptions={{
+            header: (props) => <TopBar {...props} />,
+          }}
+        >
+          {isLoggedIn ? (
+            // Screens for logged in users
+            <Stack.Group>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Profile" component={EmptyScreen} />
+            </Stack.Group>
+          ) : (
+            // Auth screens
+            <Stack.Group
+              screenOptions={{ headerShown: false, animationEnabled: false }}
+            >
+              <Stack.Screen name="LogIn" component={LoginScreen} />
+              <Stack.Screen name="SignUp" component={SignupScreen} />
+              <Stack.Screen name="EmailLogin" component={EmailLoginScreen} />
+            </Stack.Group>
+          )}
+          {/* Common modal screens */}
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen
+              name="Help"
+              component={Help}
+              options={{
+                title: "Help",
+                cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+              }}
+            />
+            <Stack.Screen name="Invite" component={EmptyScreen} />
           </Stack.Group>
-        ) : (
-          // Auth screens
-          <Stack.Group
-            screenOptions={{ headerShown: false, animationEnabled: false }}
-          >
-            <Stack.Screen name="LogIn" component={LoginScreen} />
-            <Stack.Screen name="SignUp" component={SignupScreen} />
-            <Stack.Screen name="EmailLogin" component={EmailLoginScreen} />
-          </Stack.Group>
-        )}
-        {/* Common modal screens */}
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen
-            name="Help"
-            component={Help}
-            options={{
-              title: "Help",
-              cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-            }}
-          />
-          <Stack.Screen name="Invite" component={EmptyScreen} />
-        </Stack.Group>
-      </Stack.Navigator>
-    </PaperProviderWithNavigation>
-  );
+        </Stack.Navigator>
+      </PaperProviderWithNavigation>
+    );
+  }
+
+  listenToStores() {
+    const rerender = () => this.forceUpdate();
+    getUIStore().addChangeListener(rerender);
+    getApiCacher().addChangeListener(rerender);
+  }
+
+  componentDidMount() {
+    initApp();
+    this.listenToStores();
+  }
 }
-
-export default App;

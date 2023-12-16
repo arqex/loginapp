@@ -22,7 +22,6 @@ const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 
 export const getTheme = memoizeOne(
   (isDark: boolean, colors: Material3Theme) => {
-    console.log("getTheme", isDark, colors);
     return isDark
       ? merge(CombinedDarkTheme, { colors: colors.dark })
       : merge(CombinedLightTheme, { colors: colors.light });

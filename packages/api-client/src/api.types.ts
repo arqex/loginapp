@@ -26,3 +26,26 @@ export interface ApiUser {
   email: string;
   picURL: string;
 }
+
+export interface ApiClientConfig {
+  apiURL: string;
+  authToken?: string;
+  headers?: { [headerName: string]: string };
+}
+
+export interface HeaderDefinition {
+  [headerName: string]: string;
+}
+
+export interface CachedRequest<T> {
+  response?: ResponseWithData<T>;
+  requestedAt: number;
+  needsRefresh: boolean;
+  promise: Promise<ResponseWithData<T>>;
+}
+
+export interface CachedResponse<T> {
+  isLoading: boolean;
+  response?: ResponseWithData<T>;
+  promise: Promise<ResponseWithData<T>>;
+}
