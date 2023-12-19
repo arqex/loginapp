@@ -3,6 +3,7 @@ import { getLastAuthenticatedUser } from "../auth/auth.selector";
 import { Router, createRouter, setRouter } from "../routing/router";
 import { routes } from "../routing/routes";
 import { ApiCacher, createApiCacher, setApiCacher } from "../stores/apiCacher";
+import { apiClient } from "../stores/apiClient";
 import { LS, setLS } from "../stores/localStorage";
 import { UIStore, createUIStore, setUIStore } from "../stores/uiStore";
 
@@ -25,8 +26,10 @@ export function initApp(): Stores {
   setAuthRouter(authRouter);
 
   const user = getLastAuthenticatedUser();
+  const cache = user ? { [user.id]: user } : {};
   const apiCacher = createApiCacher({
-    users: user ? { [user.id]: user } : {},
+    apiClient: apiClient,
+    initialCache: cache,
   });
   setApiCacher(apiCacher);
 

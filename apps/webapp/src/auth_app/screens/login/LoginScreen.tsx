@@ -6,9 +6,9 @@ import {
   login,
   redirectToOauth,
 } from "../../../application/auth/auth.service";
-import { ApiError } from "../../../application/api/ApiError";
 import Link from "../../../components/Link/Link";
 import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import { ApiError } from "@loginapp/api-client";
 
 interface LoginScreenProps {}
 interface LoginScreenState {

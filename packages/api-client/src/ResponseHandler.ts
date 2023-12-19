@@ -2,11 +2,15 @@ import { ResponseWithData } from "./api.types";
 import { ApiError } from "./ApiError";
 
 export async function handleResponse(
-  res: Response
+  res: Response,
+  throwOnApiError = false
 ): Promise<ResponseWithData<any>> {
   let resWithData: ResponseWithData<any> | undefined;
   if (res.status === 204) return await enhanceResponse(res, {});
-  else {
+
+  if (res.status >= 300 && throwOnApiError) {
+    throw new ApiError(await enhanceResponse(res));
+  } else {
     try {
       resWithData = await enhanceResponse(res);
     } catch (e) {

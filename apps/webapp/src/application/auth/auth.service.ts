@@ -1,25 +1,37 @@
 import { getRouter } from "../routing/router";
-import { ApiUser } from "../stores/apiCacher";
+import { getApiCacher } from "../stores/apiCacher";
+import { apiClient } from "../stores/apiClient";
 import { getLS } from "../stores/localStorage";
 import { getUIStore } from "../stores/uiStore";
-import { api } from "../stores/apiClient";
+import { loadUser } from "@loginapp/api-cacher";
+import {
+  login as apiLogin,
+  logout as apiLogout,
+  signup as apiSignup,
+  loginByOTT as apiLoginByOTT,
+  requestPasswordRecovery as apiRequestPasswordRecovery,
+  resetPassword as apiResetPassword,
+  verifyEmail as apiVerifyEmail,
+  requestEmailLogin as apiRequestEmailLogin,
+  ApiUser,
+} from "@loginapp/api-client";
 
 export function setLastAuthenticatedUser(user?: ApiUser) {
   user ? getLS().set("AUTH_USER", user) : getLS().del("AUTH_USER");
 }
 
 export async function login(email: string, password: string) {
-  const { data } = await api.login(email, password);
+  const { data } = await apiLogin(apiClient, email, password);
   await updateAuthenticatedUser(data.authenticatedId);
 }
 
 export async function logout() {
   updateAuthenticatedUser(undefined);
-  await api.logout();
+  await apiLogout(apiClient);
 }
 
 export async function signup(email: string, password: string): Promise<number> {
-  const { data, status } = await api.signup(email, password);
+  const { data, status } = await apiSignup(apiClient, email, password);
 
   if (status === 201) {
     // This is a login
@@ -33,7 +45,7 @@ export async function signup(email: string, password: string): Promise<number> {
 async function updateAuthenticatedUser(id: string | undefined) {
   const uiStore = getUIStore();
   if (id) {
-    const { data: user } = await api.loadUser(id);
+    const { data: user } = await loadUser(getApiCacher(), id).promise;
     setLastAuthenticatedUser(user);
     uiStore.data.authenticatedUserId = id;
   } else {
@@ -44,20 +56,20 @@ async function updateAuthenticatedUser(id: string | undefined) {
 }
 
 export function verifyEmail(vc: string, email: string) {
-  return api.verifyEmail(vc, email);
+  return apiVerifyEmail(apiClient, vc, email);
 }
 
 export function requestEmailLogin(email: string) {
-  return api.requestEmailLogin(email);
+  return apiRequestEmailLogin(apiClient, email);
 }
 
 export async function loginByOTT(key: string, ott: string) {
-  const { data } = await api.loginByOTT(key, ott);
+  const { data } = await apiLoginByOTT(apiClient, key, ott);
   await updateAuthenticatedUser(data.authenticatedId);
 }
 
 export function requestPasswordRecovery(email: string) {
-  return api.requestPasswordRecovery(email);
+  return apiRequestPasswordRecovery(apiClient, email);
 }
 
 export async function resetPassword(
@@ -65,7 +77,7 @@ export async function resetPassword(
   password: string,
   ott: string
 ) {
-  const { data } = await api.resetPassword(email, password, ott);
+  const { data } = await apiResetPassword(apiClient, email, password, ott);
   // A valid password reset will log the user in
   updateAuthenticatedUser(data.authenticatedId);
 }
@@ -77,7 +89,7 @@ export function goToAuthenticatedApp() {
 
 export function redirectToOauth(provider: string) {
   const returnTo = encodeURIComponent(`${window.location.origin}/#/ott_login`);
-  window.location.href = api.requester.getApiUrl(
+  window.location.href = apiClient.getApiUrl(
     `/auth/oauth_start?provider=${provider}&returnTo=${returnTo}`
   );
 }

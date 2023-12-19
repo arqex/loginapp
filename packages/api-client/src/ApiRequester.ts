@@ -18,7 +18,7 @@ export const apiRequester = {
       headers: this.headers,
       credentials: "include",
     });
-    return await handleResponse(res);
+    return await handleResponse(res, true);
   },
   async get(route: string) {
     const url = this.getApiUrl(route);
@@ -36,7 +36,7 @@ export const apiRequester = {
       headers: this.headers,
       credentials: "include",
     });
-    return await handleResponse(res);
+    return await handleResponse(res, true);
   },
   async delete(route: string) {
     const res = await fetch(this.getApiUrl(route), {
@@ -44,6 +44,6 @@ export const apiRequester = {
       credentials: "include",
       headers: this.headers,
     });
-    return await handleResponse(res);
+    return await handleResponse(res, true);
   },
 };

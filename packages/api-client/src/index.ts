@@ -1,5 +1,6 @@
 export { ApiClient } from "./ApiClient";
 export { ApiError } from "./ApiError";
+export { clearCache, invalidateCache } from "./RequestMemo";
 export * from "./api.types";
 
 export * from "./methods/auth.api";

@@ -5,5 +5,9 @@ export function getAuthenticatedId() {
 }
 
 export function isAuthenticated() {
-  return !!getAuthenticatedId();
+  return getUIStore().data.isAuthenticated;
+}
+
+export function getAuthToken() {
+  return getUIStore().data.authenticationToken;
 }

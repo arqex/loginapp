@@ -20,6 +20,7 @@ import { isAppInitialized } from "./application/initialization/initialization.ac
 import { getUIStore } from "./application/stores/uiStore";
 import { getApiCacher } from "./application/stores/apiCacher";
 import { isAuthenticated } from "./application/authentication/authentication.accessors";
+import HomeScreen from "./screens/home/HomeScreen";
 
 initStores();
 
@@ -60,6 +61,11 @@ const Stack = createStackNavigator();
 
 export default class App extends React.Component {
   render() {
+    if (!isAppInitialized()) {
+      console.log("Not initialized");
+      return null;
+    }
+
     const isLoggedIn = isAuthenticated();
 
     return (
@@ -72,7 +78,7 @@ export default class App extends React.Component {
           {isLoggedIn ? (
             // Screens for logged in users
             <Stack.Group>
-              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Profile" component={EmptyScreen} />
             </Stack.Group>
           ) : (
@@ -103,7 +109,9 @@ export default class App extends React.Component {
   }
 
   listenToStores() {
-    const rerender = () => this.forceUpdate();
+    const rerender = () => {
+      this.forceUpdate();
+    };
     getUIStore().addChangeListener(rerender);
     getApiCacher().addChangeListener(rerender);
   }

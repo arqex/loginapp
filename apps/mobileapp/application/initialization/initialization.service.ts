@@ -5,8 +5,14 @@ import {
   getUIStore,
   setUIStore,
 } from "../stores/uiStore";
-import { setApiCacher, createApiCacher } from "../stores/apiCacher";
+import {
+  setApiCacher,
+  createApiCacher,
+  getApiCacher,
+} from "../stores/apiCacher";
 import { apiClient } from "../stores/apiClient";
+import { getAuthToken } from "../authentication/authentication.accessors";
+import * as SplashScreen from "expo-splash-screen";
 
 export async function initStores() {
   // Inititalize UIStore
@@ -16,8 +22,6 @@ export async function initStores() {
     cacheUIStore(uiStore.data);
   });
 
-  restoreCachedData(uiStore);
-
   // Initialize data store
   const apiCacher = createApiCacher({ apiClient });
   setApiCacher(apiCacher);
@@ -26,8 +30,13 @@ export async function initStores() {
 export async function initApp() {
   const store = getUIStore();
   await restoreCachedData(store);
+  const authToken = getAuthToken();
+  if (authToken) {
+    getApiCacher().authenticate(authToken);
+  }
   store.data.isAppInitialized = true;
   store.emitChange();
+  await SplashScreen.hideAsync();
 }
 
 const UISTORE_KEY = "UIStore";
@@ -49,5 +58,4 @@ async function restoreCachedData(uiStore: AppStore) {
     ...uiStore.data,
     ...cachedData,
   };
-  uiStore.emitChange();
 }

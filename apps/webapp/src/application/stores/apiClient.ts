@@ -1,3 +1,5 @@
 import { ApiClient } from "@loginapp/api-client";
 
-export const api = new ApiClient("http://localhost:3000");
+export const apiClient = new ApiClient({
+  apiURL: "http://localhost:3000",
+});

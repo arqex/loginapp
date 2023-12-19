@@ -7,18 +7,23 @@ import { logout } from "@loginapp/api-client";
 import { onLogout } from "../../application/authentication/authentication.service";
 
 import { apiClient } from "../../application/stores/apiClient";
+import { userLoader } from "@loginapp/api-cacher/src/loaders/user.loaders";
+import { getApiCacher } from "../../application/stores/apiCacher";
+import { getAuthenticatedId } from "../../application/authentication/authentication.accessors";
+import { StoreConnected } from "../../components/StoreConnectedScreen";
 
-type HomeScreenProps = StackScreenProps<ParamListBase, "HomeScreen">;
+type HomeScreenProps = StackScreenProps<ParamListBase, "Home">;
 interface HomeScreenState {
   isLogginOut: boolean;
 }
 
-export default class HomeScreen extends React.Component<
-  HomeScreenProps,
-  HomeScreenState
-> {
-  state: HomeScreenState = {};
+class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
+  state: HomeScreenState = {
+    isLogginOut: false,
+  };
   render() {
+    const { data: user } = userLoader(getApiCacher(), getAuthenticatedId()!);
+    console.log("USER", user);
     return (
       <ScreenLayout>
         <Text>Home screen</Text>
@@ -42,3 +47,5 @@ export default class HomeScreen extends React.Component<
       .finally(() => this.setState({ isLogginOut: false }));
   };
 }
+
+export default StoreConnected<"Home">(HomeScreen);

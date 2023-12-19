@@ -115,11 +115,12 @@
       "import { StackScreenProps } from \"@react-navigation/stack\";",
       "import { ParamListBase } from \"@react-navigation/native\";",
       "import ScreenLayout from \"../../components/ScreenLayout\";",
+      "import { StoreConnected } from \"../../components/StoreConnectedScreen\";"
       "",
       "type ${1:$TM_FILENAME_BASE}Props = StackScreenProps<ParamListBase, \"${1:$TM_FILENAME_BASE}\">",
       "interface ${1:$TM_FILENAME_BASE}State {}",
       "",
-      "export default class ${1:$TM_FILENAME_BASE} extends React.Component<${1:$TM_FILENAME_BASE}Props, ${1:$TM_FILENAME_BASE}State> {",
+      "class ${1:$TM_FILENAME_BASE} extends React.Component<${1:$TM_FILENAME_BASE}Props, ${1:$TM_FILENAME_BASE}State> {",
       "	state: ${1:$TM_FILENAME_BASE}State = {};",
       "	render() {",
       "		return (",
@@ -128,7 +129,9 @@
       "			 </ScreenLayout>",
       "		);",
       "	}",
-      "}"
+      "}",
+      "",
+      "export default StoreConnected<\"${1:$TM_FILENAME_BASE\"}>(${1:$TM_FILENAME_BASE});"
     ]
   }
 }

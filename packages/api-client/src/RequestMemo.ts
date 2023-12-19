@@ -1,10 +1,6 @@
+import { createEmptyResponse } from "../../api-cacher/src/apiCacher.utils";
 import { handleResponse } from "./ResponseHandler";
-import {
-  CachedRequest,
-  CachedResponse,
-  HeaderDefinition,
-  ResponseWithData,
-} from "./api.types";
+import { CachedRequest, CachedResponse, HeaderDefinition } from "./api.types";
 
 type RequestCach = { [key: string]: CachedRequest<any> };
 const cache: RequestCach = {};
@@ -15,6 +11,7 @@ export function cachedFetch(
 ): CachedResponse<any> {
   const cached = cache[url];
   if (cached && !cached.needsRefresh) {
+    console.log("Cache hit!", cached);
     return {
       promise: cached.promise,
       isLoading: false,
@@ -22,6 +19,7 @@ export function cachedFetch(
     };
   }
 
+  console.log("Cache miss! fetching with headers...", headers);
   const promise = fetch(url, { credentials: "include", headers })
     .then(handleResponse)
     .then((response) => {
@@ -35,6 +33,8 @@ export function cachedFetch(
     needsRefresh: false,
   };
 
+  console.log("...and returning", cache[url]);
+
   return {
     promise,
     isLoading: true,
@@ -42,16 +42,19 @@ export function cachedFetch(
   };
 }
 
-export function setCachedResponse(
-  url: string,
-  response: ResponseWithData<any>
-) {
+export function setCachedResult(url: string, data: any) {
+  const response = cache[url]?.response || createEmptyResponse();
+  response.data = data;
   cache[url] = {
     promise: Promise.resolve(response),
     requestedAt: Date.now(),
     needsRefresh: false,
     response,
   };
+}
+
+export function clearCachedResult(url: string) {
+  delete cache[url];
 }
 
 export function invalidateCacheResponse(url: string) {

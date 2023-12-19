@@ -1,14 +1,6 @@
 import EventEmitter from "eventemitter3";
-
-import { ApiClient, ApiUser } from "@loginapp/api-client";
-
-interface IndexOf<T> {
-  [key: string]: T;
-}
-
-export interface ApiCache {
-  users: IndexOf<ApiUser>;
-}
+import { ApiClient } from "@loginapp/api-client";
+import { ApiCache } from "./apiCacher.types";
 
 const blankCache: ApiCache = {
   users: {},
@@ -21,7 +13,7 @@ interface ApiCacherConfig {
 
 export class ApiCacher {
   #emitter = new EventEmitter();
-  emitTimeout: NodeJS.Timeout | number | undefined;
+  emitTimeout: number | undefined;
   data: ApiCache;
   apiClient: ApiClient;
 

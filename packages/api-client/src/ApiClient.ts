@@ -15,7 +15,9 @@ export class ApiClient implements ApiClientBase {
   }
 
   authenticate(authToken: string) {
-    this.requester = this.requester.withHeaders({ [AUTH_HEADER]: authToken });
+    this.requester = this.requester.withHeaders({
+      [AUTH_HEADER]: getBearer(authToken),
+    });
   }
 
   unauthenticate() {
@@ -31,6 +33,10 @@ export class ApiClient implements ApiClientBase {
       authToken: allHeaders[AUTH_HEADER],
       headers: allHeaders,
     });
+  }
+
+  getApiUrl(route: string = "") {
+    return this.requester.getApiUrl(route);
   }
 }
 

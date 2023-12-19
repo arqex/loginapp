@@ -15,6 +15,8 @@ interface PaperThemeProviderProps {
   children: React.ReactNode;
 }
 
+let counter = 0;
+
 export default function PaperProviderWithNavigation(
   props: PaperThemeProviderProps
 ) {
