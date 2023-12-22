@@ -1,10 +1,12 @@
-import { ResponseWithData } from "./api.types";
+import { ResponseMiddleware, ResponseWithData } from "./api.types";
 import { ApiError } from "./ApiError";
 
 export async function handleResponse(
   res: Response,
-  throwOnApiError = false
+  throwOnApiError = false,
+  middlewares: ResponseMiddleware[]
 ): Promise<ResponseWithData<any>> {
+  res = applyMiddleware(res, middlewares);
   let resWithData: ResponseWithData<any> | undefined;
   if (res.status === 204) return await enhanceResponse(res, {});
 
@@ -36,4 +38,14 @@ async function enhanceResponse<T>(
     type: res.type,
     url: res.url,
   };
+}
+
+function applyMiddleware(res: Response, middlewares: ResponseMiddleware[]) {
+  let applied = res;
+  const toApply = [...middlewares];
+  while (toApply.length > 0) {
+    const current = toApply.shift()!;
+    applied = current(applied);
+  }
+  return applied;
 }

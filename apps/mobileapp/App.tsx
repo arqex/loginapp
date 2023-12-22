@@ -14,6 +14,7 @@ import SignupScreen from "./authScreens/signup/SignupScreen";
 import EmailLoginScreen from "./authScreens/emailLogin/EmailLoginScreen";
 import {
   initApp,
+  initGlobalErrorHandler,
   initStores,
 } from "./application/initialization/initialization.service";
 import { isAppInitialized } from "./application/initialization/initialization.accessors";
@@ -22,6 +23,7 @@ import { getApiCacher } from "./application/stores/apiCacher";
 import { isAuthenticated } from "./application/authentication/authentication.accessors";
 import HomeScreen from "./screens/home/HomeScreen";
 
+initGlobalErrorHandler();
 initStores();
 
 function Home({ navigation }) {

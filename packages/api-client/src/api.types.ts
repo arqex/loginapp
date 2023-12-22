@@ -31,7 +31,10 @@ export interface ApiClientConfig {
   apiURL: string;
   authToken?: string;
   headers?: { [headerName: string]: string };
+  responseMiddleware?: ResponseMiddleware[];
 }
+
+export type ResponseMiddleware = (res: Response) => Response;
 
 export interface HeaderDefinition {
   [headerName: string]: string;

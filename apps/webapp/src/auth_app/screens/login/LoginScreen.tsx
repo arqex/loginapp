@@ -100,6 +100,7 @@ export default class LoginScreen extends React.Component<
         });
         this.inputRef.current?.focus();
       } else {
+        console.error(err);
         this.setState({ loading: false });
       }
     }

@@ -3,7 +3,7 @@ import { getApiCacher } from "../stores/apiCacher";
 import { apiClient } from "../stores/apiClient";
 import { getLS } from "../stores/localStorage";
 import { getUIStore } from "../stores/uiStore";
-import { loadUser } from "@loginapp/api-cacher";
+import { ApiCacher, loadUser } from "@loginapp/api-cacher";
 import {
   login as apiLogin,
   logout as apiLogout,
@@ -14,6 +14,7 @@ import {
   verifyEmail as apiVerifyEmail,
   requestEmailLogin as apiRequestEmailLogin,
   ApiUser,
+  ResponseMiddleware,
 } from "@loginapp/api-client";
 
 export function setLastAuthenticatedUser(user?: ApiUser) {
@@ -93,3 +94,18 @@ export function redirectToOauth(provider: string) {
     `/auth/oauth_start?provider=${provider}&returnTo=${returnTo}`
   );
 }
+
+export function handleExpiredSessions(apiCacher: ApiCacher) {
+  const currentMiddleware = apiCacher.apiClient.requester.responseMiddleware;
+  if (!currentMiddleware.includes(expiredSessionMiddleware)) {
+    currentMiddleware.push(expiredSessionMiddleware);
+  }
+}
+
+const expiredSessionMiddleware: ResponseMiddleware = (res) => {
+  if (res.status === 401) {
+    console.log("Expired session detected, logging out");
+    logout();
+  }
+  return res;
+};

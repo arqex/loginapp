@@ -1,5 +1,4 @@
 import { UIStore } from "@loginapp/api-cacher";
-
 export interface UiStoreData {
   authenticatedUserId: string | null;
   toast: any;

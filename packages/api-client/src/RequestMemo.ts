@@ -1,13 +1,19 @@
 import { createEmptyResponse } from "../../api-cacher/src/apiCacher.utils";
 import { handleResponse } from "./ResponseHandler";
-import { CachedRequest, CachedResponse, HeaderDefinition } from "./api.types";
+import {
+  CachedRequest,
+  CachedResponse,
+  HeaderDefinition,
+  ResponseMiddleware,
+} from "./api.types";
 
 type RequestCach = { [key: string]: CachedRequest<any> };
 const cache: RequestCach = {};
 
 export function cachedFetch(
   url: string,
-  headers: HeaderDefinition
+  headers: HeaderDefinition,
+  middlewares: ResponseMiddleware[]
 ): CachedResponse<any> {
   const cached = cache[url];
   if (cached && !cached.needsRefresh) {
@@ -21,7 +27,7 @@ export function cachedFetch(
 
   console.log("Cache miss! fetching with headers...", headers);
   const promise = fetch(url, { credentials: "include", headers })
-    .then(handleResponse)
+    .then((res) => handleResponse(res, false, middlewares))
     .then((response) => {
       cache[url].response = response;
       return response;

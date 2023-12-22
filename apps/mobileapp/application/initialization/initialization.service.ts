@@ -13,6 +13,7 @@ import {
 import { apiClient } from "../stores/apiClient";
 import { getAuthToken } from "../authentication/authentication.accessors";
 import * as SplashScreen from "expo-splash-screen";
+import { handleExpiredSessions } from "../authentication/authentication.service";
 
 export async function initStores() {
   // Inititalize UIStore
@@ -25,6 +26,8 @@ export async function initStores() {
   // Initialize data store
   const apiCacher = createApiCacher({ apiClient });
   setApiCacher(apiCacher);
+
+  handleExpiredSessions(apiCacher);
 }
 
 export async function initApp() {
@@ -58,4 +61,11 @@ async function restoreCachedData(uiStore: AppStore) {
     ...uiStore.data,
     ...cachedData,
   };
+}
+
+export function initGlobalErrorHandler() {
+  ErrorUtils.setGlobalHandler((error) => {
+    console.log("Error finally catched here", error);
+    throw error;
+  });
 }

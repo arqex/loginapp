@@ -1,6 +1,7 @@
-import { clearCache } from "@loginapp/api-client";
+import { ResponseMiddleware, clearCache } from "@loginapp/api-client";
 import { getApiCacher } from "../stores/apiCacher";
 import { getUIStore } from "../stores/uiStore";
+import { ApiCacher } from "@loginapp/api-cacher";
 
 export function onAuthenticate(userId: string, token: string) {
   const store = getUIStore();
@@ -23,3 +24,18 @@ export function onLogout() {
   }, 1000);
   store.emitChange();
 }
+
+export function handleExpiredSessions(apiCacher: ApiCacher) {
+  const currentMiddleware = apiCacher.apiClient.requester.responseMiddleware;
+  if (!currentMiddleware.includes(expiredSessionMiddleware)) {
+    currentMiddleware.push(expiredSessionMiddleware);
+  }
+}
+
+const expiredSessionMiddleware: ResponseMiddleware = (res) => {
+  if (res.status === 401) {
+    console.log("Expired session detected, logging out");
+    onLogout();
+  }
+  return res;
+};

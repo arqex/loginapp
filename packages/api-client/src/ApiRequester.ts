@@ -1,10 +1,11 @@
 import { cachedFetch, invalidateCacheResponse } from "./RequestMemo";
 import { handleResponse } from "./ResponseHandler";
-import { HeaderDefinition } from "./api.types";
+import { HeaderDefinition, ResponseMiddleware } from "./api.types";
 
 export const apiRequester = {
   headers: { "content-type": "application/json" } as HeaderDefinition,
   apiUrl: "http://localhost:3000",
+  responseMiddleware: [] as ResponseMiddleware[],
   getApiUrl(route: string) {
     return `${this.apiUrl}${route}`;
   },
@@ -18,16 +19,20 @@ export const apiRequester = {
       headers: this.headers,
       credentials: "include",
     });
-    return await handleResponse(res, true);
+    return await handleResponse(res, true, this.responseMiddleware);
   },
   async get(route: string) {
     const url = this.getApiUrl(route);
     invalidateCacheResponse(url);
-    const { promise } = cachedFetch(url, this.headers);
+    const { promise } = cachedFetch(url, this.headers, this.responseMiddleware);
     return await promise;
   },
   getCached(route: string) {
-    return cachedFetch(this.getApiUrl(route), this.headers);
+    return cachedFetch(
+      this.getApiUrl(route),
+      this.headers,
+      this.responseMiddleware
+    );
   },
   async patch(route: string, data: any) {
     const res = await fetch(this.getApiUrl(route), {
@@ -36,7 +41,7 @@ export const apiRequester = {
       headers: this.headers,
       credentials: "include",
     });
-    return await handleResponse(res, true);
+    return await handleResponse(res, true, this.responseMiddleware);
   },
   async delete(route: string) {
     const res = await fetch(this.getApiUrl(route), {
@@ -44,6 +49,6 @@ export const apiRequester = {
       credentials: "include",
       headers: this.headers,
     });
-    return await handleResponse(res, true);
+    return await handleResponse(res, true, this.responseMiddleware);
   },
 };
