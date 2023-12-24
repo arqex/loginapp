@@ -2,6 +2,7 @@ import { ResponseMiddleware, clearCache } from "@loginapp/api-client";
 import { getApiCacher } from "../stores/apiCacher";
 import { getUIStore } from "../stores/uiStore";
 import { ApiCacher } from "@loginapp/api-cacher";
+import { getAuthenticatedId } from "./authentication.accessors";
 
 export function onAuthenticate(userId: string, token: string) {
   const store = getUIStore();
@@ -33,7 +34,7 @@ export function handleExpiredSessions(apiCacher: ApiCacher) {
 }
 
 const expiredSessionMiddleware: ResponseMiddleware = (res) => {
-  if (res.status === 401) {
+  if (res.status === 401 && getAuthenticatedId()) {
     console.log("Expired session detected, logging out");
     onLogout();
   }

@@ -5,9 +5,10 @@ import {
   goToAuthenticatedApp,
   signup,
 } from "../../../application/auth/auth.service";
-import { ApiError } from "../../../application/api/ApiError";
 import Link from "../../../components/Link/Link";
 import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import { getAuthRouter } from "../../authRoutes";
+import { ApiError } from "@loginapp/api-client";
 
 interface SignupScreenProps {}
 interface SignupScreenState {
@@ -98,7 +99,9 @@ export default class SignupScreen extends React.Component<
     try {
       const status = await signup(this.state.email, this.state.password);
       if (status === 204) {
-        this.setState({ isSigningUp: false, isSuccess: true });
+        getAuthRouter()?.push(
+          "/verify_email?email=" + encodeURIComponent(this.state.email)
+        );
       } else {
         // 201, we are logged in
         goToAuthenticatedApp();

@@ -6,14 +6,15 @@ export function getEmailVerifyTemplate(
 ): EmailDetails {
   const verifyLink = `${
     process.env.APP_URL
-  }/#/verify_email?vc=${verificationCode}&email=${encodeURIComponent(email)}`;
+  }/#/verify_email?email=${encodeURIComponent(email)}`;
 
   return {
     subject: 'Welcome to LoginApp',
     text: `You are one step away from using LoginApp. Verify your email address using this link: ${verifyLink}`,
     html: `
       <h1>Welcome to LoginApp</h1>
-      <p>You are one step away from using LoginApp. Verify your email address using this link <a href="${verifyLink}">${verifyLink}</a></p>
+      <p>You are one step away from using LoginApp. Go back to the app or <a href="${verifyLink}">visit this link<a> and type the following code:</p>
+      <h2>${verificationCode}</h2>
     `,
   };
 }

@@ -16,6 +16,7 @@ import {
   ApiUser,
   ResponseMiddleware,
 } from "@loginapp/api-client";
+import { getAuthenticatedId } from "./auth.selector";
 
 export function setLastAuthenticatedUser(user?: ApiUser) {
   user ? getLS().set("AUTH_USER", user) : getLS().del("AUTH_USER");
@@ -56,8 +57,9 @@ async function updateAuthenticatedUser(id: string | undefined) {
   uiStore.emitChange();
 }
 
-export function verifyEmail(vc: string, email: string) {
-  return apiVerifyEmail(apiClient, vc, email);
+export async function verifyEmail(vc: string, email: string) {
+  const res = await apiVerifyEmail(apiClient, vc, email);
+  updateAuthenticatedUser(res.data.authenticatedId);
 }
 
 export function requestEmailLogin(email: string) {
@@ -103,7 +105,7 @@ export function handleExpiredSessions(apiCacher: ApiCacher) {
 }
 
 const expiredSessionMiddleware: ResponseMiddleware = (res) => {
-  if (res.status === 401) {
+  if (res.status === 401 && getAuthenticatedId()) {
     console.log("Expired session detected, logging out");
     logout();
   }

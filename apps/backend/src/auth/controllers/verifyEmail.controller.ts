@@ -5,12 +5,13 @@ import {
   resUnauthorized,
 } from 'src/utils/respond.utils';
 import { isValidEmailAddress } from 'src/utils/validation.utils';
-import { findAuth } from '../auth.db';
-import { getUserById, updateUser } from 'src/users/users.db';
+import { findAuth, updateAuth } from '../auth.db';
 import { JsonObject } from '@prisma/client/runtime/library';
+import { respondLogin } from './login.controller';
 
 export async function verifyEmailController(req: Request, res: Response) {
   const { vc, email } = req.body;
+  const { useCookie } = req.query;
 
   if (!vc) return resError(res, 'missing_verification_token');
   if (!isValidEmailAddress(email)) return resInvalidEmail(res);
@@ -21,15 +22,11 @@ export async function verifyEmailController(req: Request, res: Response) {
   const { vc: storedVC } = auth.meta as JsonObject;
   if (storedVC !== vc) return resUnauthorized(res);
 
-  const user = await getUserById(auth.userId);
-  const { verified } = user?.meta as JsonObject;
-  if (!user || verified) return resUnauthorized(res);
-
-  const updatedMeta = {
-    ...(user.meta as JsonObject),
-    verified: true,
+  const update = {
+    ...(auth.meta as JsonObject),
   };
+  delete update.vc;
+  await updateAuth(auth.key, { meta: update });
 
-  await updateUser(user.id, { meta: updatedMeta });
-  res.status(204).send();
+  respondLogin(auth, res, useCookie !== 'false');
 }

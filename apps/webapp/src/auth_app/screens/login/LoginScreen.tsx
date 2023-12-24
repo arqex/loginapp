@@ -9,6 +9,7 @@ import {
 import Link from "../../../components/Link/Link";
 import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
 import { ApiError } from "@loginapp/api-client";
+import { getAuthRouter } from "../../authRoutes";
 
 interface LoginScreenProps {}
 interface LoginScreenState {
@@ -92,7 +93,11 @@ export default class LoginScreen extends React.Component<
       goToAuthenticatedApp();
     } catch (err: any) {
       const error = err as ApiError;
-      if (error.response?.status === 401) {
+      if (error.response?.data?.error === "verification_required") {
+        getAuthRouter()?.push(
+          "/verify_email?email=" + encodeURIComponent(this.state.email)
+        );
+      } else if (error.response?.status === 401) {
         console.log("No authorized");
         this.setState({
           errors: { email: "Email or password not valid" },

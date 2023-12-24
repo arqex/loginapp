@@ -74,7 +74,7 @@ export async function verifyEmail(
   return (await apiClient.requester.post("/auth/verify_email", {
     vc,
     email,
-  })) as ResponseWithData<{}>;
+  })) as ResponseWithData<LoginResponseWithToken>;
 }
 
 export async function requestEmailLogin(

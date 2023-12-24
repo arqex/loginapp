@@ -3,8 +3,15 @@ import { findAuth } from '../auth.db';
 import { isValidPassword, createJWT } from '../auth.utils';
 import { AuthToken } from '@prisma/client';
 import { AUTH_COOKIE_NAME } from '../strategies/jwt.strategy';
-import { resInvalidEmail, resUnauthorized } from 'src/utils/respond.utils';
+import {
+  resError,
+  resInvalidEmail,
+  resUnauthorized,
+} from 'src/utils/respond.utils';
 import { isValidEmailAddress } from 'src/utils/validation.utils';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { sendEmail } from 'src/email/sender';
+import { getEmailVerifyTemplate } from 'src/email/templates/verifyEmail.template';
 
 export async function loginController(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -14,6 +21,12 @@ export async function loginController(req: Request, res: Response) {
   const auth = await findAuth(email);
   if (!auth || !(await isValidPassword(auth, password)))
     return resUnauthorized(res);
+
+  const vc = (auth.meta as JsonObject).vc as string;
+  if (vc) {
+    await sendEmail(email, getEmailVerifyTemplate(email, vc));
+    return resError(res, 'verification_required', 400);
+  }
 
   await respondLogin(auth, res, useCookie !== 'false');
 }
