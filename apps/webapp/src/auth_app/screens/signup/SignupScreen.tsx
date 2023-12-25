@@ -9,13 +9,17 @@ import Link from "../../../components/Link/Link";
 import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
 import { getAuthRouter } from "../../authRoutes";
 import { ApiError } from "@loginapp/api-client";
+import {
+  ValidationErrors,
+  isValidEmailAddress,
+} from "../../../application/utils/validation.utils";
 
 interface SignupScreenProps {}
 interface SignupScreenState {
   email: string;
   password: string;
   isSigningUp: boolean;
-  errors: { [key: string]: string | undefined };
+  errors: ValidationErrors;
   isSuccess: boolean;
 }
 
@@ -27,7 +31,7 @@ export default class SignupScreen extends React.Component<
     email: "",
     password: "",
     isSigningUp: false,
-    errors: {},
+    errors: undefined,
     isSuccess: false,
   };
   render() {
@@ -55,8 +59,8 @@ export default class SignupScreen extends React.Component<
             label="Email:"
             value={email}
             onChange={(e) => this.setState({ email: e.target.value })}
-            invalid={!!errors.email}
-            feedbackInvalid={errors.email}
+            invalid={!!errors?.email}
+            feedbackInvalid={errors?.email}
             autoComplete="on"
             autoFocus
           />
@@ -69,7 +73,8 @@ export default class SignupScreen extends React.Component<
             value={password}
             onChange={(e) => this.setState({ password: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && this._onSignupClick()}
-            invalid={!!errors.password}
+            invalid={!!errors?.password}
+            feedbackInvalid={errors?.password}
           />
         </div>
         <Button loading={isSigningUp} onClick={this._onSignupClick}>
@@ -96,6 +101,13 @@ export default class SignupScreen extends React.Component<
 
   _onSignupClick = async () => {
     this.setState({ isSigningUp: true });
+    const { email, password } = this.state;
+    const errors = this.getValidationErrors(email, password);
+
+    if (errors) {
+      return this.setState({ errors });
+    }
+
     try {
       const status = await signup(this.state.email, this.state.password);
       if (status === 204) {
@@ -119,4 +131,16 @@ export default class SignupScreen extends React.Component<
       }
     }
   };
+
+  getValidationErrors(email: string, password: string) {
+    const errors: ValidationErrors = {};
+    if (!isValidEmailAddress(email)) {
+      errors.email = "The email address is not valid.";
+    }
+    if (!password) {
+      errors.password = "Need to type a password.";
+    }
+
+    if (Object.keys(errors).length > 0) return errors;
+  }
 }

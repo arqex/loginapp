@@ -17,6 +17,7 @@ import { JsonObject } from '@prisma/client/runtime/library';
 
 export async function signupController(req: Request, res: Response) {
   const { email, password } = req.body;
+  const { useCookie } = req.query;
 
   if (!isValidEmailAddress(email)) return resInvalidEmail(res);
   const auth = await findAuth(email);
@@ -32,7 +33,7 @@ export async function signupController(req: Request, res: Response) {
       }
 
       // User is verified, and passowrd is ok, we can just login
-      return await respondLogin(auth, res);
+      return await respondLogin(auth, res, useCookie !== 'false');
     } else {
       // Password not valid, send email to login by email
       await handleEmailLoginRequest(auth);

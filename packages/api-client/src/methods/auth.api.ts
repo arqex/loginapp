@@ -58,23 +58,31 @@ export async function logout(apiClient: ApiClientBase) {
 export async function signup(
   apiClient: ApiClientBase,
   email: string,
-  password: string
+  password: string,
+  useCookie = true
 ) {
-  return (await apiClient.requester.post("/auth/signup", {
-    email,
-    password,
-  })) as ResponseWithData<LoginResponse>;
+  return (await apiClient.requester.post(
+    "/auth/signup?useCookie=" + useCookie,
+    {
+      email,
+      password,
+    }
+  )) as ResponseWithData<LoginResponse | LoginResponseWithToken>;
 }
 
 export async function verifyEmail(
   apiClient: ApiClientBase,
   vc: string,
-  email: string
+  email: string,
+  useCookie = true
 ) {
-  return (await apiClient.requester.post("/auth/verify_email", {
-    vc,
-    email,
-  })) as ResponseWithData<LoginResponseWithToken>;
+  return (await apiClient.requester.post(
+    "/auth/verify_email?useCookie=" + useCookie,
+    {
+      vc,
+      email,
+    }
+  )) as ResponseWithData<LoginResponseWithToken>;
 }
 
 export async function requestEmailLogin(

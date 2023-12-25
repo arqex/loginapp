@@ -1,8 +1,13 @@
-import { ResponseMiddleware, clearCache } from "@loginapp/api-client";
-import { getApiCacher } from "../stores/apiCacher";
-import { getUIStore } from "../stores/uiStore";
-import { ApiCacher } from "@loginapp/api-cacher";
-import { getAuthenticatedId } from "./authentication.accessors";
+import {
+  ResponseMiddleware,
+  clearCache,
+  verifyEmail as apiVerifyEmail,
+} from '@loginapp/api-client';
+import { getApiCacher } from '../stores/apiCacher';
+import { getUIStore } from '../stores/uiStore';
+import { ApiCacher } from '@loginapp/api-cacher';
+import { getAuthenticatedId } from './authentication.accessors';
+import { apiClient } from '../stores/apiClient';
 
 export function onAuthenticate(userId: string, token: string) {
   const store = getUIStore();
@@ -35,8 +40,15 @@ export function handleExpiredSessions(apiCacher: ApiCacher) {
 
 const expiredSessionMiddleware: ResponseMiddleware = (res) => {
   if (res.status === 401 && getAuthenticatedId()) {
-    console.log("Expired session detected, logging out");
+    console.log('Expired session detected, logging out');
     onLogout();
   }
   return res;
 };
+
+export async function verifyEmail(vc: string, email: string) {
+  const { authenticatedId, token } = (
+    await apiVerifyEmail(apiClient, vc, email, false)
+  ).data;
+  onAuthenticate(authenticatedId, token);
+}

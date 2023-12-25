@@ -1,11 +1,11 @@
-import React from "react";
-import ScreenLayout from "../../components/ScreenLayout";
-import { Button, Text } from "react-native-paper";
-import Column from "../../components/Column";
-import { ParamListBase } from "@react-navigation/native";
-import { StackScreenProps } from "@react-navigation/stack";
+import React from 'react';
+import ScreenLayout from '../../components/ScreenLayout';
+import { Button, Text } from 'react-native-paper';
+import Column from '../../components/Column';
+import { ParamListBase } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-type SignupScreenProps = StackScreenProps<ParamListBase, "SignUp">;
+type SignupScreenProps = StackScreenProps<ParamListBase, 'SignUp'>;
 interface SignupScreenState {}
 
 export default class SignupScreen extends React.Component<
@@ -20,12 +20,12 @@ export default class SignupScreen extends React.Component<
           <Button mode="contained" icon="google">
             Sign up with Google
           </Button>
-          <Button mode="contained" icon="at">
+          <Button mode="contained" icon="at" onPress={this._goToEmailLogin}>
             Sign up with Email
           </Button>
           <Button
             onPress={this._goToLogin}
-            labelStyle={{ textDecorationLine: "underline" }}
+            labelStyle={{ textDecorationLine: 'underline' }}
           >
             Already have an account? Log in
           </Button>
@@ -35,6 +35,10 @@ export default class SignupScreen extends React.Component<
   }
 
   _goToLogin = () => {
-    this.props.navigation.navigate("LogIn");
+    this.props.navigation.navigate('LogIn');
+  };
+
+  _goToEmailLogin = () => {
+    this.props.navigation.navigate('EmailSignup');
   };
 }

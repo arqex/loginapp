@@ -1,31 +1,32 @@
 import React from 'react';
-import ScreenLayout from '../../components/ScreenLayout';
-import { Button, HelperText, TextInput } from 'react-native-paper';
-import Column from '../../components/Column';
-import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { apiClient } from '../../application/stores/apiClient';
-import { getAuthenticationToken, signup } from '@loginapp/api-client';
+import { ParamListBase } from '@react-navigation/native';
+import ScreenLayout from '../../components/ScreenLayout';
+import { StoreConnected } from '../../components/StoreConnectedScreen';
+import Column from '../../components/Column';
+import { Button, HelperText, TextInput } from 'react-native-paper';
+import { signup, getAuthenticationToken, ApiError } from '@loginapp/api-client';
 import { onAuthenticate } from '../../application/authentication/authentication.service';
+import { apiClient } from '../../application/stores/apiClient';
 import {
-  isValidEmailAddress,
   ValidationErrors,
+  isValidEmailAddress,
 } from '../../application/utils/validation.utils';
 import { View } from 'react-native';
 
-type EmailLoginScreenProps = StackScreenProps<ParamListBase, 'EmailLogin'>;
-interface EmailLoginScreenState {
+type EmailSignupScreenProps = StackScreenProps<ParamListBase, 'EmailSignup'>;
+interface EmailSignupScreenState {
   email: string;
   password: string;
   isSending: boolean;
   errors: ValidationErrors;
 }
 
-export default class EmailLoginScreen extends React.Component<
-  EmailLoginScreenProps,
-  EmailLoginScreenState
+class EmailSignupScreen extends React.Component<
+  EmailSignupScreenProps,
+  EmailSignupScreenState
 > {
-  state: EmailLoginScreenState = {
+  state: EmailSignupScreenState = {
     email: '',
     password: '',
     isSending: false,
@@ -48,8 +49,8 @@ export default class EmailLoginScreen extends React.Component<
               autoCapitalize="none"
               blurOnSubmit={false}
               returnKeyType="next"
-              error={!!errors?.email}
               onSubmitEditing={() => this.passwordInputRef.current?.focus()}
+              error={!!errors?.email}
               autoFocus
             />
             <HelperText type="error" visible={!!errors?.email}>
@@ -64,9 +65,9 @@ export default class EmailLoginScreen extends React.Component<
               value={password}
               onChangeText={(password) => this.setState({ password })}
               autoComplete="password"
+              error={!!errors?.password}
               secureTextEntry
               blurOnSubmit
-              error={!!errors?.password}
             />
             <HelperText type="error" visible={!!errors?.password}>
               {errors?.password}
@@ -78,7 +79,10 @@ export default class EmailLoginScreen extends React.Component<
             disabled={isSending}
             loading={isSending}
           >
-            Login
+            Log in
+          </Button>
+          <Button mode="contained" onPress={this._goToEmailVerification}>
+            Verify account
           </Button>
         </Column>
       </ScreenLayout>
@@ -94,14 +98,32 @@ export default class EmailLoginScreen extends React.Component<
     }
     this.setState({ isSending: true });
 
-    getAuthenticationToken(apiClient, email, password)
-      .then(({ data }) => {
-        const { authenticatedId, token } = data;
-        onAuthenticate(authenticatedId, token);
-      })
-      .catch((error) => {
-        console.error('error', error);
-      });
+    try {
+      const { data, status } = await signup(apiClient, email, password, false);
+      console.log('signup', data, status);
+      if (status === 201) {
+        // @ts-ignore This is a login
+        return onAuthenticate(data.authenticatedId, data.token);
+      }
+      this.setState({ isSending: false });
+      this.props.navigation.navigate('VerifyEmail', { email });
+    } catch (err) {
+      const error = err as ApiError;
+      if (error.response?.status === 401) {
+        console.log('No authorized');
+        this.setState({
+          errors: { email: 'Email or password not valid' },
+          isSending: false,
+        });
+      } else {
+        this.setState({ isSending: false });
+      }
+    }
+  };
+
+  _goToEmailVerification = () => {
+    const { email } = this.state;
+    this.props.navigation.navigate('VerifyEmail', { email });
   };
 
   getValidationErrors(email: string, password: string) {
@@ -116,3 +138,5 @@ export default class EmailLoginScreen extends React.Component<
     if (Object.keys(errors).length > 0) return errors;
   }
 }
+
+export default StoreConnected<'EmailSignup'>(EmailSignupScreen);
