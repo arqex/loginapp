@@ -1,4 +1,4 @@
-import { UIStore } from "@loginapp/api-cacher";
+import { UIStore } from '@loginapp/ui-store';
 
 interface AppStoreData {
   isAppInitialized: boolean;
@@ -29,6 +29,6 @@ export function setUIStore(nextStore: AppStore) {
 }
 
 export function getUIStore(): AppStore {
-  if (!uiStore) throw new Error("UI store not initialized");
+  if (!uiStore) throw new Error('UI store not initialized');
   return uiStore;
 }

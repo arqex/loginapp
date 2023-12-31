@@ -1,19 +1,14 @@
-import * as SecureStore from "expo-secure-store";
+import * as SecureStore from 'expo-secure-store';
 import {
   AppStore,
   createUIStore,
   getUIStore,
   setUIStore,
-} from "../stores/uiStore";
-import {
-  setApiCacher,
-  createApiCacher,
-  getApiCacher,
-} from "../stores/apiCacher";
-import { apiClient } from "../stores/apiClient";
-import { getAuthToken } from "../authentication/authentication.accessors";
-import * as SplashScreen from "expo-splash-screen";
-import { handleExpiredSessions } from "../authentication/authentication.service";
+} from '../stores/uiStore';
+import { apiClient } from '../stores/apiClient';
+import { getAuthToken } from '../authentication/authentication.accessors';
+import * as SplashScreen from 'expo-splash-screen';
+import { handleExpiredSessions } from '../authentication/authentication.service';
 
 export async function initStores() {
   // Inititalize UIStore
@@ -23,11 +18,7 @@ export async function initStores() {
     cacheUIStore(uiStore.data);
   });
 
-  // Initialize data store
-  const apiCacher = createApiCacher({ apiClient });
-  setApiCacher(apiCacher);
-
-  handleExpiredSessions(apiCacher);
+  handleExpiredSessions();
 }
 
 export async function initApp() {
@@ -35,14 +26,14 @@ export async function initApp() {
   await restoreCachedData(store);
   const authToken = getAuthToken();
   if (authToken) {
-    getApiCacher().authenticate(authToken);
+    apiClient.authenticate(authToken);
   }
   store.data.isAppInitialized = true;
   store.emitChange();
   await SplashScreen.hideAsync();
 }
 
-const UISTORE_KEY = "UIStore";
+const UISTORE_KEY = 'UIStore';
 async function getCachedUIStore() {
   const cached = await SecureStore.getItemAsync(UISTORE_KEY);
   if (cached) {
@@ -65,7 +56,7 @@ async function restoreCachedData(uiStore: AppStore) {
 
 export function initGlobalErrorHandler() {
   ErrorUtils.setGlobalHandler((error) => {
-    console.log("Error finally catched here", error);
+    console.log('Error finally catched here', error);
     throw error;
   });
 }

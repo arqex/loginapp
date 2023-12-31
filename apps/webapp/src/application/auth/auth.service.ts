@@ -1,9 +1,7 @@
 import { getRouter } from "../routing/router";
-import { getApiCacher } from "../stores/apiCacher";
 import { apiClient } from "../stores/apiClient";
 import { getLS } from "../stores/localStorage";
 import { getUIStore } from "../stores/uiStore";
-import { ApiCacher, loadUser } from "@loginapp/api-cacher";
 import {
   login as apiLogin,
   logout as apiLogout,
@@ -15,6 +13,8 @@ import {
   requestEmailLogin as apiRequestEmailLogin,
   ApiUser,
   ResponseMiddleware,
+  ApiClient,
+  loadUser,
 } from "@loginapp/api-client";
 import { getAuthenticatedId } from "./auth.selector";
 
@@ -47,7 +47,7 @@ export async function signup(email: string, password: string): Promise<number> {
 async function updateAuthenticatedUser(id: string | undefined) {
   const uiStore = getUIStore();
   if (id) {
-    const { data: user } = await loadUser(getApiCacher(), id).promise;
+    const { data: user } = await loadUser(apiClient, id).promise;
     setLastAuthenticatedUser(user);
     uiStore.data.authenticatedUserId = id;
   } else {
@@ -97,8 +97,8 @@ export function redirectToOauth(provider: string) {
   );
 }
 
-export function handleExpiredSessions(apiCacher: ApiCacher) {
-  const currentMiddleware = apiCacher.apiClient.requester.responseMiddleware;
+export function handleExpiredSessions(apiClient: ApiClient) {
+  const currentMiddleware = apiClient.requester.responseMiddleware;
   if (!currentMiddleware.includes(expiredSessionMiddleware)) {
     currentMiddleware.push(expiredSessionMiddleware);
   }

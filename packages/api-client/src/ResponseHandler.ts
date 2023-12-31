@@ -1,4 +1,10 @@
-import { ResponseMiddleware, ResponseWithData } from "./api.types";
+import {
+  CachedResponse,
+  LoaderResult,
+  LoaderResultWithErrors,
+  ResponseMiddleware,
+  ResponseWithData,
+} from "./api.types";
 import { ApiError } from "./ApiError";
 
 export async function handleResponse(
@@ -48,4 +54,62 @@ function applyMiddleware(res: Response, middlewares: ResponseMiddleware[]) {
     applied = current(applied);
   }
   return applied;
+}
+
+export function getLoaderResult<T>(
+  cachedResponse: CachedResponse<T>
+): LoaderResult<T> {
+  const { response, isLoading } = cachedResponse;
+  if (!response)
+    return {
+      isLoading: isLoading,
+      data: undefined,
+    };
+
+  if (response.status >= 300) throw new ApiError(response);
+
+  return {
+    isLoading: isLoading,
+    data: response.data,
+  };
+}
+
+export function getLoaderResultWithErrors<T>(
+  cachedResponse: CachedResponse<T>
+): LoaderResultWithErrors<T> {
+  const { response, isLoading } = cachedResponse;
+  if (!response)
+    return {
+      isLoading: isLoading,
+      error: undefined,
+      data: undefined,
+    };
+
+  if (response.status >= 300)
+    return {
+      isLoading: isLoading,
+      error: response.data,
+      data: undefined,
+    };
+
+  return {
+    isLoading: isLoading,
+    error: undefined,
+    data: response.data,
+  };
+}
+
+export function createEmptyResponse(): ResponseWithData<any> {
+  return {
+    data: undefined,
+    body: null,
+    bodyUsed: true,
+    headers: new Headers(),
+    ok: true,
+    redirected: false,
+    status: 200,
+    statusText: "",
+    type: "basic",
+    url: "",
+  };
 }

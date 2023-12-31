@@ -1,5 +1,4 @@
-import { createEmptyResponse } from "../../api-cacher/src/apiCacher.utils";
-import { handleResponse } from "./ResponseHandler";
+import { createEmptyResponse, handleResponse } from "./ResponseHandler";
 import {
   CachedRequest,
   CachedResponse,
@@ -13,7 +12,8 @@ const cache: RequestCach = {};
 export function cachedFetch(
   url: string,
   headers: HeaderDefinition,
-  middlewares: ResponseMiddleware[]
+  middlewares: ResponseMiddleware[],
+  onLoad: () => void
 ): CachedResponse<any> {
   const cached = cache[url];
   if (cached && !cached.needsRefresh) {
@@ -29,7 +29,9 @@ export function cachedFetch(
   const promise = fetch(url, { credentials: "include", headers })
     .then((res) => handleResponse(res, false, middlewares))
     .then((response) => {
+      cache[url].isLoading = false;
       cache[url].response = response;
+      onLoad();
       return response;
     });
 
@@ -37,6 +39,8 @@ export function cachedFetch(
     promise,
     requestedAt: Date.now(),
     needsRefresh: false,
+    response: cached?.response,
+    isLoading: true,
   };
 
   console.log("...and returning", cache[url]);
@@ -55,6 +59,7 @@ export function setCachedResult(url: string, data: any) {
     promise: Promise.resolve(response),
     requestedAt: Date.now(),
     needsRefresh: false,
+    isLoading: false,
     response,
   };
 }

@@ -32,6 +32,7 @@ export interface ApiClientConfig {
   authToken?: string;
   headers?: { [headerName: string]: string };
   responseMiddleware?: ResponseMiddleware[];
+  useCache?: boolean;
 }
 
 export type ResponseMiddleware = (res: Response) => Response;
@@ -45,10 +46,22 @@ export interface CachedRequest<T> {
   requestedAt: number;
   needsRefresh: boolean;
   promise: Promise<ResponseWithData<T>>;
+  isLoading: boolean;
 }
 
 export interface CachedResponse<T> {
   isLoading: boolean;
   response?: ResponseWithData<T>;
   promise: Promise<ResponseWithData<T>>;
+}
+
+export interface LoaderResult<RET> {
+  isLoading: boolean;
+  data: RET | undefined;
+}
+
+export interface LoaderResultWithErrors<RET> {
+  isLoading: boolean;
+  data: RET | undefined;
+  error: any;
 }

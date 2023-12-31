@@ -3,9 +3,7 @@ import {
   clearCache,
   verifyEmail as apiVerifyEmail,
 } from '@loginapp/api-client';
-import { getApiCacher } from '../stores/apiCacher';
 import { getUIStore } from '../stores/uiStore';
-import { ApiCacher } from '@loginapp/api-cacher';
 import { getAuthenticatedId } from './authentication.accessors';
 import { apiClient } from '../stores/apiClient';
 
@@ -14,14 +12,14 @@ export function onAuthenticate(userId: string, token: string) {
   store.data.authenticatedUserId = userId;
   store.data.authenticationToken = token;
   store.data.isAuthenticated = true;
-  getApiCacher().authenticate(token);
+  apiClient.authenticate(token);
   store.emitChange();
 }
 
 export function onLogout() {
   const store = getUIStore();
   store.data.isAuthenticated = false;
-  getApiCacher().unauthenticate();
+  apiClient.unauthenticate();
   setTimeout(() => {
     store.data.authenticatedUserId = null;
     store.data.authenticationToken = null;
@@ -31,8 +29,8 @@ export function onLogout() {
   store.emitChange();
 }
 
-export function handleExpiredSessions(apiCacher: ApiCacher) {
-  const currentMiddleware = apiCacher.apiClient.requester.responseMiddleware;
+export function handleExpiredSessions() {
+  const currentMiddleware = apiClient.requester.responseMiddleware;
   if (!currentMiddleware.includes(expiredSessionMiddleware)) {
     currentMiddleware.push(expiredSessionMiddleware);
   }

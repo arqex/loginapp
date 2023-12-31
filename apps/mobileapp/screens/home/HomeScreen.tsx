@@ -1,18 +1,17 @@
-import React from "react";
-import { StackScreenProps } from "@react-navigation/stack";
-import { ParamListBase } from "@react-navigation/native";
-import ScreenLayout from "../../components/ScreenLayout";
-import { Button, Text } from "react-native-paper";
-import { logout } from "@loginapp/api-client";
-import { onLogout } from "../../application/authentication/authentication.service";
+import React from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { ParamListBase } from '@react-navigation/native';
+import ScreenLayout from '../../components/ScreenLayout';
+import { Button, Text } from 'react-native-paper';
+import { logout } from '@loginapp/api-client';
+import { onLogout } from '../../application/authentication/authentication.service';
 
-import { apiClient } from "../../application/stores/apiClient";
-import { userLoader } from "@loginapp/api-cacher/src/loaders/user.loaders";
-import { getApiCacher } from "../../application/stores/apiCacher";
-import { getAuthenticatedId } from "../../application/authentication/authentication.accessors";
-import { StoreConnected } from "../../components/StoreConnectedScreen";
+import { apiClient } from '../../application/stores/apiClient';
+import { getAuthenticatedId } from '../../application/authentication/authentication.accessors';
+import { StoreConnected } from '../../components/StoreConnectedScreen';
+import { userLoader } from '../../business/user/user.loaders';
 
-type HomeScreenProps = StackScreenProps<ParamListBase, "Home">;
+type HomeScreenProps = StackScreenProps<ParamListBase, 'Home'>;
 interface HomeScreenState {
   isLogginOut: boolean;
 }
@@ -22,8 +21,8 @@ class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
     isLogginOut: false,
   };
   render() {
-    const { data: user } = userLoader(getApiCacher(), getAuthenticatedId()!);
-    console.log("USER", user);
+    const { data: user } = userLoader(apiClient, getAuthenticatedId()!);
+    console.log('USER', user);
     return (
       <ScreenLayout>
         <Text>Home screen</Text>
@@ -48,4 +47,4 @@ class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
   };
 }
 
-export default StoreConnected<"Home">(HomeScreen);
+export default StoreConnected<'Home'>(HomeScreen);

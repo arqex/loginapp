@@ -1,4 +1,4 @@
-import { UIStore } from "@loginapp/api-cacher";
+import { UIStore } from "@loginapp/ui-store";
 export interface UiStoreData {
   authenticatedUserId: string | null;
   toast: any;

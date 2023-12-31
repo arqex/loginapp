@@ -1,7 +1,7 @@
-import { userLoader } from "@loginapp/api-cacher";
+import { userLoader } from "../../business/user/user.loaders";
+import { apiClient } from "../stores/apiClient";
 import { getLS } from "../stores/localStorage";
 import { getUIStore } from "../stores/uiStore";
-import { getApiCacher } from "../stores/apiCacher";
 
 export function getAuthenticatedId() {
   return getUIStore().data.authenticatedUserId;
@@ -10,7 +10,7 @@ export function getAuthenticatedId() {
 export function getAuthenticatedUser() {
   const id = getAuthenticatedId();
   if (!id) return;
-  const { data } = userLoader(getApiCacher(), id);
+  const { data } = userLoader(apiClient, id);
   return data;
 }
 

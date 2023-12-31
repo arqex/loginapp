@@ -5,17 +5,17 @@ import AuthApp from "./auth_app/AuthApp";
 import "./base.css";
 import "@coreui/coreui/dist/css/coreui.min.css";
 import { Router } from "./application/routing/router";
-import { ApiCacher } from "./application/stores/apiCacher";
 import { LS } from "./application/stores/localStorage";
-import { UIStore } from "./application/stores/uiStore";
+import { AppStore } from "./application/stores/uiStore";
 import { CToaster } from "@coreui/react";
 import { getToast } from "./application/toaster/toaster.service";
+import { ApiClient } from "@loginapp/api-client";
 
 interface RootProps {
   router: Router;
   authRouter: Router;
-  apiCacher: ApiCacher;
-  uiStore: UIStore;
+  uiStore: AppStore;
+  apiClient: ApiClient;
   ls: LS;
 }
 
@@ -44,7 +44,7 @@ export default class Root extends React.Component<RootProps> {
   componentDidMount() {
     this.props.router.onChange(this._rerender);
     this.props.authRouter.onChange(this._rerender);
-    this.props.apiCacher.addChangeListener(this._rerender);
+    this.props.apiClient.addLoadListener(this._rerender);
     this.props.uiStore.addChangeListener(this._rerender);
     this.props.ls.addChangeListener(this._rerender);
   }
@@ -58,9 +58,9 @@ export default class Root extends React.Component<RootProps> {
       prevProps.authRouter.offChange(this._rerender);
       this.props.authRouter.onChange(this._rerender);
     }
-    if (prevProps.apiCacher !== this.props.apiCacher) {
-      prevProps.apiCacher.removeChangeListener(this._rerender);
-      this.props.apiCacher.addChangeListener(this._rerender);
+    if (prevProps.apiClient !== this.props.apiClient) {
+      prevProps.apiClient.removeLoadListener(this._rerender);
+      this.props.apiClient.addLoadListener(this._rerender);
     }
     if (prevProps.uiStore !== this.props.uiStore) {
       prevProps.uiStore.removeChangeListener(this._rerender);

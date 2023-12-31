@@ -1,9 +1,9 @@
 import React from "react";
 import Button from "../../components/Button/Button";
 import { logout } from "../../application/auth/auth.service";
-import { userLoader } from "@loginapp/api-cacher";
-import { getApiCacher } from "../../application/stores/apiCacher";
 import { getAuthenticatedId } from "../../application/auth/auth.selector";
+import { apiClient } from "../../application/stores/apiClient";
+import { userLoader } from "../../business/user/user.loaders";
 
 interface HomeScreenProps {}
 interface HomeScreenState {}
@@ -14,7 +14,7 @@ export default class HomeScreen extends React.Component<
 > {
   state: HomeScreenState = {};
   render() {
-    const { data } = userLoader(getApiCacher(), getAuthenticatedId()!);
+    const { data } = userLoader(apiClient, getAuthenticatedId()!);
     console.log("USER", data);
     return (
       <div>

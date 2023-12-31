@@ -19,11 +19,11 @@ import {
 } from './application/initialization/initialization.service';
 import { isAppInitialized } from './application/initialization/initialization.accessors';
 import { getUIStore } from './application/stores/uiStore';
-import { getApiCacher } from './application/stores/apiCacher';
 import { isAuthenticated } from './application/authentication/authentication.accessors';
 import HomeScreen from './screens/home/HomeScreen';
 import EmailSignupScreen from './authScreens/emailSignup/EmailSignupScreen';
 import VerifyEmailScreen from './authScreens/verifyEmail/VerifyEmailScreen';
+import { apiClient } from './application/stores/apiClient';
 
 initGlobalErrorHandler();
 initStores();
@@ -137,7 +137,7 @@ export default class App extends React.Component {
       this.forceUpdate();
     };
     getUIStore().addChangeListener(rerender);
-    getApiCacher().addChangeListener(rerender);
+    apiClient.addLoadListener(rerender);
   }
 
   componentDidMount() {
