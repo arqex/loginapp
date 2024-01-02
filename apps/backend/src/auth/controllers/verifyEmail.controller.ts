@@ -28,5 +28,5 @@ export async function verifyEmailController(req: Request, res: Response) {
   delete update.vc;
   await updateAuth(auth.key, { meta: update });
 
-  respondLogin(auth, res, useCookie !== 'false');
+  respondLogin(auth.userId, res, useCookie !== 'false');
 }

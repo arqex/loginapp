@@ -14,5 +14,5 @@ export async function loginByOTTController(req: AuthRequest, res: Response) {
 
   await invalidateOTT(key);
 
-  respondLogin(auth, res, useCookie !== 'false');
+  respondLogin(auth.userId, res, useCookie !== 'false');
 }

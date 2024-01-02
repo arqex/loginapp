@@ -115,3 +115,31 @@ export async function resetPassword(
     ott,
   })) as ResponseWithData<LoginResponse>;
 }
+
+export async function loginByProvider(
+  apiClient: ApiClientBase,
+  provider: "apple",
+  token: string
+) {
+  return (await apiClient.requester.post(
+    `/auth/login_by_provider?useCookie=false`,
+    {
+      provider,
+      token,
+    }
+  )) as ResponseWithData<LoginResponseWithToken>;
+}
+
+export async function signupByProvider(
+  apiClient: ApiClientBase,
+  provider: "apple",
+  token: string
+) {
+  return (await apiClient.requester.post(
+    `/auth/signup_by_provider?useCookie=false`,
+    {
+      provider,
+      token,
+    }
+  )) as ResponseWithData<LoginResponseWithToken>;
+}

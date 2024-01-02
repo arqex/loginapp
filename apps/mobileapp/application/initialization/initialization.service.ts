@@ -8,7 +8,10 @@ import {
 import { apiClient } from '../stores/apiClient';
 import { getAuthToken } from '../authentication/authentication.accessors';
 import * as SplashScreen from 'expo-splash-screen';
-import { handleExpiredSessions } from '../authentication/authentication.service';
+import {
+  checkGooglePlayServices,
+  handleExpiredSessions,
+} from '../authentication/authentication.service';
 
 export async function initStores() {
   // Inititalize UIStore
@@ -19,6 +22,7 @@ export async function initStores() {
   });
 
   handleExpiredSessions();
+  checkGooglePlayServices();
 }
 
 export async function initApp() {

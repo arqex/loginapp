@@ -5,6 +5,7 @@ interface AppStoreData {
   isAuthenticated: boolean;
   authenticatedUserId: string | null;
   authenticationToken: string | null;
+  hasGooglePlayServices: boolean;
 }
 
 export type AppStore = UIStore<AppStoreData>;
@@ -19,6 +20,7 @@ export function createUIStore(initialData?: Partial<AppStoreData>) {
     isAuthenticated: false,
     authenticatedUserId: null,
     authenticationToken: null,
+    hasGooglePlayServices: false,
     ...(initialData || {}),
   };
   return new UIStore<AppStoreData>(data);

@@ -13,7 +13,7 @@ export async function getUserById(id: string): Promise<User | null> {
 
 export async function getUserByEmail(email: string): Promise<User | null> {
   const prisma = new PrismaClient();
-  return await prisma.user.findUnique({ where: { email } });
+  return await prisma.user.findFirst({ where: { email } });
 }
 
 export async function updateUser(id: string, user: Prisma.UserUpdateInput) {

@@ -28,5 +28,5 @@ export async function resetPasswordController(req: AuthRequest, res: Response) {
 
   await updateAuth(email, { meta: updatedMeta });
 
-  respondLogin(auth, res);
+  respondLogin(auth.userId, res);
 }

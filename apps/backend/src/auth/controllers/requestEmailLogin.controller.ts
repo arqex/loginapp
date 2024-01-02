@@ -1,8 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from 'src/auth/auth.types';
-import { findAuth, updateAuth } from '../auth.db';
-import { JsonObject } from '@prisma/client/runtime/library';
-import { generateOtt, refreshOTT } from '../auth.utils';
+import { findAuth } from '../auth.db';
+import { refreshOTT } from '../auth.utils';
 import { sendEmail } from 'src/email/sender';
 import { getLoginByEmailTemplate } from 'src/email/templates/loginByEmail.template';
 import { AuthToken } from '@prisma/client';

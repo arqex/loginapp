@@ -6,6 +6,8 @@ import {
 import { getUIStore } from '../stores/uiStore';
 import { getAuthenticatedId } from './authentication.accessors';
 import { apiClient } from '../stores/apiClient';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Platform } from 'react-native';
 
 export function onAuthenticate(userId: string, token: string) {
   const store = getUIStore();
@@ -49,4 +51,21 @@ export async function verifyEmail(vc: string, email: string) {
     await apiVerifyEmail(apiClient, vc, email, false)
   ).data;
   onAuthenticate(authenticatedId, token);
+}
+
+export async function checkGooglePlayServices() {
+  if (Platform.OS === 'android') {
+    const hasPlayServices = await GoogleSignin.hasPlayServices({
+      showPlayServicesUpdateDialog: false,
+    });
+    if (hasPlayServices) {
+      getUIStore().data.hasGooglePlayServices = true;
+      getUIStore().emitChange();
+    }
+  }
+
+  console.log(
+    'Checking play services',
+    getUIStore().data.hasGooglePlayServices,
+  );
 }

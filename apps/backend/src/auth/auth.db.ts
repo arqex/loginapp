@@ -6,6 +6,11 @@ export async function findAuth(key: string): Promise<AuthToken | null> {
   return await prisma.authToken.findUnique({ where: { key } });
 }
 
+export async function findAuthByUserId(id: string): Promise<AuthToken[]> {
+  const prisma = new PrismaClient();
+  return await prisma.authToken.findMany({ where: { userId: id } });
+}
+
 export async function createAuth(auth: Prisma.AuthTokenUncheckedCreateInput) {
   const prisma = new PrismaClient();
   return await prisma.authToken.create({ data: auth });

@@ -33,7 +33,7 @@ export async function signupController(req: Request, res: Response) {
       }
 
       // User is verified, and passowrd is ok, we can just login
-      return await respondLogin(auth, res, useCookie !== 'false');
+      return await respondLogin(auth.userId, res, useCookie !== 'false');
     } else {
       // Password not valid, send email to login by email
       await handleEmailLoginRequest(auth);

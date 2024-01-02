@@ -7,18 +7,29 @@ import { StackScreenProps } from '@react-navigation/stack';
 import SocialLoginButton from '../../components/SocialLoginButton';
 
 type LoginScreenProps = StackScreenProps<ParamListBase, 'LogIn'>;
-interface LoginScreenState {}
+interface LoginScreenState {
+  isAuthenticating: boolean;
+  authenticationError: string;
+}
 
 export default class LoginScreen extends React.Component<
   LoginScreenProps,
   LoginScreenState
 > {
-  state: LoginScreenState = {};
+  state: LoginScreenState = {
+    isAuthenticating: false,
+    authenticationError: '',
+  };
   render() {
     return (
       <ScreenLayout>
         <Column gap={10} style={{ minWidth: 260 }}>
-          <SocialLoginButton type="login" />
+          {this.renderProviderError()}
+          <SocialLoginButton
+            type="login"
+            onLoadToggle={this._onProviderLoading}
+            onError={this._onProviderError}
+          />
           <Button mode="contained" icon="at" onPress={this._goToEmailLogin}>
             Log in with Email
           </Button>
@@ -32,6 +43,23 @@ export default class LoginScreen extends React.Component<
       </ScreenLayout>
     );
   }
+
+  renderProviderError() {
+    const { authenticationError } = this.state;
+    if (!authenticationError) return null;
+
+    console.log('Authentication ERROR:', authenticationError);
+    return null;
+  }
+
+  _onProviderLoading = (isLoading: boolean) => {
+    this.setState({ isAuthenticating: isLoading });
+  };
+
+  _onProviderError = (error: string) => {
+    console.log('Received error', error);
+    this.setState({ authenticationError: error });
+  };
 
   _goToSignup = () => {
     this.props.navigation.navigate('SignUp');
