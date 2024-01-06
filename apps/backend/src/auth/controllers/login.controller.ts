@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { findAuth } from '../auth.db';
 import { isValidPassword, createJWT } from '../auth.utils';
-import { AuthToken } from '@prisma/client';
 import { AUTH_COOKIE_NAME } from '../strategies/jwt.strategy';
 import {
   resError,

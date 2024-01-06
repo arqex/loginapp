@@ -1,4 +1,3 @@
-import { loginByProvider } from '@loginapp/api-client';
 import {
   AppleAuthenticationButton,
   AppleAuthenticationButtonStyle,
@@ -8,11 +7,24 @@ import {
   signInAsync,
 } from 'expo-apple-authentication';
 import React from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { Platform, Appearance } from 'react-native';
 import { Button } from 'react-native-paper';
-import { onAuthenticate } from '../application/authentication/authentication.service';
+import {
+  loginByProvider,
+  onAuthenticate,
+  signupByProvider,
+} from '../application/authentication/authentication.service';
 import { apiClient } from '../application/stores/apiClient';
-import * as Google from 'expo-auth-session/providers/google';
+import {
+  GoogleOneTapSignIn,
+  GoogleOneTapSignInButton,
+  statusCodes,
+} from 'react-native-google-one-tap-signin';
+
+GoogleOneTapSignIn.configure({
+  webClientId:
+    '423004890114-acopap91vmqv3ontegdb7n8qe6gj90uc.apps.googleusercontent.com',
+});
 
 interface SocialLoginButtonProps {
   type: 'login' | 'signup';
@@ -23,6 +35,7 @@ interface SocialLoginButtonProps {
 
 interface SocialLoginButtonState {
   hasGooglePlayServices: boolean;
+  isLoading: boolean;
 }
 
 (async function isAppleSignInAvailable() {
@@ -35,9 +48,10 @@ export default class SocialLoginButton extends React.Component<
 > {
   state = {
     hasGooglePlayServices: false,
+    isLoading: false,
   };
   render() {
-    const isDarkMode = useColorScheme() === 'dark';
+    const isDarkMode = Appearance.getColorScheme() === 'dark';
     const { onLoadToggle, onError, type, onPress } = this.props;
     if (Platform.OS === 'ios') {
       return (
@@ -63,7 +77,12 @@ export default class SocialLoginButton extends React.Component<
       );
     } else if (Platform.OS === 'android') {
       return (
-        <Button mode="contained" icon="google" onPress={onPress}>
+        <Button
+          mode="contained"
+          icon="google"
+          onPress={this._signIn}
+          loading={this.state.isLoading}
+        >
           {type === 'login' ? 'Log in with Google' : 'Sign up with Google'}
         </Button>
       );
@@ -71,6 +90,33 @@ export default class SocialLoginButton extends React.Component<
 
     return null;
   }
+
+  _signIn = async () => {
+    this.setState({ isLoading: true });
+    try {
+      await GoogleOneTapSignIn.hasPlayServices();
+      const userInfo = await GoogleOneTapSignIn.signIn();
+      const { type } = this.props;
+      if (type === 'signup') {
+        await signupByProvider('google', userInfo.idToken!);
+      } else {
+        await loginByProvider('google', userInfo.idToken!);
+      }
+    } catch (error: any) {
+      console.log('Google sign in error', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
 }
 
 async function appleSignIn(
@@ -87,16 +133,9 @@ async function appleSignIn(
       ],
     });
 
-    console.log('Apple sign in', appleAuth);
     if (appleAuth.identityToken) {
       try {
-        const { data } = await loginByProvider(
-          apiClient,
-          'apple',
-          appleAuth.identityToken,
-        );
-        const { authenticatedId, token } = data;
-        onAuthenticate(authenticatedId, token);
+        await loginByProvider('apple', appleAuth.identityToken);
       } catch (err: any) {
         console.log('Error', err.response);
         onError('unauthorized');

@@ -15,25 +15,12 @@ It also needs the backend running in order to work. You can find the backend in 
 
 Once it's running, update the URLs in `application/stores/apiClient.ts` to point to the API.
 
-## Configure google auth
-It's so hard to configure proper one-tap google auth in react native, that we decided to use the oauth version of it.
+## Configure google auth in android
+Need to create a google app, and create WEB oauth client id. 
 
-To make it work:
-* in your `app.json` make sure that you have your own `expo.android.package` and `expo.ios.bundleIdentifier` set up properly. Also `expo.scheme` to redirect the oauth flow to your app. Take note of all of these are needed to set the google application up.
-* create your own google application at https://console.cloud.google.com/apis.
-* create credentials for your ios or android apps by > Create credentials > Oauth client Id
-* In package name (android) or package id (ios) use the `package` and `bundleIdentifier` from the `app.json` that we defined before.
-* In android we will also need our app's sha1 fingerprint. To get it from expo:
-  * Install `expo-cli` globally by `npm install -g expo-cli`
-  * Run `expo credentials:manager` from the webapp folder
-  * Select android > update keystore > generate new
-  * Copy the SHA-1 version of the google certificate and add it to your google app
-
-* 
-
-
-There 
-
+Copy the client id and add it to the `GoogleOneTapSignIn` configuration at the `SocialLoginButton.tsx` file.
 
 ## Configure apple auth
-Apple sign in button will be visible when you run the app in iOS. That button will prmmpt the user to allow the app 
+Apple sign in button will be visible when you run the app in iOS. That button will prmmpt the user to allow the app sign in or sign up with apple.
+
+NOTE: Apple will only return the email the first time the user accept, so the backend will register that apple login and match the apple id with the user email at that chance. If there is some error in this first time authentication, we won't be able to log that user in again with apple as we won't have an email to match with the user table.

@@ -118,7 +118,7 @@ export async function resetPassword(
 
 export async function loginByProvider(
   apiClient: ApiClientBase,
-  provider: "apple",
+  provider: "apple" | "google",
   token: string
 ) {
   return (await apiClient.requester.post(
@@ -132,7 +132,7 @@ export async function loginByProvider(
 
 export async function signupByProvider(
   apiClient: ApiClientBase,
-  provider: "apple",
+  provider: "apple" | "google",
   token: string
 ) {
   return (await apiClient.requester.post(

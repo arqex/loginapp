@@ -25,8 +25,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.arqex.loginapp"
+      "package": "com.arqex.loginapp",
+      "versionCode": 1
     },
-    "plugins": ["expo-apple-authentication"]
+    "plugins": [
+      "expo-apple-authentication",
+      ["expo-build-properties", {
+        "ios": {"deploymentTarget": "14.0"}
+      }]
+    ]
   }
 }

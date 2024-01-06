@@ -14,12 +14,12 @@ export async function loginByProviderController(
 ) {
   const { provider, token } = req.body;
   const decoder = providerDecoders[provider];
+  console.log('loginByProviderController', provider, token);
   if (!decoder) return resError(res, 'unknown_provider');
 
   let providerId, email;
   try {
     const decoded = await decoder(token);
-    console.log('DECODED!!!', decoded);
     providerId = decoded.id;
     email = decoded.email;
   } catch (err) {

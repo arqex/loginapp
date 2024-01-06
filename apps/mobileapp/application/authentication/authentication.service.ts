@@ -2,6 +2,8 @@ import {
   ResponseMiddleware,
   clearCache,
   verifyEmail as apiVerifyEmail,
+  loginByProvider as apiLoginByProvider,
+  signupByProvider as apiSignupByProvider,
 } from '@loginapp/api-client';
 import { getUIStore } from '../stores/uiStore';
 import { getAuthenticatedId } from './authentication.accessors';
@@ -49,6 +51,26 @@ const expiredSessionMiddleware: ResponseMiddleware = (res) => {
 export async function verifyEmail(vc: string, email: string) {
   const { authenticatedId, token } = (
     await apiVerifyEmail(apiClient, vc, email, false)
+  ).data;
+  onAuthenticate(authenticatedId, token);
+}
+
+export async function loginByProvider(
+  provider: 'apple' | 'google',
+  idToken: string,
+) {
+  const { authenticatedId, token } = (
+    await apiLoginByProvider(apiClient, provider, idToken)
+  ).data;
+  onAuthenticate(authenticatedId, token);
+}
+
+export async function signupByProvider(
+  provider: 'apple' | 'google',
+  idToken: string,
+) {
+  const { authenticatedId, token } = (
+    await apiSignupByProvider(apiClient, provider, idToken)
   ).data;
   onAuthenticate(authenticatedId, token);
 }
