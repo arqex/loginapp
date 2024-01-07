@@ -31,7 +31,7 @@
     "plugins": [
       "expo-apple-authentication",
       ["expo-build-properties", {
-        "ios": {"deploymentTarget": "14.0"}
+        "ios": {"deploymentTarget": "16.0"}
       }]
     ]
   }

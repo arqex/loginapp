@@ -6,7 +6,8 @@ import { createAuth, findAuth, findAuthByUserId, updateAuth } from '../auth.db';
 import { providerDecoders } from 'src/utils/providers.utils';
 import { AuthTokenType } from '@prisma/client';
 import { JsonObject } from '@prisma/client/runtime/library';
-import { getUserByEmail } from 'src/users/users.db';
+import { createUser, getUserByEmail } from 'src/users/users.db';
+import { generateVerificationCode } from '../auth.utils';
 
 export async function loginByProviderController(
   req: AuthRequest,
@@ -25,6 +26,8 @@ export async function loginByProviderController(
   } catch (err) {
     return resUnauthorized(res);
   }
+
+  console.log('Token decoded', providerId, email, provider);
 
   const auth = await findAuth(providerId);
   const { useCookie } = req.query;
@@ -65,6 +68,29 @@ export async function loginByProviderController(
     });
 
     return respondLogin(user.id, res, useCookie !== 'false');
+  }
+
+  // We don't have the user or the auth, but apple only returns
+  // the email the first time the user authenticates, so we need
+  // to create a non verified user to save the apple id at this point
+  if (provider === 'apple') {
+    const user = await createUser({
+      email: email,
+      meta: {},
+    });
+    const verificationCode = generateVerificationCode();
+    await createAuth({
+      key: providerId,
+      type: AuthTokenType.PROVIDER_LOGIN,
+      userId: user.id,
+      meta: {
+        provider,
+        token,
+        vc: verificationCode,
+      },
+    });
+    // if user want to register with apple, at this point we
+    // know what the email is, even if it's not provided by apple
   }
 
   // If the user wasn't registered, just return an error

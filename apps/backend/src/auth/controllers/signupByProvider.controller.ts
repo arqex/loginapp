@@ -24,6 +24,14 @@ export async function signupByProviderController(req: Request, res: Response) {
   const auth = await findAuth(providerId);
   const { useCookie } = req.query;
   if (auth) {
+    // Apple users might have tried to login already
+    // if so, they aren't verified yet. Verify them now
+    const meta = auth.meta as JsonObject;
+    if (meta.vc) {
+      delete meta.vc;
+      await updateAuth(auth.key, { meta });
+    }
+
     // The user already exists, we can just login
     return await respondLogin(auth.userId, res, useCookie !== 'false');
   }

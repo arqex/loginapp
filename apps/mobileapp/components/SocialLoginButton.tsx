@@ -1,27 +1,20 @@
 import {
-  AppleAuthenticationButton,
-  AppleAuthenticationButtonStyle,
-  AppleAuthenticationButtonType,
-  AppleAuthenticationScope,
-  isAvailableAsync,
-  signInAsync,
-} from 'expo-apple-authentication';
+  appleAuth,
+  AppleButton,
+} from '@invertase/react-native-apple-authentication';
 import React from 'react';
 import { Platform, Appearance } from 'react-native';
 import { Button } from 'react-native-paper';
 import {
   loginByProvider,
-  onAuthenticate,
   signupByProvider,
 } from '../application/authentication/authentication.service';
-import { apiClient } from '../application/stores/apiClient';
 import {
-  GoogleOneTapSignIn,
-  GoogleOneTapSignInButton,
+  GoogleSignin,
   statusCodes,
-} from 'react-native-google-one-tap-signin';
+} from '@react-native-google-signin/google-signin';
 
-GoogleOneTapSignIn.configure({
+GoogleSignin.configure({
   webClientId:
     '423004890114-acopap91vmqv3ontegdb7n8qe6gj90uc.apps.googleusercontent.com',
 });
@@ -38,10 +31,6 @@ interface SocialLoginButtonState {
   isLoading: boolean;
 }
 
-(async function isAppleSignInAvailable() {
-  console.log('Is available', await isAvailableAsync());
-})();
-
 export default class SocialLoginButton extends React.Component<
   SocialLoginButtonProps,
   SocialLoginButtonState
@@ -55,19 +44,20 @@ export default class SocialLoginButton extends React.Component<
     const { onLoadToggle, onError, type, onPress } = this.props;
     if (Platform.OS === 'ios') {
       return (
-        <AppleAuthenticationButton
+        <AppleButton
           buttonStyle={
-            isDarkMode
-              ? AppleAuthenticationButtonStyle.WHITE
-              : AppleAuthenticationButtonStyle.BLACK
+            isDarkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK
           }
           buttonType={
             type === 'login'
-              ? AppleAuthenticationButtonType.SIGN_IN
-              : AppleAuthenticationButtonType.SIGN_UP
+              ? AppleButton.Type.SIGN_IN
+              : AppleButton.Type.SIGN_UP
           }
-          cornerRadius={21}
-          style={{ alignSelf: 'stretch', height: 42 }}
+          cornerRadius={22}
+          style={{
+            alignSelf: 'stretch', // You must specify a width
+            height: 42, // You must specify a height
+          }}
           onPress={
             type === 'login'
               ? () => appleSignIn(onLoadToggle, onError)
@@ -94,8 +84,8 @@ export default class SocialLoginButton extends React.Component<
   _signIn = async () => {
     this.setState({ isLoading: true });
     try {
-      await GoogleOneTapSignIn.hasPlayServices();
-      const userInfo = await GoogleOneTapSignIn.signIn();
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
       const { type } = this.props;
       if (type === 'signup') {
         await signupByProvider('google', userInfo.idToken!);
@@ -126,16 +116,17 @@ async function appleSignIn(
   onLoadToggle(true);
 
   try {
-    const appleAuth = await signInAsync({
-      requestedScopes: [
-        AppleAuthenticationScope.FULL_NAME,
-        AppleAuthenticationScope.EMAIL,
-      ],
+    const appleResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.EMAIL],
     });
 
-    if (appleAuth.identityToken) {
+    console.log('Apple response', appleResponse);
+
+    if (appleResponse.identityToken) {
       try {
-        await loginByProvider('apple', appleAuth.identityToken);
+        await loginByProvider('apple', appleResponse.identityToken);
       } catch (err: any) {
         console.log('Error', err.response);
         onError('unauthorized');
