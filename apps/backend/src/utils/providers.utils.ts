@@ -12,8 +12,6 @@ export const providerDecoders = {
       idToken,
     });
 
-    console.log('Auth token result', result);
-
     const { sub, email } = result.getPayload();
 
     return {
