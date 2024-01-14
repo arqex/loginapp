@@ -56,7 +56,7 @@ export default class SignupScreen extends React.Component<
           <CFormInput
             name="email"
             type="email"
-            label="Email:"
+            label="Your email:"
             value={email}
             onChange={(e) => this.setState({ email: e.target.value })}
             invalid={!!errors?.email}
@@ -69,7 +69,7 @@ export default class SignupScreen extends React.Component<
           <CFormInput
             name="password"
             type="password"
-            label="Password:"
+            label="Choose a password:"
             value={password}
             onChange={(e) => this.setState({ password: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && this._onSignupClick()}

@@ -41,7 +41,7 @@ class EmailSignupScreen extends React.Component<
           <View>
             <TextInput
               mode="outlined"
-              label="Email"
+              label="Your email"
               value={email}
               onChangeText={(email) => this.setState({ email })}
               autoComplete="email"
@@ -61,7 +61,7 @@ class EmailSignupScreen extends React.Component<
             <TextInput
               mode="outlined"
               ref={this.passwordInputRef}
-              label="Password"
+              label="Choose a password"
               value={password}
               onChangeText={(password) => this.setState({ password })}
               autoComplete="password"

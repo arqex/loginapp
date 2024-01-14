@@ -6,16 +6,24 @@ It contains 3 main apps:
 * A React web app that handles the UI for the login system and redirects to the authenticated app when logged in.
 * A React Native app that handles the UI for the login system and redirects to the authenticated app when logged in.
 
+## Bootstrap your project
+Create your own repo in github. E.g. `git@github.com:myuser/my_private_repo.git`.
+Clone this one `git clone --bare git@github.com:arqex/loginapp.git`
+Get into the repo `cd loginapp`
+Mirror push to your repo `git push --mirror git@github.com:myuser/my_private_repo.git`
+Delete the temporary local repo you created `cd .. && rm -rf loginapp`
+Clone your repo `git clone git@github.com:myuser/my_private_repo.git`
 
-## Getting started
-First clone this repository.
+Your repo is ready!
 
+
+## Apps
 This repository looks like a monorepo, but it's not. It's a collection of 3 different apps that are related to each other. Each app has its own dependencies and scripts. But for the sake of simplicity, there is a root package.json that contains scripts to run all the apps at once.
 
-To install everything, just run:
-```bash
-npm install
-```
+To install every app follow their own instructions:
+* [Backend](apps/backend/README.md)
+* [Webapp](apps/webapp/README.md)
+* [Mobile](apps/mobile/README.md)
 
 To run the apps:
 ```bash
