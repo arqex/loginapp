@@ -2,10 +2,10 @@ import { AuthTokenType } from '@prisma/client';
 import { Request, Response } from 'express';
 import { createAuth, findAuth, findAuthByUserId, updateAuth } from '../auth.db';
 import { respondLogin } from './login.controller';
-import { createUser, getUserByEmail } from 'src/users/users.db';
-import { resError, resUnauthorized } from 'src/utils/respond.utils';
 import { JsonObject } from '@prisma/client/runtime/library';
-import { providerDecoders } from 'src/utils/providers.utils';
+import { getUserByEmail, createUser } from '../../users/users.db';
+import { providerDecoders } from '../../utils/providers.utils';
+import { resError, resUnauthorized } from '../../utils/respond.utils';
 
 export async function signupByProviderController(req: Request, res: Response) {
   const { provider, token } = req.body;
