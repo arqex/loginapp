@@ -7,13 +7,13 @@ import {
   isValidPassword,
 } from '../auth.utils';
 import { respondLogin } from './login.controller';
-import { createUser } from 'src/users/users.db';
-import { sendEmail } from 'src/email/sender';
-import { getEmailVerifyTemplate } from 'src/email/templates/verifyEmail.template';
-import { handleEmailLoginRequest } from './requestEmailLogin.controller';
-import { isValidEmailAddress } from 'src/utils/validation.utils';
-import { resInvalidEmail } from 'src/utils/respond.utils';
 import { JsonObject } from '@prisma/client/runtime/library';
+import { sendEmail } from '../../email/sender';
+import { getEmailVerifyTemplate } from '../../email/templates/verifyEmail.template';
+import { createUser } from '../../users/users.db';
+import { resInvalidEmail } from '../../utils/respond.utils';
+import { isValidEmailAddress } from '../../utils/validation.utils';
+import { handleEmailLoginRequest } from './requestEmailLogin.controller';
 
 export async function signupController(req: Request, res: Response) {
   const { email, password } = req.body;

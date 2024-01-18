@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { withJWTAuth } from 'src/auth/strategies/jwt.strategy';
 import { getUserController } from './controllers/getUser.controller';
+import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 
 const usersRouter = Router();
 

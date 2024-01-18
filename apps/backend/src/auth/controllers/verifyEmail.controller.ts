@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
+import { findAuth, updateAuth } from '../auth.db';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { respondLogin } from './login.controller';
 import {
   resError,
   resInvalidEmail,
   resUnauthorized,
-} from 'src/utils/respond.utils';
-import { isValidEmailAddress } from 'src/utils/validation.utils';
-import { findAuth, updateAuth } from '../auth.db';
-import { JsonObject } from '@prisma/client/runtime/library';
-import { respondLogin } from './login.controller';
+} from '../../utils/respond.utils';
+import { isValidEmailAddress } from '../../utils/validation.utils';
 
 export async function verifyEmailController(req: Request, res: Response) {
   const { vc, email } = req.body;

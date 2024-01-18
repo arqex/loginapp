@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { OauthRequest } from 'src/auth/auth.types';
+import { OauthRequest } from '../auth.types';
 
 export async function oauthCallbackController(
   req: OauthRequest,

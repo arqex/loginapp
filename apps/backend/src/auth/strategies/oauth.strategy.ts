@@ -1,8 +1,7 @@
 import * as passport from 'passport';
 import './oauth/googleOauth.strategy';
 import { Request, Response } from 'express';
-
-import { resError } from 'src/utils/respond.utils';
+import { resError } from '../../utils/respond.utils';
 
 export function oauthStart(req: Request, res: Response, next: any) {
   const { provider, returnTo } = req.query;

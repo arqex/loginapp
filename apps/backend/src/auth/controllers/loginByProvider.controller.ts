@@ -1,13 +1,13 @@
 import { Response } from 'express';
-import { AuthRequest } from 'src/auth/auth.types';
-import { resError, resUnauthorized } from 'src/utils/respond.utils';
 import { respondLogin } from './login.controller';
 import { createAuth, findAuth, findAuthByUserId, updateAuth } from '../auth.db';
-import { providerDecoders } from 'src/utils/providers.utils';
 import { AuthTokenType } from '@prisma/client';
 import { JsonObject } from '@prisma/client/runtime/library';
-import { createUser, getUserByEmail } from 'src/users/users.db';
 import { generateVerificationCode } from '../auth.utils';
+import { getUserByEmail, createUser } from '../../users/users.db';
+import { providerDecoders } from '../../utils/providers.utils';
+import { resError, resUnauthorized } from '../../utils/respond.utils';
+import { AuthRequest } from '../auth.types';
 
 export async function loginByProviderController(
   req: AuthRequest,

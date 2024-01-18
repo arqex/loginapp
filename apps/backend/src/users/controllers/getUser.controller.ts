@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { AuthRequest } from 'src/auth/auth.types';
-import { resError, resForbidden } from 'src/utils/respond.utils';
 import { getUserById } from '../users.db';
 import { JsonObject } from '@prisma/client/runtime/library';
+import { AuthRequest } from '../../auth/auth.types';
+import { resForbidden, resError } from '../../utils/respond.utils';
 
 export async function getUserController(req: AuthRequest, res: Response) {
   const { id: authenticatedUserId } = req.user!;

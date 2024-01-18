@@ -1,13 +1,13 @@
 import { Response } from 'express';
-import { AuthRequest } from 'src/auth/auth.types';
 import { findAuth, updateAuth } from '../auth.db';
 import { JsonObject } from '@prisma/client/runtime/library';
 import { generateOtt } from '../auth.utils';
-import { sendEmail } from 'src/email/sender';
 import { AuthToken } from '@prisma/client';
-import { resInvalidEmail } from 'src/utils/respond.utils';
-import { isValidEmailAddress } from 'src/utils/validation.utils';
-import { getPasswordRecoveryTemplate } from 'src/email/templates/passwordRecoveryEmail.template';
+import { sendEmail } from '../../email/sender';
+import { getPasswordRecoveryTemplate } from '../../email/templates/passwordRecoveryEmail.template';
+import { resInvalidEmail } from '../../utils/respond.utils';
+import { isValidEmailAddress } from '../../utils/validation.utils';
+import { AuthRequest } from '../auth.types';
 
 export async function requestPasswordRecoveryController(
   req: AuthRequest,

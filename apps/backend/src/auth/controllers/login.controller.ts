@@ -2,15 +2,15 @@ import { Request, Response } from 'express';
 import { findAuth } from '../auth.db';
 import { isValidPassword, createJWT } from '../auth.utils';
 import { AUTH_COOKIE_NAME } from '../strategies/jwt.strategy';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { sendEmail } from '../../email/sender';
+import { getEmailVerifyTemplate } from '../../email/templates/verifyEmail.template';
 import {
-  resError,
   resInvalidEmail,
   resUnauthorized,
-} from 'src/utils/respond.utils';
-import { isValidEmailAddress } from 'src/utils/validation.utils';
-import { JsonObject } from '@prisma/client/runtime/library';
-import { sendEmail } from 'src/email/sender';
-import { getEmailVerifyTemplate } from 'src/email/templates/verifyEmail.template';
+  resError,
+} from '../../utils/respond.utils';
+import { isValidEmailAddress } from '../../utils/validation.utils';
 
 export async function loginController(req: Request, res: Response) {
   const { email, password } = req.body;

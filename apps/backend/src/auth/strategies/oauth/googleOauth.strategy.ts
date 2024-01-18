@@ -1,6 +1,6 @@
 import * as passport from 'passport';
 import * as GoogleStrategy from 'passport-google-oauth20';
-import { handleOauthCallback } from 'src/auth/auth.utils';
+import { handleOauthCallback } from '../../auth.utils';
 
 passport.use(
   new GoogleStrategy(

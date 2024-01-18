@@ -1,9 +1,9 @@
 import { Response } from 'express';
-import { AuthRequest } from 'src/auth/auth.types';
-import { resUnauthorized } from 'src/utils/respond.utils';
 import { isValidOTT } from '../auth.utils';
 import { respondLogin } from './login.controller';
 import { findAuth, invalidateOTT } from '../auth.db';
+import { resUnauthorized } from '../../utils/respond.utils';
+import { AuthRequest } from '../auth.types';
 
 export async function loginByOTTController(req: AuthRequest, res: Response) {
   const { key, ott } = req.body;

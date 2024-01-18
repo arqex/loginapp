@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { createAuth, findAuth, updateAuth } from './auth.db';
 import { JsonObject } from '@prisma/client/runtime/library';
-import { createUser, getUserByEmail, getUserById } from 'src/users/users.db';
+import { getUserById, getUserByEmail, createUser } from '../users/users.db';
 
 const createHash = promisify(pbkdf2);
 const generateSalt = promisify(randomBytes);
