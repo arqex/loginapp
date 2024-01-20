@@ -72,7 +72,7 @@ export async function refreshOTT(auth: AuthToken) {
     ott,
   };
   await updateAuth(auth.key, { meta });
-  return ott.token;
+  return ott;
 }
 
 export async function handleOauthCallback(accessToken, refreshToken, profile) {
@@ -86,7 +86,7 @@ export async function handleOauthCallback(accessToken, refreshToken, profile) {
     const user = await getUserById(auth.userId);
     if (user) {
       const ott = await refreshOTT(auth);
-      return { id: profile.id, ott };
+      return { id: profile.id, ott: ott.token };
     }
   }
 
@@ -118,5 +118,5 @@ export async function handleOauthCallback(accessToken, refreshToken, profile) {
     },
   });
 
-  return { id: profile.id, ott };
+  return { id: profile.id, ott: ott.token };
 }

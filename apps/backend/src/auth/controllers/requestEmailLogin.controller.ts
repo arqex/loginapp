@@ -28,5 +28,5 @@ export async function requestEmailLoginController(
 
 export async function handleEmailLoginRequest(auth: AuthToken) {
   const ott = await refreshOTT(auth);
-  await sendEmail(auth.key, getLoginByEmailTemplate(auth.key, ott));
+  await sendEmail(auth.key, getLoginByEmailTemplate(auth.key, ott.token));
 }
