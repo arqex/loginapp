@@ -1,5 +1,5 @@
 import React from "react";
-import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import { CCard, CCardBody } from "@coreui/react";
 import { getAuthRouter } from "../../authRoutes";
 import {

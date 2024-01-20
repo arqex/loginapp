@@ -1,6 +1,6 @@
 import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
-import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
 import { ApiError } from "../../../application/api/ApiError";

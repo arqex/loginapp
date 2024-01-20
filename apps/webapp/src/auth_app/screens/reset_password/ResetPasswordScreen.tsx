@@ -5,7 +5,7 @@ import {
   resetPassword,
 } from "../../../application/auth/auth.service";
 import { isValidEmailAddress } from "../../../application/validation/validation.utils";
-import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
 import { getAuthRouter } from "../../authRoutes";

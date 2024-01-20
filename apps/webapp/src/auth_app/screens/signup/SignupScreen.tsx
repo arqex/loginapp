@@ -6,7 +6,7 @@ import {
   signup,
 } from "../../../application/auth/auth.service";
 import Link from "../../../components/Link/Link";
-import AuthScreenLayout from "../../../components/AuthScreenLayout/AuthScreenLayout";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import { getAuthRouter } from "../../authRoutes";
 import { ApiError } from "@loginapp/api-client";
 import {
