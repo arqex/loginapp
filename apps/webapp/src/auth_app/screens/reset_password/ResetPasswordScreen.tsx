@@ -1,4 +1,3 @@
-import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
 import {
   goToAuthenticatedApp,
@@ -9,8 +8,18 @@ import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
 import { getAuthRouter } from "../../authRoutes";
-import { getRouter } from "../../../application/routing/router";
 import { showToast } from "../../../application/toaster/toaster.service";
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
 
 interface ResetPasswordScreenProps {}
 interface ResetPasswordScreenState {
@@ -35,14 +44,16 @@ export default class ResetPasswordScreen extends React.Component<
     const { areParametersOk } = this.state;
     return (
       <AuthScreenLayout>
-        <CCard>
-          <CCardBody className="column">
-            {areParametersOk ? this.renderForm() : this.renderInvalidLink()}
-          </CCardBody>
-        </CCard>
-        <div className="mt-3">
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              {areParametersOk ? this.renderForm() : this.renderInvalidLink()}
+            </VStack>
+          </ContentCard>
+        </Flex>
+        <Box mt="2" textAlign="center" fontSize="sm">
           <Link href="/login">I don't want to reset my password</Link>
-        </div>
+        </Box>
       </AuthScreenLayout>
     );
   }
@@ -51,21 +62,19 @@ export default class ResetPasswordScreen extends React.Component<
     const { password, loading, errors } = this.state;
     return (
       <>
-        <h4>Reset your password</h4>
-        <div className="mb-3">
-          <CFormInput
-            name="password"
+        <Heading size="lg">Reset your password</Heading>
+        <FormControl isInvalid={!!errors.password}>
+          <FormLabel>Type a new password:</FormLabel>
+          <Input
             type="password"
-            label="Type a new password:"
             value={password}
             onChange={(e) => this.setState({ password: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && this._onSendClick()}
-            invalid={!!errors.password}
-            feedbackInvalid={errors.password}
             autoFocus
           />
-        </div>
-        <Button loading={loading} onClick={this._onSendClick}>
+          <FormErrorMessage>{errors.password}</FormErrorMessage>
+        </FormControl>
+        <Button isLoading={loading} onClick={this._onSendClick}>
           Set password
         </Button>
       </>
@@ -75,7 +84,7 @@ export default class ResetPasswordScreen extends React.Component<
   renderInvalidLink() {
     return (
       <>
-        <h4>Oops!</h4>
+        <Heading size="lg">Oops!</Heading>
         <p>
           Sorry the link you followed is not valid anymore. Try to{" "}
           <Link href="/request_password_recovery">
@@ -99,10 +108,8 @@ export default class ResetPasswordScreen extends React.Component<
     try {
       await resetPassword(email, password, ott);
       // If password is reset ok, the user is logged in
-      showToast({ content: "Your new password has been set. Redirecting" });
-      setTimeout(() => {
-        goToAuthenticatedApp();
-      }, 2000);
+      showToast("Your new password has been set.", { status: "success" });
+      goToAuthenticatedApp();
     } catch (err: any) {
       this.setState({ loading: false, areParametersOk: false });
     }
@@ -115,7 +122,7 @@ export default class ResetPasswordScreen extends React.Component<
 }
 
 function getParams() {
-  const query = getAuthRouter()?.location.query;
+  const query = getAuthRouter()?.location?.query;
   return {
     ott: typeof query?.ott === "string" ? query.ott : "",
     email: typeof query?.email === "string" ? query.email : "",

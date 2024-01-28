@@ -1,15 +1,27 @@
-import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
-import Button from "../../../components/Button/Button";
 import {
   goToAuthenticatedApp,
   login,
   redirectToOauth,
 } from "../../../application/auth/auth.service";
-import Link from "../../../components/Link/Link";
-import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import { ApiError } from "@loginapp/api-client";
 import { getAuthRouter } from "../../authRoutes";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import Button from "../../../components/Button/Button";
+import Link from "../../../components/Link/Link";
 
 interface LoginScreenProps {}
 interface LoginScreenState {
@@ -32,60 +44,61 @@ export default class LoginScreen extends React.Component<
   inputRef = React.createRef<HTMLInputElement>();
   render() {
     const { email, password, loading, errors } = this.state;
+    console.log("rrors", errors);
     return (
       <AuthScreenLayout>
-        <CCard className="width">
-          <CCardBody className="column">
-            <h4>Login</h4>
-            <div className="mb-3 column">
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              <Heading size="lg">Login</Heading>
               <Button onClick={this._startGoogleOauth}>
                 Login with Google
               </Button>
-            </div>
-            <div className="mb-3">
-              <CFormInput
-                name="email"
-                type="email"
-                label="Email:"
-                value={email}
-                onChange={(e) => this.setState({ email: e.target.value })}
-                invalid={!!errors.email}
-                feedbackInvalid={errors.email}
-                autoComplete="on"
-                autoFocus
-              />
-            </div>
-            <div className="mb-3">
-              <CFormInput
-                name="password"
-                type="password"
-                label="Password:"
-                value={password}
-                onChange={(e) => this.setState({ password: e.target.value })}
-                onKeyDown={(e) => e.key === "Enter" && this._onLoginClick()}
-                invalid={!!errors.password}
-                ref={this.inputRef}
-              />
-            </div>
-            <Button loading={loading} onClick={this._onLoginClick}>
-              Login
-            </Button>
-            <div className="fs-sm mt-2 text-center">
-              <Link href="/request_password_recovery">Forgot password?</Link>
-              <span> - </span>
-              <Link href="/request_email_login">Login with email link</Link>
-            </div>
-          </CCardBody>
-        </CCard>
-        <div className="mt-3">
-          <Link href="/signup">Don't have an account? Sign up</Link>
-        </div>
+              <FormControl isInvalid={!!errors.email}>
+                <FormLabel>Email:</FormLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => this.setState({ email: e.target.value })}
+                  autoFocus
+                />
+                <FormErrorMessage>{errors.email}</FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel>Password:</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => this.setState({ password: e.target.value })}
+                />
+                <FormErrorMessage>{errors.password}</FormErrorMessage>
+              </FormControl>
+              <Button onClick={this._onLoginClick} isLoading={loading}>
+                Log in
+              </Button>
+              <HStack alignItems="center" fontSize="sm" justifyContent="center">
+                <Link href="/request_password_recovery">Forgot password?</Link>
+                <span> - </span>
+                <Link href="/request_email_login">Login with email link</Link>
+              </HStack>
+            </VStack>
+          </ContentCard>
+          <Box mt="2" textAlign="center" fontSize="sm">
+            <Link href="/signup">Don't have an account? Sign up</Link>
+          </Box>
+        </Flex>
       </AuthScreenLayout>
     );
   }
 
   _onLoginClick = async () => {
     console.log("login", this.state);
+    const validationErrors = this.getValidationErrors();
+    if (validationErrors) {
+      this.setState({ errors: validationErrors });
+      return;
+    }
+
     this.setState({ loading: true });
     try {
       await login(this.state.email, this.state.password);
@@ -113,4 +126,17 @@ export default class LoginScreen extends React.Component<
   _startGoogleOauth = async () => {
     redirectToOauth("google");
   };
+
+  getValidationErrors() {
+    const { email, password } = this.state;
+    if (!email) {
+      return { email: "Email is required" };
+    }
+    if (!password) {
+      return { password: "Password is required" };
+    }
+    if (!isValidEmailAddress(email)) {
+      return { email: "Email is not valid" };
+    }
+  }
 }

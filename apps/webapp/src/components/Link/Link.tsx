@@ -1,35 +1,35 @@
 import { DetailedHTMLProps, AnchorHTMLAttributes } from "react";
-import { getRouter } from "../../application/routing/router";
+import styles from "./Link.module.css";
+import classNames from "classnames";
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
-  onClick?: (e: any) => void;
+  variant?: "primary" | "underlined" | "inherit";
 }
 
 export default function Link({
   children,
+  className,
+  variant = "underlined",
   ...props
 }: DetailedHTMLProps<LinkProps, HTMLAnchorElement>) {
-  const extraProps: any = {};
-  const router = getRouter();
-  let href = props.href || "";
-  if (href.startsWith("?")) {
-    href = router.location.pathname + href;
-  }
-
-  if (href.startsWith("/") || href.startsWith("?")) {
-    extraProps.onClick = (e: any) => {
-      if (props.onClick) {
-        props.onClick(e);
-      }
-      if (!e.defaultPrevented) {
+  const extraProps: any = {
+    className: classNames(styles[variant], className),
+    onClick: (e: any) => {
+      if (href?.startsWith("#")) {
         e.preventDefault();
-        getRouter().push(href);
       }
-    };
-  } else {
-    extraProps.target = "_blank";
-    extraProps.rel = "noopener noreferrer";
+      props.onClick?.(e);
+    },
+  };
+
+  const href = props.href;
+  if (href !== undefined) {
+    if (href.startsWith("/")) {
+      extraProps.href = `/#${href}`;
+    } else {
+      extraProps.target = "_blank";
+      extraProps.rel = "noopener noreferrer";
+    }
   }
 
   return (

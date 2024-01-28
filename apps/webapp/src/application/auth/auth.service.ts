@@ -17,6 +17,7 @@ import {
   loadUser,
 } from "@loginapp/api-client";
 import { getAuthenticatedId } from "./auth.selector";
+import { getAuthRouter } from "../../auth_app/authRoutes";
 
 export function setLastAuthenticatedUser(user?: ApiUser) {
   user ? getLS().set("AUTH_USER", user) : getLS().del("AUTH_USER");
@@ -28,7 +29,10 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
+  getRouter()?.stop();
+  getAuthRouter()?.start();
   updateAuthenticatedUser(undefined);
+  getAuthRouter()?.replace("/login");
   await apiLogout(apiClient);
 }
 
@@ -86,8 +90,9 @@ export async function resetPassword(
 }
 
 export function goToAuthenticatedApp() {
+  getAuthRouter()?.stop();
+  getRouter()?.start();
   getRouter()?.replace("/");
-  window.location.reload();
 }
 
 export function redirectToOauth(provider: string) {

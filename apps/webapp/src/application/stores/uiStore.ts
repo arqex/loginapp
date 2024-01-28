@@ -2,11 +2,13 @@ import { UIStore } from "@loginapp/ui-store";
 export interface UiStoreData {
   authenticatedUserId: string | null;
   toast: any;
+  isSidebarVisible: boolean;
 }
 
 export const emptyStore: UiStoreData = {
   authenticatedUserId: "",
   toast: undefined,
+  isSidebarVisible: false,
 };
 
 export type AppStore = UIStore<UiStoreData>;

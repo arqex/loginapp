@@ -1,0 +1,7 @@
+.contentCard {
+  margin: 0 0 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--content_bg);
+}

@@ -3,7 +3,6 @@ import { initApp } from "./application/init/initialization.service.ts";
 import Root from "./Root.tsx";
 
 const { router, authRouter, apiClient, uiStore, ls } = initApp();
-console.log("Creating root!");
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Root
     router={router}

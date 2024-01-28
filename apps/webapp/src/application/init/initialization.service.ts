@@ -26,13 +26,17 @@ export function initApp(): Stores {
   const authRouter = createRouter(authRoutes);
   setAuthRouter(authRouter);
 
+  handleExpiredSessions(apiClient);
+
   const user = getLastAuthenticatedUser();
   if (user) {
+    router.start();
     // Cache the user but mark it to refresh
     apiClient.setCachedResult(`/users/${user.id}`, user);
     apiClient.invalidateCacheResponse(`/users/${user.id}`);
+  } else {
+    authRouter.start();
   }
-  handleExpiredSessions(apiClient);
 
   const uiStore = createUIStore({
     authenticatedUserId: user ? user.id : undefined,

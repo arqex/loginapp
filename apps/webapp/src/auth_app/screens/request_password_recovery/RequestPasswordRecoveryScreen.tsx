@@ -1,11 +1,22 @@
-import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
-import { ApiError } from "../../../application/api/ApiError";
 import { requestPasswordRecovery } from "../../../application/auth/auth.service";
 import { isValidEmailAddress } from "../../../application/validation/validation.utils";
 import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
+import { ApiError } from "@loginapp/api-client";
 
 interface RequestPasswordRecoveryScreenProps {}
 interface RequestPasswordRecoveryScreenState {
@@ -27,16 +38,16 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
   };
   render() {
     const { isSuccess } = this.state;
+
     return (
       <AuthScreenLayout>
-        <CCard style={{ maxWidth: "var(--cui-breakpoint-sm)" }}>
-          <CCardBody className="column">
-            {isSuccess ? this.renderSuccess() : this.renderForm()}
-          </CCardBody>
-        </CCard>
-        <div className="mt-3">
-          <Link href="/login">I already know my password</Link>
-        </div>
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              {isSuccess ? this.renderSuccess() : this.renderForm()}
+            </VStack>
+          </ContentCard>
+        </Flex>
       </AuthScreenLayout>
     );
   }
@@ -45,24 +56,26 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
     const { email, loading, errors } = this.state;
     return (
       <>
-        <h4>Password recovery</h4>
-        <div className="mb-3">
-          <CFormInput
-            name="email"
+        <Heading size="lg">Password recovery</Heading>
+        <FormControl isInvalid={!!errors.email}>
+          <FormLabel>Email:</FormLabel>
+          <Input
             type="email"
-            label="Email:"
             value={email}
             onChange={(e) => this.setState({ email: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && this._onSendLink()}
-            invalid={!!errors.email}
-            feedbackInvalid={errors.email}
-            autoComplete="on"
             autoFocus
+            autoComplete="on"
           />
-        </div>
-        <Button loading={loading} onClick={this._onSendLink}>
+          <FormErrorMessage>{errors.email}</FormErrorMessage>
+        </FormControl>
+        <Button isLoading={loading} onClick={this._onSendLink}>
           Send recovery email
         </Button>
+
+        <HStack alignItems="center" fontSize="sm" justifyContent="center">
+          <Link href="/login">I already know my password</Link>
+        </HStack>
       </>
     );
   }
@@ -71,7 +84,7 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
     const { email } = this.state;
     return (
       <>
-        <h4>Looks good!</h4>
+        <Heading size="lg">Looks good!</Heading>
         <p>
           If {email} has an account, we have sent an email there with the
           instructions to recover the password. Please check your inbox.

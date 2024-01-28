@@ -1,5 +1,4 @@
-import { ReactRoute, UrlhubRoute } from "urlhub";
-import { Router } from "../application/routing/router";
+import { ReactRoute, Router } from "../application/routing/router";
 import LoginScreen from "./screens/login/LoginScreen";
 import SignupScreen from "./screens/signup/SignupScreen";
 import VerifyEmailScreen from "./screens/verify_email/VerifyEmailScreen";
@@ -9,7 +8,7 @@ import OttLoginScreen from "./screens/ott_login/OttLoginScreen";
 import RequestPasswordRecoveryScreen from "./screens/request_password_recovery/RequestPasswordRecoveryScreen";
 import ResetPasswordScreen from "./screens/reset_password/ResetPasswordScreen";
 
-export const authRoutes: UrlhubRoute<ReactRoute>[] = [
+export const authRoutes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
   { path: "/signup", cb: SignupScreen },
   { path: "/verify_email", cb: VerifyEmailScreen },
@@ -18,7 +17,7 @@ export const authRoutes: UrlhubRoute<ReactRoute>[] = [
   { path: "/ott_login", cb: OttLoginScreen },
   { path: "/reset_password", cb: ResetPasswordScreen },
   { path: "/", cb: LoginScreen },
-  { path: "*", cb: NotFoundScreen }, // Page not found?
+  { path: "/*", cb: NotFoundScreen }, // Page not found?
 ];
 
 let authRouter: Router | undefined;

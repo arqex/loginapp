@@ -1,12 +1,13 @@
 import React from "react";
 import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
-import { CCard, CCardBody } from "@coreui/react";
 import { getAuthRouter } from "../../authRoutes";
 import {
   goToAuthenticatedApp,
   loginByOTT,
 } from "../../../application/auth/auth.service";
 import Link from "../../../components/Link/Link";
+import { Flex, VStack, Heading } from "@chakra-ui/react";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
 
 interface OttLoginScreenProps {}
 interface OttLoginScreenState {
@@ -23,9 +24,13 @@ export default class OttLoginScreen extends React.Component<
   render() {
     return (
       <AuthScreenLayout>
-        <CCard style={{ maxWidth: "var(--cui-breakpoint-sm)" }}>
-          <CCardBody className="column">{this.renderContent()}</CCardBody>
-        </CCard>
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              {this.renderContent()}
+            </VStack>
+          </ContentCard>
+        </Flex>
       </AuthScreenLayout>
     );
   }
@@ -35,13 +40,13 @@ export default class OttLoginScreen extends React.Component<
     if (isVerifiying) {
       return (
         <>
-          <h4>Verifying...</h4>
+          <Heading size="lg">Verifying...</Heading>
         </>
       );
     } else {
       return (
         <>
-          <h4>Oops!</h4>
+          <Heading size="lg">Oops!</Heading>
           <p>
             Sorry the link you followed is not valid anymore.{" "}
             {this.renderExtraInstructions()}
@@ -97,7 +102,7 @@ export default class OttLoginScreen extends React.Component<
 }
 
 function getParams() {
-  const query = getAuthRouter()?.location.query;
+  const query = getAuthRouter()?.location?.query;
   return {
     ott: typeof query?.ott === "string" ? query.ott : "",
     key: typeof query?.key === "string" ? query.key : "",

@@ -1,0 +1,22 @@
+.headingControls {
+}
+
+div.barLayout {
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.barLayoutButton {
+  margin-inline-end: 8px;
+}
+.rightButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (--tablet-vp) {
+  .headingControls button {
+    display: none;
+  }
+}

@@ -1,18 +1,29 @@
-import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
 import Button from "../../../components/Button/Button";
 import {
   goToAuthenticatedApp,
+  redirectToOauth,
   signup,
 } from "../../../application/auth/auth.service";
 import Link from "../../../components/Link/Link";
-import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import { getAuthRouter } from "../../authRoutes";
 import { ApiError } from "@loginapp/api-client";
 import {
   ValidationErrors,
   isValidEmailAddress,
 } from "../../../application/utils/validation.utils";
+import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
+import {
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
 
 interface SignupScreenProps {}
 interface SignupScreenState {
@@ -31,18 +42,20 @@ export default class SignupScreen extends React.Component<
     email: "",
     password: "",
     isSigningUp: false,
-    errors: undefined,
+    errors: {},
     isSuccess: false,
   };
   render() {
     const { isSuccess } = this.state;
     return (
       <AuthScreenLayout>
-        <CCard style={{ maxWidth: "var(--cui-breakpoint-sm)" }}>
-          <CCardBody className="column">
-            {isSuccess ? this.renderSuccess() : this.renderForm()}
-          </CCardBody>
-        </CCard>
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              {isSuccess ? this.renderSuccess() : this.renderForm()}
+            </VStack>
+          </ContentCard>
+        </Flex>
       </AuthScreenLayout>
     );
   }
@@ -51,38 +64,35 @@ export default class SignupScreen extends React.Component<
     const { email, password, isSigningUp, errors } = this.state;
     return (
       <>
-        <h4>Signup</h4>
-        <div className="mb-3">
-          <CFormInput
-            name="email"
+        <Heading size="lg">Sign up</Heading>
+        <Button onClick={this._startGoogleOauth}>Sign up with Google</Button>
+        <FormControl isInvalid={!!errors?.email}>
+          <FormLabel>Your email:</FormLabel>
+          <Input
             type="email"
-            label="Your email:"
             value={email}
             onChange={(e) => this.setState({ email: e.target.value })}
-            invalid={!!errors?.email}
-            feedbackInvalid={errors?.email}
-            autoComplete="on"
             autoFocus
+            autoComplete="on"
           />
-        </div>
-        <div className="mb-3">
-          <CFormInput
-            name="password"
+          <FormErrorMessage>{errors?.email}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!!errors?.password}>
+          <FormLabel>Choose a password:</FormLabel>
+          <Input
             type="password"
-            label="Choose a password:"
             value={password}
             onChange={(e) => this.setState({ password: e.target.value })}
-            onKeyDown={(e) => e.key === "Enter" && this._onSignupClick()}
-            invalid={!!errors?.password}
-            feedbackInvalid={errors?.password}
           />
-        </div>
-        <Button loading={isSigningUp} onClick={this._onSignupClick}>
-          Signup
+          <FormErrorMessage>{errors?.password}</FormErrorMessage>
+        </FormControl>
+
+        <Button onClick={this._onSignupClick} isLoading={isSigningUp}>
+          Sign up
         </Button>
-        <div className="mt-2 fs-sm text-center">
+        <HStack alignItems="center" fontSize="sm" justifyContent="center">
           <Link href="/login">I already have an account</Link>
-        </div>
+        </HStack>
       </>
     );
   }
@@ -130,6 +140,10 @@ export default class SignupScreen extends React.Component<
         this.setState({ isSigningUp: false });
       }
     }
+  };
+
+  _startGoogleOauth = async () => {
+    redirectToOauth("google");
   };
 
   getValidationErrors(email: string, password: string) {

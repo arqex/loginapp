@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./AuthScreenLayout.module.css";
+import Theme from "../../../components/Theme/Theme";
 
 interface AuthScreenLayoutProps {
   children: React.ReactNode;
@@ -7,8 +8,10 @@ interface AuthScreenLayoutProps {
 
 export default function AuthScreenLayout(props: AuthScreenLayoutProps) {
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>{props.children}</div>
-    </div>
+    <Theme>
+      <div className={styles.container}>
+        <div className={styles.content}>{props.children}</div>
+      </div>
+    </Theme>
   );
 }

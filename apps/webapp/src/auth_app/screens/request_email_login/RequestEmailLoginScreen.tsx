@@ -1,11 +1,21 @@
-import { CCard, CCardBody, CFormInput } from "@coreui/react";
 import React from "react";
 import AuthScreenLayout from "../../components/AuthScreenLayout/AuthScreenLayout";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
-import { ApiError } from "../../../application/api/ApiError";
 import { requestEmailLogin } from "../../../application/auth/auth.service";
 import { isValidEmailAddress } from "../../../application/validation/validation.utils";
+import {
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import { ApiError } from "@loginapp/api-client";
+import ContentCard from "../../../components/ContentLayout/ContentCard";
 
 interface RequestEmailLoginScreenProps {}
 interface RequestEmailLoginScreenState {
@@ -27,45 +37,45 @@ export default class RequestEmailLoginScreen extends React.Component<
   };
   render() {
     const { isSuccess } = this.state;
+
     return (
       <AuthScreenLayout>
-        <CCard style={{ maxWidth: "var(--cui-breakpoint-sm)" }}>
-          <CCardBody className="column">
-            {isSuccess ? this.renderSuccess() : this.renderForm()}
-          </CCardBody>
-        </CCard>
-        <div className="mt-3">
-          <Link href="/signup">Don't have an account? Sign up</Link>
-        </div>
+        <Flex maxW="400px" w="100%" flexDir="column" alignItems="stretch">
+          <ContentCard padding="8">
+            <VStack alignItems="stretch" spacing="4">
+              {isSuccess ? this.renderSuccess() : this.renderForm()}
+            </VStack>
+          </ContentCard>
+        </Flex>
       </AuthScreenLayout>
     );
   }
 
   renderForm() {
     const { email, loading, errors } = this.state;
+
     return (
       <>
-        <h4>Login by email</h4>
-        <div className="mb-3">
-          <CFormInput
-            name="email"
+        <Heading size="lg">Password recovery</Heading>
+        <FormControl isInvalid={!!errors.email}>
+          <FormLabel>Email:</FormLabel>
+          <Input
             type="email"
-            label="Email:"
             value={email}
             onChange={(e) => this.setState({ email: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && this._onSendClick()}
-            invalid={!!errors.email}
-            feedbackInvalid={errors.email}
-            autoComplete="on"
             autoFocus
+            autoComplete="on"
           />
-        </div>
-        <Button loading={loading} onClick={this._onSendClick}>
+          <FormErrorMessage>{errors.email}</FormErrorMessage>
+        </FormControl>
+        <Button isLoading={loading} onClick={this._onSendClick}>
           Send login email
         </Button>
-        <div className="fs-sm mt-2 text-center">
+
+        <HStack alignItems="center" fontSize="sm" justifyContent="center">
           <Link href="/login">Login with password</Link>
-        </div>
+        </HStack>
       </>
     );
   }
@@ -74,7 +84,7 @@ export default class RequestEmailLoginScreen extends React.Component<
     const { email } = this.state;
     return (
       <>
-        <h4>Looks good!</h4>
+        <Heading size="lg">Looks good!</Heading>
         <p>
           If {email} has an account, we have sent an email there with a link to
           login. Please check your inbox.

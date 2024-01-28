@@ -1,0 +1,5 @@
+/* Viewports to use in media queries thanks to postcss-custom-media */
+@custom-media --desktop-vp (min-width: 1220px);
+
+/* Needs to be the same than --cui-is-mobile */
+@custom-media --tablet-vp (min-width: 960px);

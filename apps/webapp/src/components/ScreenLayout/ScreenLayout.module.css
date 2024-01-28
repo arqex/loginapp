@@ -1,0 +1,43 @@
+.screenWrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  align-items: stretch;
+}
+
+.sidebarWrapper {
+  flex-shrink: 0;
+  width: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  border-inline-end: 1px solid var(--border);
+  background-color: var(--sidebar)
+}
+
+.screenMain {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.userMenuBar {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.screenContent {
+  margin: 0 auto;
+  padding: 0 1.5rem 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+
+}
+
+@media (--tablet-vp) {
+  .sidebarWrapper {
+    width: var(--cui-sidebar-width);
+  }
+}

@@ -3,13 +3,11 @@ import { getAuthenticatedId } from "./application/auth/auth.selector";
 import App from "./App";
 import AuthApp from "./auth_app/AuthApp";
 import "./base.css";
-import "@coreui/coreui/dist/css/coreui.min.css";
 import { Router } from "./application/routing/router";
 import { LS } from "./application/stores/localStorage";
 import { AppStore } from "./application/stores/uiStore";
-import { CToaster } from "@coreui/react";
-import { getToast } from "./application/toaster/toaster.service";
 import { ApiClient } from "@loginapp/api-client";
+import Toaster from "./components/Toaster/Toaster";
 
 interface RootProps {
   router: Router;
@@ -25,7 +23,7 @@ export default class Root extends React.Component<RootProps> {
     return (
       <>
         {authId ? <App /> : <AuthApp />}
-        <CToaster placement="top-end" push={getToast()} />
+        <Toaster />
       </>
     );
   }
@@ -42,8 +40,14 @@ export default class Root extends React.Component<RootProps> {
   };
 
   componentDidMount() {
-    this.props.router.onChange(this._rerender);
-    this.props.authRouter.onChange(this._rerender);
+    this.props.router.onChange(() => {
+      console.log("router changed");
+      this._rerender();
+    });
+    this.props.authRouter.onChange(() => {
+      console.log("auth router changed");
+      this._rerender();
+    });
     this.props.apiClient.addLoadListener(this._rerender);
     this.props.uiStore.addChangeListener(this._rerender);
     this.props.ls.addChangeListener(this._rerender);

@@ -1,18 +1,16 @@
-import {
-  default as urlhub,
-  ReactRoute,
-  UrlhubClass,
-  UrlhubRoute,
-} from "urlhub";
-import hashStrategy from "urlhub/hashStrategy";
+import { FunctionComponent, ComponentClass } from "react";
+import { Urlhub, HashStrategy, UrlhubRoute } from "urlhub";
 
-export type Router = UrlhubClass<ReactRoute>;
+export type ReactRoute = UrlhubRoute<FunctionComponent | ComponentClass>;
+export type Router = Urlhub<FunctionComponent | ComponentClass>;
 
-export function createRouter(routes: UrlhubRoute<ReactRoute>[]) {
-  const router: Router = urlhub.create({ strategy: hashStrategy });
+export function createRouter(routes: ReactRoute[]) {
+  const router = new Urlhub<FunctionComponent | ComponentClass>({
+    // @ts-ignore
+    strategy: HashStrategy,
+  });
 
   router.setRoutes(routes);
-  router.start();
 
   return router;
 }
@@ -22,7 +20,7 @@ export function setRouter(router: Router) {
   singleton = router;
 }
 
-export function getRouter() {
+export function getRouter(): Router {
   if (!singleton) throw new Error("Router not initialized");
   return singleton;
 }

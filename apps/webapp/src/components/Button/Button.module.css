@@ -12,3 +12,24 @@
 .withSpinner .text {
   opacity: 0
 }
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  border: none;
+  color: var(--cui-header-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  &:hover {
+    background-color: var(--bg_hover);
+  }
+
+  &:active {
+    background-color: var(--bg_active);
+  }
+}

@@ -1,0 +1,41 @@
+.sidebarNavigation {
+  margin: 0 16px;
+}
+
+.sidebarNavigation button:hover {
+  background-color: transparent;
+}
+
+.item {
+  flex-grow: 1;
+  display:block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: 4px
+}
+
+.item:hover { 
+  background-color: var(--nav_hover_bg);
+}
+
+.item_active {
+  background-color: var(--nav_active_bg);
+  font-weight: 600;
+}
+
+.item_active:hover {
+  background-color: var(--nav_active_bg);
+}
+
+
+.sidebarNavigation [id^="accordion-panel"] {
+  padding: 4px 0 4px 31px;
+}
+
+.sidebarNavigation button {
+  padding: 0;
+}
+
+.sidebarNavigation :global(.chakra-accordion__item) {
+  border: 0;
+}
