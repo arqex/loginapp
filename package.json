@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "backend:serve": "cd apps/backend && npm run start:dev",
+    "backend:serve": "cd apps/backend && npm run dev",
     "webapp:serve": "cd apps/webapp && npm run dev",
     "android": "cd apps/mobileapp && npm run android",
     "ios": "cd apps/mobileapp && npm run ios",
