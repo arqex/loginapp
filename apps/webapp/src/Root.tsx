@@ -8,6 +8,10 @@ import { LS } from "./application/stores/localStorage";
 import { AppStore } from "./application/stores/uiStore";
 import { ApiClient } from "@loginapp/api-client";
 import Toaster from "./components/Toaster/Toaster";
+import { initI18n } from "./application/i18n/i18n.service";
+import { I18next, i18nLoader } from "@loginapp/i18n";
+import { Spinner } from "@chakra-ui/react";
+import SpinnerScreen from "./components/SpinnerScreen/SpinnerScreen";
 
 interface RootProps {
   router: Router;
@@ -15,10 +19,15 @@ interface RootProps {
   uiStore: AppStore;
   apiClient: ApiClient;
   ls: LS;
+  i18n: I18next;
 }
 
 export default class Root extends React.Component<RootProps> {
   render() {
+    const { i18n, uiStore } = this.props;
+    const { isLoading } = i18nLoader(i18n, () => uiStore.emitChange());
+    if (isLoading) return <SpinnerScreen />;
+
     const authId = getAuthenticatedId();
     return (
       <>

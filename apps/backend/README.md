@@ -23,7 +23,7 @@ In the .env file you need to update the `DB_URL` with the database name you've j
 Create the tables needed for the authentication to work by running:
 
 ```bash
-npx run prisma migrate dev
+npx prisma migrate dev
 ```
 
 The DB needs to be running to make the API work, so don't forget to start it locally when developing.
