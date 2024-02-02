@@ -1,22 +1,18 @@
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
+import { getPrismaClient } from '../prismaclient';
 
 export async function createUser(user: Prisma.UserCreateInput) {
-  const prisma = new PrismaClient();
-  const createdUser = await prisma.user.create({ data: user });
-  return createdUser;
+  return await getPrismaClient().user.create({ data: user });
 }
 
 export async function getUserById(id: string): Promise<User | null> {
-  const prisma = new PrismaClient();
-  return await prisma.user.findUnique({ where: { id } });
+  return await getPrismaClient().user.findUnique({ where: { id } });
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-  const prisma = new PrismaClient();
-  return await prisma.user.findFirst({ where: { email } });
+  return await getPrismaClient().user.findFirst({ where: { email } });
 }
 
 export async function updateUser(id: string, user: Prisma.UserUpdateInput) {
-  const prisma = new PrismaClient();
-  return await prisma.user.update({ where: { id }, data: user });
+  return await getPrismaClient().user.update({ where: { id }, data: user });
 }

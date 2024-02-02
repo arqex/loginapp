@@ -1,27 +1,27 @@
-import { AuthToken, Prisma, PrismaClient } from '@prisma/client';
+import { AuthToken, Prisma } from '@prisma/client';
 import { JsonObject } from '@prisma/client/runtime/library';
+import { getPrismaClient } from '../prismaclient';
 
 export async function findAuth(key: string): Promise<AuthToken | null> {
-  const prisma = new PrismaClient();
-  return await prisma.authToken.findUnique({ where: { key } });
+  return await getPrismaClient().authToken.findUnique({ where: { key } });
 }
 
 export async function findAuthByUserId(id: string): Promise<AuthToken[]> {
-  const prisma = new PrismaClient();
-  return await prisma.authToken.findMany({ where: { userId: id } });
+  return await getPrismaClient().authToken.findMany({ where: { userId: id } });
 }
 
 export async function createAuth(auth: Prisma.AuthTokenUncheckedCreateInput) {
-  const prisma = new PrismaClient();
-  return await prisma.authToken.create({ data: auth });
+  return await getPrismaClient().authToken.create({ data: auth });
 }
 
 export async function updateAuth(
   key: string,
   update: Prisma.AuthTokenUpdateInput,
 ) {
-  const prisma = new PrismaClient();
-  return await prisma.authToken.update({ where: { key }, data: update });
+  return await getPrismaClient().authToken.update({
+    where: { key },
+    data: update,
+  });
 }
 
 export async function invalidateOTT(key: string) {
@@ -30,8 +30,7 @@ export async function invalidateOTT(key: string) {
   const meta = { ...(auth.meta as JsonObject) };
   delete meta.ott;
 
-  const prisma = new PrismaClient();
-  return await prisma.authToken.update({
+  return await getPrismaClient().authToken.update({
     where: { key },
     data: { meta },
   });
