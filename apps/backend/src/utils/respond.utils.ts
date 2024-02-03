@@ -8,8 +8,20 @@ export function resForbidden(res: Response) {
   resError(res, 'forbidden', 403);
 }
 
-export function resError(res: Response, code: string, status: number = 400) {
-  res.status(status).json({ error: code });
+export function resError(
+  res: Response,
+  code: string,
+  status: number = 400,
+  extra?: any,
+) {
+  res.status(status).json({
+    error: code,
+    ...(extra || {}),
+  });
+}
+
+export function resPayloadError(res: Response, reason: string) {
+  resError(res, 'invalid_payload', 400, { reason });
 }
 
 export function resInvalidEmail(res: Response) {

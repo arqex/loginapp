@@ -10,5 +10,53 @@
       "  res.json({ message: '${1:controllerName}' });",
       "}",
     ]
+  },
+
+  "Create get test": {
+    "scope": "typescript",
+    "prefix": "gettest",
+    "body": [
+      "import { get${1:Model}ById as db1 } from '../${2:model}.db';",
+      "import { prepareTestAuthToken, mockRequestUserRole, mockAuthGet } from '../../../testing/testing.utils';",
+      "import { UserRole } from '@prisma/client';",
+      "",
+      "jest.mock('../${2:model}.db.ts');",
+      "",
+      "describe('get${1:Model}.controller', () => {",
+      "  const get${1:Model}ById = db1 as jest.Mock;",
+      "",
+      "  beforeAll(async () => {",
+      "    await prepareTestAuthToken();",
+      "  });",
+      "",
+      "  beforeEach(() => {",
+      "    mockRequestUserRole(UserRole.ADMIN);",
+      "  });",
+      "",
+
+
+      "  it('should not allow ${3:roles} to get ${2:model}', async () => {",
+      "    get${1:Model}ById.mockResolvedValue({ id: 'dummy_id' });",
+      "    mockRequestUserRole(UserRole.${4:ROLE});",
+      "",
+      "    const res = await mockAuthGet('/${2:model}s/dummy_${2:model}_id');", 
+      "    expect(res.status).toBe(403);",
+      "    expect(res.body).toMatchObject({",
+      "      error: 'forbidden',",
+      "    });",
+      "  });",
+      "",
+      "  it('should return 404', async () => {",
+      "    get${1:Model}ById.mockResolvedValue(null);",
+      "",
+      "    const res = await mockAuthGet('/${2:model}s/dummy_${2:model}_id');",
+      "    expect(res.status).toBe(404);",
+      "    expect(get${1:Model}ById).toHaveBeenCalledWith('dummy_${2:model}_id');",
+      "    expect(res.body).toMatchObject({",
+      "      error: '${2:model}_not_found',",
+      "    });",
+      "  });",
+      "});",
+    ]
   }
-}
+});
