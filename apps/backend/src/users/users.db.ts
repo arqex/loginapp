@@ -16,3 +16,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 export async function updateUser(id: string, user: Prisma.UserUpdateInput) {
   return await getPrismaClient().user.update({ where: { id }, data: user });
 }
+
+export async function getUsersByQuery(query: Prisma.UserFindManyArgs) {
+  return await getPrismaClient().user.findMany(query);
+}
