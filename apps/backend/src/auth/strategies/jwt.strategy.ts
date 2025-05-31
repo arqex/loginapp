@@ -7,7 +7,7 @@ const options = {
     const token = jwtFromHeader(req) || jwtFromCookie(req);
     return token;
   },
-  secretOrKey: process.env.JWT_SECRET,
+  secretOrKey: process.env.JWT_KEY,
 };
 
 const jwtStrategy = new Strategy(

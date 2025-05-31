@@ -36,7 +36,7 @@ export async function createJWT(userId: string, permissions: string[]) {
     { userId, permissions },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h',
+      expiresIn: process.env.JWT_EXPIRES_IN,
       algorithm: 'RS256',
     },
   );
