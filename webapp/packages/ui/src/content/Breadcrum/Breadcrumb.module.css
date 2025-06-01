@@ -1,0 +1,7 @@
+.breadcrumb {
+  display: flex;
+  font-size: .9em;
+  align-items: center;
+  line-height: 1em;
+  color: var(--text_light);
+}

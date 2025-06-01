@@ -1,0 +1,28 @@
+.th {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--text_lighter);
+  padding: 8px 4px;
+  font-size: var(--chakra-font-sizes-xs);
+  border-color: var(--card_border);
+}
+
+.tcell {
+  padding: 8px 4px;
+  border-color: var(--card_border);
+}
+
+.align_start {
+  text-align: start;
+  justify-content: flex-start;
+}
+
+.align_center {
+  text-align: center;
+  justify-content: flex-center;
+}
+
+.align_end {
+  text-align: end;
+  justify-content: flex-end;
+}

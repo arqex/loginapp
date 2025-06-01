@@ -1,0 +1,51 @@
+.tag {
+  line-height: 1em;
+  opacity: 1;
+  border-radius: 4px;
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+  overflow: hidden;
+  min-height: 0;
+  border: 1px solid var(--subtle_border);
+  background: var(--input_bg);
+}
+
+.loading {
+  opacity: .6;
+}
+
+.spinner {
+  transform: translate(2px, 1px);
+  margin-inline-start: 2px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.size_sm {
+ min-height: 18px;
+ padding-inline-start: 6px;
+ padding-inline-end: 6px;
+ font-size: 12px;
+}
+
+.size_md {
+  min-height: 22px;
+  font-size: 14px;
+}
+
+.removeButton {
+  color: var(--text_light);
+  transform: translate(-2px, -4px);
+  cursor: pointer;
+}
+
+
+.size_sm .removeButton {
+  transform: translate(-4px, -4px);
+}
+
+.removeButton:hover {
+  color: var(--text);
+}

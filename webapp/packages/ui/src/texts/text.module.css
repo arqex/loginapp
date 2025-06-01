@@ -1,0 +1,49 @@
+.base {
+	color: inherit;
+	font-weight: var(--fonts-normal);
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	line-height: 1.3em;
+	overflow: visible !important;
+}
+
+.block {
+	display: block;
+}
+
+.inherit {
+	color: inherit;
+}
+.default {
+	color: var(--text);
+}
+.light {
+	color: var(--text_light);
+}
+.lighter {
+	color: var(--text_lighter);
+}
+.action {
+	color: var(--link);
+}
+
+.link {
+	cursor: pointer;
+}
+
+.link:focus-visible {
+	outline-color: var(--focus_ring);
+}
+
+.link.action {
+	color: var(--link);
+}
+
+.link.action:hover {
+	color: var(--link_hover);
+}
+
+.underline {
+	text-decoration: underline;
+}

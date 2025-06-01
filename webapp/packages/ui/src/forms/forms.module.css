@@ -1,0 +1,95 @@
+
+.input, .textarea, .select, .checkbox>div:not([data-state="checked"]) {
+  background-color: var(--card);
+}
+
+.input[disabled], .textarea[disabled], .select[disabled], .checkbox div[data-disabled]:not([data-state="checked"])  {
+  background-color: var(--surface);
+  opacity: 1;
+  cursor: default;
+}
+
+.formfield label, label[data-scope="checkbox"] {
+  font-size: var(--chakra-font-sizes-md);
+}
+
+.checkbox :not([data-disabled]) {
+  cursor: pointer;
+}
+
+.select[disabled] select {
+  cursor: default;
+}
+
+.helptipWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  margin-inline-start: 4px;
+}
+
+.fakeInput {
+  border-width: 1px;
+  border-radius: var(--chakra-radii-l2);
+  display: flex;
+  align-items: center;
+  background-color: var(--input_bg);
+  height: auto !important
+}
+
+.fakeInput.sizes_sm {
+  min-height: 32px;
+}
+
+.fakeInput.sizes_md {
+  min-height: 40px;
+}
+.fakeInput.sizes_lg {
+  min-height: 44px;
+}
+
+.fakeInput:hover {
+  border-color: var(--chakra-colors-border);
+}
+
+.fakeInput:focus-within {
+  border-color: var(--focus_ring);
+  outline-color: var(--focus_ring);
+  outline-width: var( --docus-ring-width, 1px);
+}
+
+/* Sizes */
+.sizes_sm {
+  height: 32px;
+  padding: 0 var(--chakra-spacing-2\.5);
+  font-size: var(--chakra-font-sizes-sm);
+}
+
+.sizes_md {
+  height: 40px;
+  padding: 0 var(--chakra-spacing-3);
+  font-size: var(--chakra-font-sizes-sm);
+}
+
+.sizes_lg {
+  height: 44px;
+  padding: 0 var(--chakra-spacing-4);
+}
+
+.popupContainer {
+  position:relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.popupPlaceholder {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+}

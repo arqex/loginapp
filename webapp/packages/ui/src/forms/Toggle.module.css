@@ -1,0 +1,9 @@
+.toggle {
+  cursor: pointer;
+  --chakra-colors-color-palette-solid: var(--action_bg);
+}
+
+
+.toggle [data-part="label"] {
+  font-size: var(--chakra-font-sizes-md);
+}

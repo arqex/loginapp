@@ -1,0 +1,8 @@
+.trigger {
+  border-radius: 3px;
+}
+
+.trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus_ring);
+}

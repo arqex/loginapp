@@ -1,0 +1,50 @@
+.item {
+  padding: 0 12px 0 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: var(--chakra-font-sizes-sm);
+  color: var(--text_light);
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+}
+
+.item:focus-visible {
+  outline-color: var(--focus_ring);
+}
+
+.content {
+  flex-grow: 1;
+  align-items: stretch !important;
+  overflow: visible;
+}
+
+
+.item:hover {
+  background-color: var(--action_subtle_bg);
+}
+
+.selected {
+  color: var(--text);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding-left: 10px;
+  border-left: 4px solid var(--action_bg);
+}
+
+.size_sm {
+  height: 36px;
+}
+
+.size_md {
+  height: 40px;
+}
+
+.size_lg {
+  height: 48px;
+}
+
+.startElement {
+  transform: translateX(-2px);
+}
+

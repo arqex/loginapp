@@ -1,0 +1,11 @@
+.tabs {
+  --indicator-color: var(--action_bg);
+}
+
+.tabs [role="tablist"] {
+  border-color: var(--card_border);
+}
+
+.tabs [aria-selected="true"]::before{
+  background-color: var(--action_bg);
+}

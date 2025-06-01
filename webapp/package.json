@@ -1,0 +1,14 @@
+{
+  "name": "@loginapp/webapp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "cd packages/app && npm run dev",
+    "dev": "npm start",
+    "build": "cd packages/app && npm run build",
+    "preview": "cd packages/app && npm run preview",
+    "test": "cd packages/app && npm run test"
+  },
+  "workspaces": ["packages/app", "packages/ui-components"]
+}

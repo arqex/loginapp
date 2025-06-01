@@ -1,0 +1,19 @@
+.content {
+  gap: var(--chakra-spacing-4);
+  align-items: stretch;
+  flex-grow: 1;
+}
+
+.pd_sm {
+  padding: var(--chakra-spacing-4);
+}
+
+.pd_md {
+  padding: var(--chakra-spacing-6);
+}
+
+.pd_lg {
+  padding: var(--chakra-spacing-8);
+}
+
+

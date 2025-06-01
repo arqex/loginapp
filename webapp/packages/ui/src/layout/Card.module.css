@@ -1,0 +1,65 @@
+.card {
+  border: 1px solid var(--card_border);
+}
+
+.bg_card {
+  background-color: var(--card);
+}
+
+.bg_surface {
+  background-color: var(--surface);
+}
+
+.bg_shaded {
+  background-color: var(--shaded);
+}
+
+.bg_tinted {
+  background-color: var(--tinted);
+}
+
+.pd_none {
+  padding: 0;
+}
+.pd_xs {
+  padding: var(--chakra-spacing-2);
+}
+.pd_sm {
+  padding: var(--chakra-spacing-4);
+}
+.pd_md {
+  padding: var(--chakra-spacing-8);
+}
+.pd_lg {
+  padding: var(--chakra-spacing-12);
+}
+
+.sh_none {
+  box-shadow: none;
+}
+.sh_sm {
+  box-shadow: var(--chakra-shadows-sm);
+}
+.sh_md {
+  box-shadow: var(--chakra-shadows-md);
+}
+.sh_lg {
+  box-shadow: var(--chakra-shadows-lg);
+}
+
+.borderless {
+  border-width: 0px;
+}
+
+.rd_none {
+  border-radius: 0;
+}
+.rd_sm {
+  border-radius: var(--chakra-radii-md);
+}
+.rd_md {
+  border-radius: var(--chakra-radii-lg);
+}
+.rd_lg {
+  border-radius: var(--chakra-radii-xl);
+}

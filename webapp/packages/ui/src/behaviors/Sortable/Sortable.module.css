@@ -1,0 +1,17 @@
+.handler {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  color: var(--text_lighter);
+  padding-inline-start: 0.5rem;
+}
+
+.handler:active{
+  cursor: grabbing;
+}
+
+.dragging {
+  cursor: grabbing !important;
+  opacity: 0.5;
+}
