@@ -1,9 +1,9 @@
 import { ApiAccount } from "./api.types";
-import { ApiClientBase } from "../ApiClientBase";
 import { ResponseWithData } from "../apiClient.types";
+import { ApiClient } from "../ApiClient";
 
 export async function loadAccount(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   id: string
 ): Promise<ResponseWithData<ApiAccount>> {
   return await apiClient.requester.get(`/accounts/${id}`);

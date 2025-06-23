@@ -36,7 +36,7 @@ export interface ApiUser {
 
 export interface ApiClientConfig {
   apiURL?: string;
-  authToken?: string;
+  auth?: { token: string; type?: AuthType };
   headers?: { [headerName: string]: string };
   responseMiddleware?: ResponseMiddleware[];
   requestMiddleware?: RequestMiddleware[];

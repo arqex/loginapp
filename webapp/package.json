@@ -10,5 +10,15 @@
     "preview": "cd packages/app && npm run preview",
     "test": "cd packages/app && npm run test"
   },
-  "workspaces": ["packages/app", "packages/ui-components"]
+  "workspaces": [
+    "packages/app",
+    "packages/ui-components",
+    "packages/api-client"
+  ],
+  "dependencies": {
+    "i18next": "^25.2.1",
+    "i18next-browser-languagedetector": "^8.1.0",
+    "i18next-http-backend": "^3.0.2",
+    "react-i18next": "^15.5.2"
+  }
 }

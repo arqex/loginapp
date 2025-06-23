@@ -1,12 +1,12 @@
-import { ReactRoute, Router } from "../application/routing/router";
-import LoginScreen from "./screens/login/LoginScreen";
-import NotFoundScreen from "../screens/notFound/NotFoundScreen";
-import RequestPasswordRecoveryScreen from "./screens/request_password_recovery/RequestPasswordRecoveryScreen";
-import RequestEmailLoginScreen from "./screens/request_email_login/RequestEmailLoginScreen";
-import SignupScreen from "./screens/signup/SignupScreen";
-import VerifyEmailScreen from "./screens/verify_email/VerifyEmailScreen";
-import OttLoginScreen from "./screens/ott_login/OttLoginScreen";
-import ResetPasswordScreen from "./screens/reset_password/ResetPasswordScreen";
+import type { ReactRoute, Router } from "./router";
+import LoginScreen from "../../screens/login/LoginScreen";
+import NotFoundScreen from "../../screens/notFound/NotFoundScreen";
+import RequestPasswordRecoveryScreen from "../../screens/request_password_recovery/RequestPasswordRecoveryScreen";
+import RequestEmailLoginScreen from "../../screens/request_email_login/RequestEmailLoginScreen";
+import SignupScreen from "../../screens/signup/SignupScreen";
+import VerifyEmailScreen from "../../screens/verify_email/VerifyEmailScreen";
+import OttLoginScreen from "../../screens/ott_login/OttLoginScreen";
+import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScreen";
 
 export const authRoutes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },

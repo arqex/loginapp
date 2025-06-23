@@ -1,16 +1,15 @@
 import EventEmitter from "eventemitter3";
 import { ApiClientConfig, AuthType } from "./apiClient.types";
-import { ApiClientBase } from "./ApiClientBase";
 import { ApiRequester } from "./ApiRequester";
 
-export class ApiClient implements ApiClientBase {
+export class ApiClient {
   emitter = new EventEmitter();
   requester: ApiRequester;
   constructor(config: ApiClientConfig = {}) {
     const headers = config.headers || { "content-type": "application/json" };
 
-    if (config.authToken) {
-      headers[AUTH_HEADER] = getAuthHeader(config.authToken, config.authType);
+    if (config.auth) {
+      headers[AUTH_HEADER] = getAuthHeader(config.auth.token, config.auth.type);
     }
 
     this.requester = new ApiRequester({

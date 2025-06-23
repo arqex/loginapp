@@ -1,21 +1,21 @@
+import { ApiClient } from "../ApiClient";
 import { CachedResponse, ResponseWithData } from "../apiClient.types";
-import { ApiClientBase } from "../ApiClientBase";
 import { ApiUser, EmptyObject } from "./api.types";
 
-export async function loadUser(apiClient: ApiClientBase, id: string) {
+export async function loadUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.get(
     `/users/${id}`
   )) as ResponseWithData<ApiUser>;
 }
 
-export function loadUserWithCache(apiClient: ApiClientBase, id: string) {
+export function loadUserWithCache(apiClient: ApiClient, id: string) {
   return apiClient.requester.getCached(
     `/users/${id}`
   ) as CachedResponse<ApiUser>;
 }
 
 export async function updateUser(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   id: string,
   data: Partial<ApiUser>
 ) {
@@ -25,7 +25,7 @@ export async function updateUser(
   )) as ResponseWithData<EmptyObject>;
 }
 
-export async function deleteUser(apiClient: ApiClientBase, id: string) {
+export async function deleteUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.delete(
     `/users/${id}`
   )) as ResponseWithData<EmptyObject>;

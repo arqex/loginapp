@@ -1,5 +1,5 @@
 import type { FunctionComponent, ComponentClass } from "react";
-import { Urlhub, HashStrategy, UrlhubRoute } from "urlhub";
+import { Urlhub, HashStrategy, type UrlhubRoute } from "urlhub";
 
 export type ReactRoute = UrlhubRoute<FunctionComponent | ComponentClass>;
 export type Router = Urlhub<FunctionComponent | ComponentClass>;

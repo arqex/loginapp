@@ -1,9 +1,6 @@
 # Authentication methods
 
-
-
-
-# Google sign in by oauth
+## Google sign in by oauth
 
 To be able to use this method you need to create a project in the [Google Cloud Platform](https://console.cloud.google.com/). You can follow the steps in the [Google documentation](https://developers.google.com/identity/sign-in/web/sign-in) to create the project and enable the Google Sign-In method.
 

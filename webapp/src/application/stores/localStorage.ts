@@ -2,7 +2,7 @@ import EventEmitter from "eventemitter3";
 
 type LSKey = "AUTH_USER" | "COLOR_SCHEME";
 
-const PREFIX = "ycbm_";
+const PREFIX = "la_";
 export class LS {
   #emitter = new EventEmitter();
 

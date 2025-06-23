@@ -1,5 +1,5 @@
+import { ApiClient } from "../ApiClient";
 import { ResponseWithData } from "../apiClient.types";
-import { ApiClientBase } from "../ApiClientBase";
 import {
   EmptyObject,
   LoginResponse,
@@ -7,7 +7,7 @@ import {
 } from "./api.types";
 
 export async function login(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   email: string,
   password: string
 ) {
@@ -18,7 +18,7 @@ export async function login(
 }
 
 export async function loginByOTT(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   key: string,
   ott: string
 ) {
@@ -29,7 +29,7 @@ export async function loginByOTT(
 }
 
 export async function getAuthenticationToken(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   email: string,
   password: string
 ) {
@@ -40,7 +40,7 @@ export async function getAuthenticationToken(
 }
 
 export async function getAuthenticationTokenByOTT(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   key: string,
   ott: string
 ) {
@@ -50,14 +50,14 @@ export async function getAuthenticationTokenByOTT(
   })) as ResponseWithData<LoginResponseWithToken>;
 }
 
-export async function logout(apiClient: ApiClientBase) {
+export async function logout(apiClient: ApiClient) {
   return (await apiClient.requester.post(
     "/auth/logout"
   )) as ResponseWithData<EmptyObject>;
 }
 
 export async function signup(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   email: string,
   password: string,
   useCookie = true
@@ -72,7 +72,7 @@ export async function signup(
 }
 
 export async function verifyEmail(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   vc: string,
   email: string,
   useCookie = true
@@ -86,17 +86,14 @@ export async function verifyEmail(
   )) as ResponseWithData<EmptyObject>;
 }
 
-export async function requestEmailLogin(
-  apiClient: ApiClientBase,
-  email: string
-) {
+export async function requestEmailLogin(apiClient: ApiClient, email: string) {
   return (await apiClient.requester.post("/auth/request_email_login", {
     email,
   })) as ResponseWithData<EmptyObject>;
 }
 
 export async function requestPasswordRecovery(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   email: string
 ) {
   return (await apiClient.requester.post("/auth/request_password_recovery", {
@@ -105,7 +102,7 @@ export async function requestPasswordRecovery(
 }
 
 export async function resetPassword(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   email: string,
   password: string,
   ott: string
@@ -118,7 +115,7 @@ export async function resetPassword(
 }
 
 export async function loginByProvider(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   provider: "apple" | "google",
   token: string
 ) {
@@ -132,7 +129,7 @@ export async function loginByProvider(
 }
 
 export async function signupByProvider(
-  apiClient: ApiClientBase,
+  apiClient: ApiClient,
   provider: "apple" | "google",
   token: string
 ) {

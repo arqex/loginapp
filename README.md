@@ -33,13 +33,5 @@ npm run ios # runs the mobile app in ios
 npm run android # runs the mobile app in android
 ```
 
-## Packages
-This repo also provides a package to communicate with the API at `packages/api-client` making easy to authenticate. 
-
-This first package is already linked to the applications, but since this is not a monorepo, any new package will need to be linked manually to the applications. To do so, just run the following in any app that need the new package:
-```bash
-cd apps/webapp
-npm install ../../packages/my-new-package
-```
 
 
