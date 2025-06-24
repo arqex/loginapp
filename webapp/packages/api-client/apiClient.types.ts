@@ -11,29 +11,6 @@ export interface ResponseWithData<T> {
   url: string;
 }
 
-export interface LoginResponse {
-  authenticatedId: string;
-}
-
-export interface LoginResponseWithToken {
-  authenticatedId: string;
-  token: string;
-}
-
-export interface ApiAccount {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ApiUser {
-  id: string;
-  name: string;
-  email: string;
-  picURL: string;
-}
-
 export interface ApiClientConfig {
   apiURL?: string;
   auth?: { token: string; type?: AuthType };

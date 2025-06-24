@@ -8,10 +8,7 @@
     "backend:serve": "cd backend && npm run start:dev",
     "webapp:serve": "cd webapp && npm run dev",
     "android": "cd mobileapp && npm run android",
-    "ios": "cd mobileapp && npm run ios",
-    "postinstall": "npm run apps:install && npm run packages:install",
-    "apps:install": "cd webapp && npm install && cd ../backend && npm install && cd ../mobileapp",
-    "packages:install": "cd packages/api-client && npm install"
+    "ios": "cd mobileapp && npm run ios"
   },
   "author": "",
   "license": "MIT",

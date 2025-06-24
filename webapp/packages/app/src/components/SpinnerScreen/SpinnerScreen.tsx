@@ -1,4 +1,4 @@
-import { Theme, Spinner, VStack } from "@cataloga/ui-components";
+import { Theme, Spinner, VStack } from "@loginapp/ui";
 
 export default function SpinnerScreen() {
   return (

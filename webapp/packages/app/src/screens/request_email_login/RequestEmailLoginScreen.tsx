@@ -1,6 +1,4 @@
 import React from "react";
-import { requestEmailLogin } from "../../../application/auth/auth.service";
-import { ApiError } from "../../../application/api-client";
 import {
   Button,
   Card,
@@ -11,8 +9,10 @@ import {
   Link,
   VStack,
 } from "@loginapp/ui";
+import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import { requestEmailLogin, type ApiError } from "@loginapp/api-client";
+import { getApiClient } from "../../application/stores/apiClient";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
-import { isValidEmailAddress } from "../../../application/utils/validation.utils";
 
 interface RequestEmailLoginScreenProps {}
 interface RequestEmailLoginScreenState {
@@ -93,9 +93,9 @@ export default class RequestEmailLoginScreen extends React.Component<
     }
     this.setState({ loading: true });
     try {
-      await requestEmailLogin(email);
+      await requestEmailLogin(getApiClient(), email);
       this.setState({ loading: false, isSuccess: true });
-    } catch (err: any) {
+    } catch (err) {
       const error = err as ApiError;
       if (error.response?.status === 401) {
         console.log("No authorized");

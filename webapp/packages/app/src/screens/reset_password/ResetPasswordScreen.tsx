@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  goToAuthenticatedApp,
-  resetPassword,
-} from "../../../application/auth/auth.service";
-import { getAuthRouter } from "../../authRoutes";
+import { getRouter } from "../../application/routing/router";
 import {
   Box,
   Button,
@@ -15,8 +11,10 @@ import {
   toaster,
   VStack,
 } from "@loginapp/ui";
+import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import { resetPassword } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
-import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface ResetPasswordScreenProps {}
 interface ResetPasswordScreenState {
@@ -99,11 +97,10 @@ export default class ResetPasswordScreen extends React.Component<
     }
     this.setState({ loading: true });
     try {
-      await resetPassword(email, password, ott);
+      await resetPassword(getApiClient(), email, password, ott);
       // If password is reset ok, the user is logged in
       toaster.success("Password reset successfully");
-      goToAuthenticatedApp();
-    } catch (err: any) {
+    } catch (err) {
       this.setState({ loading: false, areParametersOk: false });
     }
   };
@@ -115,7 +112,7 @@ export default class ResetPasswordScreen extends React.Component<
 }
 
 function getParams() {
-  const query = getAuthRouter()?.location?.query;
+  const query = getRouter()?.location?.query;
   return {
     ott: typeof query?.ott === "string" ? query.ott : "",
     email: typeof query?.email === "string" ? query.email : "",

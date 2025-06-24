@@ -1,5 +1,4 @@
 import React from "react";
-import { requestPasswordRecovery } from "../../../application/auth/auth.service";
 import {
   Button,
   Card,
@@ -10,9 +9,11 @@ import {
   Link,
   VStack,
 } from "@loginapp/ui";
-import { ApiError } from "../../../application/api-client";
+import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import type { ApiError } from "@loginapp/api-client";
+import { requestPasswordRecovery } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
-import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface RequestPasswordRecoveryScreenProps {}
 interface RequestPasswordRecoveryScreenState {
@@ -92,9 +93,9 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
     }
     this.setState({ loading: true });
     try {
-      await requestPasswordRecovery(email);
+      await requestPasswordRecovery(getApiClient(), email);
       this.setState({ loading: false, isSuccess: true });
-    } catch (err: any) {
+    } catch (err) {
       const error = err as ApiError;
       if (error.response?.status === 401) {
         console.log("No authorized");

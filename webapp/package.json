@@ -11,9 +11,7 @@
     "test": "cd packages/app && npm run test"
   },
   "workspaces": [
-    "packages/app",
-    "packages/ui-components",
-    "packages/api-client"
+    "packages/*"
   ],
   "dependencies": {
     "i18next": "^25.2.1",

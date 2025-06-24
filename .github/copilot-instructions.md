@@ -10,4 +10,4 @@ The code for the mobile app is in `/mobile`.
 
 To know more about how the backend works, check the [backend documentation](backend/docs/introduction_backend.md).
 To know about the test application, check the [test application documentation](./test-application.md).
-The task we are working currently is [Add some test data into the database)[./task-instructions.md].
+The task we are working currently is [Reorganization of the webapp)[./task-instructions.md].

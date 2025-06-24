@@ -1,11 +1,9 @@
 import React from "react";
-import { getAuthRouter } from "../../authRoutes";
-import {
-  goToAuthenticatedApp,
-  loginByOTT,
-} from "../../../application/auth/auth.service";
+import { getRouter } from "../../application/routing/router";
 import { Card, Heading, Link, VStack } from "@loginapp/ui";
+import { loginByOTT } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface OttLoginScreenProps {}
 interface OttLoginScreenState {
@@ -82,9 +80,8 @@ export default class OttLoginScreen extends React.Component<
     if (this.state.isVerifiying) {
       try {
         const { ott, key } = getParams();
-        await loginByOTT(key, ott);
-        goToAuthenticatedApp();
-      } catch (err: any) {
+        await loginByOTT(getApiClient(), key, ott);
+      } catch (err) {
         this.setState({ isVerifiying: false });
       }
     } else {
@@ -98,7 +95,7 @@ export default class OttLoginScreen extends React.Component<
 }
 
 function getParams() {
-  const query = getAuthRouter()?.location?.query;
+  const query = getRouter()?.location?.query;
   return {
     ott: typeof query?.ott === "string" ? query.ott : "",
     key: typeof query?.key === "string" ? query.key : "",

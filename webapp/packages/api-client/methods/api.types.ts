@@ -12,13 +12,7 @@ export interface ApiUser {
   picURL: string;
 }
 
-export enum UserRole {
-  ADMIN = "ADMIN",
-  EDITOR = "EDITOR",
-  COLLABORATOR = "COLLABORATOR",
-  GUEST = "GUEST",
-  NONE = "NONE",
-}
+export type UserRole = "ADMIN" | "EDITOR" | "COLLABORATOR" | "GUEST" | "NONE";
 
 export interface UserAccount extends ApiAccount {
   role: UserRole;

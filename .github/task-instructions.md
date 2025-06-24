@@ -1,11 +1,7 @@
-# Add test data to the database
+# Reorganization of the web app
 
-To try out the test application, we want to initialize the database with some test data that let the developers play with it. 
+The webapp was a some point having 2 different applications, one for the unauthenticated screens and other of the authenticated ones.
 
-We want 2 accounts:
-* One simple account that contains one user with role ADMIN
-* One collaborative account with an ADMIN, an EDITOR and an COLLABORATOR.
+Every app lived in its own folder and had its own router. But know we have moved the unauthenticated screens to the common screens folders, and their imports are wrong.
 
-In the simple account create a todoList with 3 todoItems
-In the collaborative account create 2 lists, with 3 todoIems each.
-
+We want all the screens to work in the same way, in the same folder and with the same router.

@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  goToAuthenticatedApp,
-  login,
-  redirectToOauth,
-} from "../../../application/auth/auth.service";
-import { ApiError } from "../../../application/api-client";
-import { getAuthRouter } from "../../authRoutes";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
-import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import { getRouter } from "../../application/routing/router";
+import { isValidEmailAddress } from "../../application/utils/validation.utils";
 
 import {
   Card,
@@ -20,6 +13,10 @@ import {
   Button,
   Link,
 } from "@loginapp/ui";
+import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import { login, type ApiError } from "@loginapp/api-client";
+import { redirectToOauth } from "../../application/auth/auth.service";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface LoginScreenProps {}
 interface LoginScreenState {
@@ -89,13 +86,12 @@ export default class LoginScreen extends React.Component<
 
     this.setState({ loading: true });
     try {
-      await login(this.state.email, this.state.password);
+      await login(getApiClient(), this.state.email, this.state.password);
       this.setState({ loading: false });
-      goToAuthenticatedApp();
-    } catch (err: any) {
+    } catch (err) {
       const error = err as ApiError;
       if (error.response?.data?.error === "verification_required") {
-        getAuthRouter()?.push(
+        getRouter()?.push(
           "/verify_email?email=" + encodeURIComponent(this.state.email)
         );
       } else if (error.response?.status === 401) {
@@ -110,6 +106,7 @@ export default class LoginScreen extends React.Component<
       }
     }
   };
+
   _startGoogleOauth = async () => {
     redirectToOauth("google");
   };

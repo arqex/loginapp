@@ -1,9 +1,9 @@
 import React from "react";
-import { getAuthRouter } from "../../authRoutes";
+import { getRouter } from "../../application/routing/router";
 import {
   goToAuthenticatedApp,
   verifyEmail,
-} from "../../../application/auth/auth.service";
+} from "../../application/auth/auth.service";
 import {
   Button,
   Card,
@@ -16,7 +16,7 @@ import {
   toaster,
 } from "@loginapp/ui";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
-import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import { isValidEmailAddress } from "../../application/utils/validation.utils";
 
 interface VerifyEmailScreenProps {}
 interface VerifyEmailScreenState {
@@ -151,7 +151,7 @@ export default class VerifyEmailScreen extends React.Component<
 }
 
 function getParams() {
-  const query = getAuthRouter()?.location?.query;
+  const query = getRouter()?.location?.query;
   return {
     vc: typeof query?.vc === "string" ? query.vc : "",
     email: typeof query?.email === "string" ? query.email : "",

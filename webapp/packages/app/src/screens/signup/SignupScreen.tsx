@@ -1,16 +1,9 @@
 import React from "react";
+import { getRouter } from "../../application/routing/router";
 import {
-  goToAuthenticatedApp,
-  redirectToOauth,
-  signup,
-} from "../../../application/auth/auth.service";
-import { getAuthRouter } from "../../authRoutes";
-import {
-  ValidationErrors,
+  type ValidationErrors,
   isValidEmailAddress,
-} from "../../../application/utils/validation.utils";
-import { ApiError } from "../../../application/api-client";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+} from "../../application/utils/validation.utils";
 import {
   FormField,
   Card,
@@ -21,6 +14,11 @@ import {
   Button,
   Link,
 } from "@loginapp/ui";
+import type { ApiError } from "@loginapp/api-client";
+import { signup } from "../../application/apiMethods/auth.api";
+import { redirectToOauth } from "../../application/auth/auth.service";
+import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface SignupScreenProps {}
 interface SignupScreenState {
@@ -78,7 +76,7 @@ export default class SignupScreen extends React.Component<
           />
         </FormField>
 
-        <Button onClick={this._onSignupClick} isLoading={isSigningUp}>
+        <Button onClick={this._onSignupClick} loading={isSigningUp}>
           Sign up
         </Button>
         <HStack alignItems="center" fontSize="sm" justifyContent="center">
@@ -110,16 +108,17 @@ export default class SignupScreen extends React.Component<
     }
 
     try {
-      const status = await signup(this.state.email, this.state.password);
+      const { status } = await signup(
+        getApiClient(),
+        this.state.email,
+        this.state.password
+      );
       if (status === 204) {
-        getAuthRouter()?.push(
+        getRouter()?.push(
           "/verify_email?email=" + encodeURIComponent(this.state.email)
         );
-      } else {
-        // 201, we are logged in
-        goToAuthenticatedApp();
       }
-    } catch (err: any) {
+    } catch (err) {
       const error = err as ApiError;
       if (error.response?.status === 401) {
         console.log("No authorized");

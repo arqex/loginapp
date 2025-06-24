@@ -15,3 +15,10 @@ export const expiredSessionMiddleware: ResponseMiddleware = (res) => {
   }
   return res;
 };
+
+export function redirectToOauth(provider: string) {
+  const returnTo = encodeURIComponent(`${window.location.origin}/#/ott_login`);
+  window.location.href = getApiClient().getApiUrl(
+    `/auth/oauth_start?provider=${provider}&returnTo=${returnTo}`
+  );
+}
