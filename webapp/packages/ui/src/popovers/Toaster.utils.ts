@@ -6,8 +6,6 @@ export const t = createToaster({
   duration: 6000,
 });
 
-console.log("T", t);
-
 export const toaster = {
   info: (message: string) => t.create({ title: message, type: "info" }),
   success: (message: string) => t.create({ title: message, type: "success" }),

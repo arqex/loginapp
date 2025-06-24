@@ -1,4 +1,4 @@
-import type { ReactRoute, Router } from "./router";
+import type { ReactRoute } from "./router";
 import LoginScreen from "../../screens/login/LoginScreen";
 import NotFoundScreen from "../../screens/notFound/NotFoundScreen";
 import RequestPasswordRecoveryScreen from "../../screens/request_password_recovery/RequestPasswordRecoveryScreen";
@@ -8,7 +8,7 @@ import VerifyEmailScreen from "../../screens/verify_email/VerifyEmailScreen";
 import OttLoginScreen from "../../screens/ott_login/OttLoginScreen";
 import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScreen";
 
-export const authRoutes: ReactRoute[] = [
+export const routes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
   { path: "/request_password_recovery", cb: RequestPasswordRecoveryScreen },
   { path: "/request_email_login", cb: RequestEmailLoginScreen },
@@ -19,11 +19,3 @@ export const authRoutes: ReactRoute[] = [
   { path: "/", cb: LoginScreen },
   { path: "/*", cb: NotFoundScreen }, // Page not found?
 ];
-
-let authRouter: Router | undefined;
-export function getAuthRouter() {
-  return authRouter;
-}
-export function setAuthRouter(router: Router) {
-  authRouter = router;
-}

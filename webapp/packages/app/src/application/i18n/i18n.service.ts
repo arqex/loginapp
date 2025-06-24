@@ -21,3 +21,10 @@ export function initI18n() {
 export function t(key: tKey, options?: tOptions) {
   return i18next.t(key, options);
 }
+
+export function getI18next(): I18next {
+  if (!i18next) {
+    throw new Error("I18n not initialized. Call initI18n() first.");
+  }
+  return i18next;
+}

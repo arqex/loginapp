@@ -1,10 +1,6 @@
 import React from "react";
 import { getRouter } from "../../application/routing/router";
 import {
-  goToAuthenticatedApp,
-  verifyEmail,
-} from "../../application/auth/auth.service";
-import {
   Button,
   Card,
   FormField,
@@ -15,8 +11,10 @@ import {
   Text,
   toaster,
 } from "@loginapp/ui";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import { verifyEmail } from "../../application/apiMethods/auth.api";
+import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import { getApiClient } from "../../application/stores/apiClient";
 
 interface VerifyEmailScreenProps {}
 interface VerifyEmailScreenState {
@@ -137,11 +135,10 @@ export default class VerifyEmailScreen extends React.Component<
     try {
       const { email } = getParams();
       const { verificationCode } = this.state;
-      await verifyEmail(verificationCode, email);
+      await verifyEmail(getApiClient(), verificationCode, email);
       this.setState({ isVerifiying: false, isSuccess: true });
       toaster.success("Your email has been validated successfully.");
-      goToAuthenticatedApp();
-    } catch (err: any) {
+    } catch (err) {
       this.setState({
         isVerifiying: false,
         error: "The verification code is not correct.",

@@ -1,24 +1,36 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 
 import Root from "./Root.tsx";
-import { createRouter, setRouter } from "./application/routing/router.ts";
-import { authRoutes, setAuthRouter } from "./application/routing/routes.ts";
-import { LS, setLS } from "./application/stores/localStorage.ts";
-import { createUIStore, setUIStore } from "./application/stores/uiStore.ts";
-import { initI18n } from "./application/i18n/i18n.service.ts";
-import { createApiClient } from "./application/stores/apiClient.ts";
+import {
+  createRouter,
+  getRouter,
+  setRouter,
+} from "./application/routing/router.ts";
+import { routes } from "./application/routing/routes.ts";
+import { getLS, LS, setLS } from "./application/stores/localStorage.ts";
+import {
+  createUIStore,
+  getUIStore,
+  setUIStore,
+} from "./application/stores/uiStore.ts";
+import { getI18next, initI18n } from "./application/i18n/i18n.service.ts";
+import {
+  createApiClient,
+  getApiClient,
+  setApiClient,
+} from "./application/stores/apiClient.ts";
+
+initRootProps();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Root
-      router={router}
-      authRouter={authRouter}
-      apiClient={apiClient}
-      uiStore={uiStore}
-      ls={ls}
-      i18n={i18n}
+      router={getRouter()}
+      apiClient={getApiClient()}
+      uiStore={getUIStore()}
+      ls={getLS()}
+      i18n={getI18next()}
     />
   </StrictMode>
 );
@@ -28,29 +40,17 @@ export function initRootProps() {
   setLS(ls);
 
   const router = createRouter(routes);
+  router.start();
   setRouter(router);
 
-  const authRouter = createRouter(authRoutes);
-  setAuthRouter(authRouter);
-
   const apiClient = createApiClient();
-  handleExpiredSessions(apiClient);
-
-  const user = getLastAuthenticatedUser();
-  if (user) {
-    router.start();
-    // Cache the user but mark it to refresh
-    apiClient.setCachedResult(`/users/${user.id}`, user);
-    apiClient.invalidateCacheResponse(`/users/${user.id}`);
-  } else {
-    authRouter.start();
-  }
+  setApiClient(apiClient);
 
   const uiStore = createUIStore({
-    authenticatedUserId: user ? user.id : undefined,
+    authenticatedUserId: undefined,
   });
   setUIStore(uiStore);
 
   const i18n = initI18n();
-  return { router, authRouter, uiStore, ls, apiClient, i18n };
+  return { router, uiStore, ls, apiClient, i18n };
 }
