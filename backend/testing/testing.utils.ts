@@ -80,9 +80,3 @@ export function mockAuthPatch(path: string) {
 export function mockAuthDelete(path: string) {
   return request(app).delete(path).set('Authorization', `Bearer ${token}`);
 }
-
-export function mockRequestUserRole(role: UserRole) {
-  jest.spyOn(permissionSession, 'getSessionRole').mockImplementation(() => {
-    return Promise.resolve(role);
-  });
-}

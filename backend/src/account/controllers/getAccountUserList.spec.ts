@@ -1,10 +1,10 @@
 import { getUsersByQuery as db1 } from '../../users/users.db';
 import {
   prepareTestAuthToken,
-  mockRequestUserRole,
+  mockRequestUsersOnAccountRole,
   mockAuthGet,
 } from '../../../testing/testing.utils';
-import { UserRole } from '@prisma/client';
+import { UsersOnAccountRole } from '@prisma/client';
 
 jest.mock('../../users/users.db.ts');
 
@@ -16,11 +16,11 @@ describe('getUserList.controller', () => {
   });
 
   beforeEach(() => {
-    mockRequestUserRole(UserRole.ADMIN);
+    mockRequestUsersOnAccountRole(UsersOnAccountRole.ADMIN);
   });
 
   it('should return forbidden for editors', async () => {
-    mockRequestUserRole(UserRole.EDITOR);
+    mockRequestUsersOnAccountRole(UsersOnAccountRole.EDITOR);
     const res = await mockAuthGet('/v1/accounts/dummy_account_id/users');
     expect(res.status).toBe(403);
     expect(res.body).toMatchObject({ error: 'forbidden' });

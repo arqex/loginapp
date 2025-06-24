@@ -9,5 +9,5 @@ The code for the web app is in `/webapp`.
 The code for the mobile app is in `/mobile`.
 
 To know more about how the backend works, check the [backend documentation](backend/docs/introduction_backend.md).
-
-The task we are working currently is [Create todo list example app)[./task-instructions.md].
+To know about the test application, check the [test application documentation](./test-application.md).
+The task we are working currently is [Add some test data into the database)[./task-instructions.md].

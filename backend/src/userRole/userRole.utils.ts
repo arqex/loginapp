@@ -1,14 +1,14 @@
-import { UserRole } from '@prisma/client';
+import { UsersOnAccountRole } from '@prisma/client';
 
 export type UserStringRole = 'admin' | 'editor' | 'collaborator';
 
 export function getRoleValue(role: UserStringRole) {
   switch (role) {
     case 'admin':
-      return UserRole.ADMIN;
+      return UsersOnAccountRole.ADMIN;
     case 'editor':
-      return UserRole.EDITOR;
+      return UsersOnAccountRole.EDITOR;
     case 'collaborator':
-      return UserRole.COLLABORATOR;
+      return UsersOnAccountRole.COLLABORATOR;
   }
 }

@@ -1,10 +1,10 @@
 import { getAccountsByQuery as db1 } from '../../account/account.db';
 import {
   prepareTestAuthToken,
-  mockRequestUserRole,
+  mockRequestUsersOnAccountRole,
   mockAuthGet,
 } from '../../../testing/testing.utils';
-import { UserRole } from '@prisma/client';
+import { UsersOnAccountRole } from '@prisma/client';
 
 jest.mock('../../account/account.db.ts');
 
@@ -16,7 +16,7 @@ describe('getAccountList.controller', () => {
   });
 
   beforeEach(() => {
-    mockRequestUserRole(UserRole.ADMIN);
+    mockRequestUsersOnAccountRole(UsersOnAccountRole.ADMIN);
   });
 
   it('should return forbidden if trying to access other user', async () => {
