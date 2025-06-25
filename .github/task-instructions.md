@@ -1,7 +1,8 @@
-# Reorganization of the web app
+# Create the first authenticated screen in the webapp
 
-The webapp was a some point having 2 different applications, one for the unauthenticated screens and other of the authenticated ones.
+After login, we get the id of the authenticated user, at that point we should start loading the data for the authenticated app. That data is:
+* The user information
+* The accounts where the user belong
+* The account for the context
 
-Every app lived in its own folder and had its own router. But know we have moved the unauthenticated screens to the common screens folders, and their imports are wrong.
-
-We want all the screens to work in the same way, in the same folder and with the same router.
+To load that information we need to wrap the screen in an HOC that displays a SpinnerScreen when it's loading and pass it as props to the screen when they are available.

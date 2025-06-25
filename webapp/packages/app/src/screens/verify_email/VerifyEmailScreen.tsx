@@ -12,9 +12,9 @@ import {
   toaster,
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import { verifyEmail } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { getApiClient } from "../../application/stores/apiClient";
+import { verifyEmail } from "@loginapp/api-client";
 
 interface VerifyEmailScreenProps {}
 interface VerifyEmailScreenState {

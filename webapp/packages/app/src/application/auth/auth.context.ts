@@ -1,64 +1,55 @@
-import { getUIStore } from "../stores/uiStore";
-import type { ApiOrg, ApiUser } from "../apiMethods/api.types";
+import { getUIStore, type AuthContext } from "../stores/uiStore";
 import { getLS } from "../stores/localStorage";
+import type { ApiAccount, ApiAccountRole, ApiUser } from "@loginapp/api-client";
 
-export function getContextUser() {
-  return getUIStore().data.contextUser;
+export function getAuthenticatedId() {
+  return getUIStore().data.authenticatedUserId;
 }
 
-export function setContextUser(user?: ApiUser) {
+export function setAuthenticatedId(id = "") {
   const uiStore = getUIStore();
-  uiStore.data.contextUser = user;
-  storeContextUser(user);
+  uiStore.data.authenticatedUserId = id;
+  storeAuthenticatedId(id);
   uiStore.emitChange();
 }
 
-export function retrieveStoredContextUser(): ApiUser | undefined {
-  return getLS().get("CONTEXT_USER") as ApiUser | undefined;
-}
-
-export function storeContextUser(user?: ApiUser) {
-  if (user) {
-    getLS().set("CONTEXT_USER", user);
-  } else {
-    getLS().del("CONTEXT_USER");
+export function restoreAuthenticatedId() {
+  const id = getLS().get("AUTH_ID");
+  if (typeof id === "string") {
+    setAuthenticatedId(id);
   }
 }
 
-export type AuthContext = {
-  user: ApiUser;
-  org: ApiOrg;
-};
-
-export function restoreAuthContext() {
-  const user = retrieveStoredContextUser();
-  const org = retrieveStoredContextOrg();
-  if (user && org) {
-    setContextUser(user);
-    setContextOrg(org);
-    return { user, org } as AuthContext;
+function storeAuthenticatedId(id: string) {
+  if (id) {
+    getLS().set("AUTH_ID", id);
+  } else {
+    getLS().del("AUTH_ID");
   }
 }
 
-export function getContextOrg() {
-  return getUIStore().data.contextOrg;
+export function getAuthContext(): AuthContext | undefined {
+  return getUIStore().data.authContext;
 }
 
-export function setContextOrg(user?: ApiOrg) {
-  const uiStore = getUIStore();
-  uiStore.data.contextOrg = user;
-  storeContextOrg(user);
-  uiStore.emitChange();
-}
-
-export function retrieveStoredContextOrg(): ApiOrg | undefined {
-  return getLS().get("CONTEXT_ORG") as ApiOrg | undefined;
-}
-
-export function storeContextOrg(user?: ApiOrg) {
-  if (user) {
-    getLS().set("CONTEXT_ORG", user);
-  } else {
-    getLS().del("CONTEXT_ORG");
+export function setAuthContext(
+  user: ApiUser,
+  account?: ApiAccount,
+  role?: ApiAccountRole
+) {
+  // Get the current context, if any of the values have changed, update the context
+  const currentContext = getAuthContext();
+  if (
+    !currentContext ||
+    currentContext.user !== user ||
+    currentContext.account !== account ||
+    currentContext.role !== role
+  ) {
+    getUIStore().data.authContext = {
+      user,
+      account,
+      role,
+    };
+    getUIStore().emitChange();
   }
 }

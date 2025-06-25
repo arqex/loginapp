@@ -1,10 +1,9 @@
+import type { ApiUser, ApiAccount, ApiAccountRole } from "@loginapp/api-client";
 import EventEmitter from "eventemitter3";
-import type { ApiOrg, ApiUser } from "../apiMethods/api.types";
 
 export const emptyStore: UiStoreData = {
   authenticatedUserId: "",
-  contextUser: undefined,
-  contextOrg: undefined,
+  authContext: undefined,
 };
 
 export type AppStore = UIStore<UiStoreData>;
@@ -30,10 +29,15 @@ export function getUIStore(): AppStore {
   return uiStore;
 }
 
+export interface AuthContext {
+  user: ApiUser;
+  account?: ApiAccount;
+  role?: ApiAccountRole;
+}
+
 export interface UiStoreData {
   authenticatedUserId: string | null;
-  contextUser?: ApiUser; // Set right after authentication
-  contextOrg?: ApiOrg; // Set right after authentication
+  authContext?: AuthContext;
 }
 
 export class UIStore<T extends UiStoreData> {

@@ -10,8 +10,7 @@ import {
   VStack,
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import type { ApiError } from "@loginapp/api-client";
-import { requestPasswordRecovery } from "../../application/apiMethods/auth.api";
+import { requestPasswordRecovery, type ApiError } from "@loginapp/api-client";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 

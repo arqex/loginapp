@@ -1,6 +1,6 @@
 import EventEmitter from "eventemitter3";
 
-type LSKey = "CONTEXT_USER" | "CONTEXT_ORG";
+type LSKey = "CONTEXT_USER" | "CONTEXT_ORG" | "AUTH_ID";
 
 const PREFIX = "la_";
 export class LS {

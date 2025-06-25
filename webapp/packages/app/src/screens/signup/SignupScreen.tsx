@@ -14,8 +14,7 @@ import {
   Button,
   Link,
 } from "@loginapp/ui";
-import type { ApiError } from "@loginapp/api-client";
-import { signup } from "../../application/apiMethods/auth.api";
+import { signup, type ApiError } from "@loginapp/api-client";
 import { redirectToOauth } from "../../application/auth/auth.service";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { getApiClient } from "../../application/stores/apiClient";

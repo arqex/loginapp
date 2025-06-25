@@ -12,9 +12,9 @@ import {
   VStack,
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import { resetPassword } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { getApiClient } from "../../application/stores/apiClient";
+import { resetPassword } from "@loginapp/api-client";
 
 interface ResetPasswordScreenProps {}
 interface ResetPasswordScreenState {

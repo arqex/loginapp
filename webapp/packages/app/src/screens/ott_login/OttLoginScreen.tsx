@@ -1,9 +1,9 @@
 import React from "react";
 import { getRouter } from "../../application/routing/router";
 import { Card, Heading, Link, VStack } from "@loginapp/ui";
-import { loginByOTT } from "../../application/apiMethods/auth.api";
 import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
 import { getApiClient } from "../../application/stores/apiClient";
+import { loginByOTT } from "@loginapp/api-client";
 
 interface OttLoginScreenProps {}
 interface OttLoginScreenState {

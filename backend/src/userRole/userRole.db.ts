@@ -42,10 +42,10 @@ export async function getUsersOnAccountRoleOnAccount(
   return user?.role;
 }
 
-export async function getUsersOnAccountRolesOnAccounts(userId: string) {
+export async function getUserAccounts(userId: string) {
   return await getPrismaClient().usersOnAccount.findMany({
     where: { userId },
-    select: { accountId: true, role: true },
+    select: { userId: true, accountId: true, role: true },
   });
 }
 

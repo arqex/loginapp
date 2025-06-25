@@ -20,6 +20,7 @@ import {
   getApiClient,
   setApiClient,
 } from "./application/stores/apiClient.ts";
+import { restoreAuthenticatedId } from "./application/auth/auth.context.ts";
 
 initRootProps();
 
@@ -50,6 +51,8 @@ export function initRootProps() {
     authenticatedUserId: undefined,
   });
   setUIStore(uiStore);
+
+  restoreAuthenticatedId();
 
   const i18n = initI18n();
   return { router, uiStore, ls, apiClient, i18n };

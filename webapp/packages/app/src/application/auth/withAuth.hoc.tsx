@@ -1,12 +1,18 @@
 import React, { forwardRef, type ComponentType } from "react";
-import { restoreAuthContext } from "./auth.context";
-import type { ApiUser } from "@loginapp/api-client";
-import type { ApiOrg } from "../apiMethods/api.types";
+import {
+  getAuthContext,
+  getAuthenticatedId,
+  setAuthContext,
+} from "./auth.context";
+import type { ApiAccount } from "@loginapp/api-client";
+import { getRouter } from "../routing/router";
+import { getApiClient } from "../stores/apiClient";
+import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
+import type { AuthContext } from "../stores/uiStore";
 
-export interface WithAutologinProps {
-  contextUser?: ApiUser;
-  contextOrg?: ApiOrg;
-}
+export type WithAuthProps<T> = T & {
+  authContext: AuthContext;
+};
 
 /**
  * If you are creating an authenticated screen wrapped by withAuth
@@ -20,8 +26,35 @@ export default function withAuth<Return, Props>(
 ) {
   type withAuthProps = Omit<Props, keyof Return>;
 
-  const withAuth = forwardRef<any, withAuthProps>((props, ref) => {
-    const context = restoreAuthContext();
+  const withAuth = forwardRef<ComponentType, withAuthProps>((props, ref) => {
+    const authenticatedId = getAuthenticatedId();
+    if (!authenticatedId) {
+      getRouter().push("/login");
+      return <SpinnerScreen />;
+    }
+
+    const { data: user } = userLoader(getApiClient(), authenticatedId);
+    const { data: userAccounts } = userAccountsLoader(
+      getApiClient(),
+      authenticatedId
+    );
+    let contextAccount: ApiAccount | undefined;
+    if (userAccounts?.length) {
+      const { data: account } = accountLoader(
+        getApiClient(),
+        userAccounts[0].id
+      );
+      contextAccount = account;
+    }
+
+    if (!user || !contextAccount) {
+      return <SpinnerScreen />;
+    }
+
+    // Setting the context only make changes when user, account or role changes
+    setAuthContext(user, contextAccount, userAccounts[0]?.role);
+    // Getting the context make sure that the object is the same
+    const context = getAuthContext();
 
     return <Component ref={ref} {...(props as Props)} authContext={context} />;
   });

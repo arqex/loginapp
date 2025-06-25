@@ -12,10 +12,9 @@ export interface ApiUser {
   picURL: string;
 }
 
-export type UserRole = "ADMIN" | "EDITOR" | "COLLABORATOR" | "GUEST" | "NONE";
-
+export type ApiAccountRole = "ADMIN" | "EDITOR" | "CONTRIBUTOR";
 export interface UserAccount extends ApiAccount {
-  role: UserRole;
+  role: ApiAccountRole;
 }
 
 export interface LoginResponse {
@@ -28,3 +27,25 @@ export interface LoginResponseWithToken {
 }
 
 export type EmptyObject = Record<string, never>;
+
+export interface ApiTodoItem {
+  id: string;
+  title: string;
+  completed: boolean;
+  createdAt: string;
+  updatedAt: string;
+  todoListId: string;
+}
+
+export interface ApiTodoList {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  accountId: string;
+}
+
+export interface ListCreationPayload {
+  name: string;
+  accountId: string;
+}

@@ -1,6 +1,6 @@
 import { ApiClient } from "../ApiClient";
-import { ResponseWithData } from "../apiClient.types";
-import {
+import type { ResponseWithData } from "../apiClient.types";
+import type {
   EmptyObject,
   LoginResponse,
   LoginResponseWithToken,

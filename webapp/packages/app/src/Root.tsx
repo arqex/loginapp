@@ -1,5 +1,4 @@
 import React from "react";
-import App from "./App";
 import "./base.css";
 import { LS } from "./application/stores/localStorage";
 import { type AppStore } from "./application/stores/uiStore";

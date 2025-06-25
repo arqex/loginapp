@@ -1,7 +1,7 @@
 import type { ResponseMiddleware } from "@loginapp/api-client";
 import { getApiClient } from "../stores/apiClient";
 import { setContextUser, getContextUser } from "./auth.context";
-import { logout as apiLogout } from "../apiMethods/auth.api";
+import { logout as apiLogout } from "@loginapp/api-client";
 
 export async function logout() {
   setContextUser(undefined);
