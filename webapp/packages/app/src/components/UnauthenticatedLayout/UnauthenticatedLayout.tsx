@@ -1,10 +1,12 @@
 import React from "react";
-import styles from "./LoginScreenLayout.module.css";
-interface LoginScreenLayoutProps {
+import styles from "./UnauthenticatedLayout.module.css";
+interface UnauthenticatedLayoutProps {
   children: React.ReactNode;
 }
 
-export default function LoginScreenLayout(props: LoginScreenLayoutProps) {
+export default function UnauthenticatedLayout(
+  props: UnauthenticatedLayoutProps
+) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>

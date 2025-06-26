@@ -9,6 +9,8 @@ import { getRouter } from "../routing/router";
 import { getApiClient } from "../stores/apiClient";
 import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
 import type { AuthContext } from "../stores/uiStore";
+import { userLoader, userAccountsLoader } from "../loaders/user.loaders";
+import { accountLoader } from "../loaders/account.loaders";
 
 export type WithAuthProps<T> = T & {
   authContext: AuthContext;
@@ -38,21 +40,13 @@ export default function withAuth<Return, Props>(
       getApiClient(),
       authenticatedId
     );
-    let contextAccount: ApiAccount | undefined;
-    if (userAccounts?.length) {
-      const { data: account } = accountLoader(
-        getApiClient(),
-        userAccounts[0].id
-      );
-      contextAccount = account;
-    }
 
-    if (!user || !contextAccount) {
+    if (!user || !userAccounts) {
       return <SpinnerScreen />;
     }
 
     // Setting the context only make changes when user, account or role changes
-    setAuthContext(user, contextAccount, userAccounts[0]?.role);
+    setAuthContext(user, userAccounts[0].account, userAccounts[0].role);
     // Getting the context make sure that the object is the same
     const context = getAuthContext();
 

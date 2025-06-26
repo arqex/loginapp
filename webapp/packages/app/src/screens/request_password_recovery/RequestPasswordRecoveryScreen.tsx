@@ -11,7 +11,7 @@ import {
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
 import { requestPasswordRecovery, type ApiError } from "@loginapp/api-client";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 
 interface RequestPasswordRecoveryScreenProps {}
@@ -36,13 +36,13 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
     const { isSuccess } = this.state;
 
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {isSuccess ? this.renderSuccess() : this.renderForm()}
           </VStack>
         </Card>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

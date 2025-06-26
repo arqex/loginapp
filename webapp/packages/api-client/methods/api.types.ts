@@ -14,7 +14,12 @@ export interface ApiUser {
 
 export type ApiAccountRole = "ADMIN" | "EDITOR" | "CONTRIBUTOR";
 export interface UserAccount extends ApiAccount {
+  account: ApiAccount;
+  accountId: string;
+  createdAt: string;
   role: ApiAccountRole;
+  updatedAt: string;
+  userId: string;
 }
 
 export interface LoginResponse {

@@ -12,7 +12,7 @@ import {
   toaster,
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 import { verifyEmail } from "@loginapp/api-client";
 
@@ -39,7 +39,7 @@ export default class VerifyEmailScreen extends React.Component<
   render() {
     const { isSuccess, isEmailOk } = this.state;
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {isSuccess
@@ -49,7 +49,7 @@ export default class VerifyEmailScreen extends React.Component<
                 : this.renderInvalidLink()}
           </VStack>
         </Card>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

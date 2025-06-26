@@ -1,7 +1,7 @@
 import React from "react";
 import { getRouter } from "../../application/routing/router";
 import { Card, Heading, Link, VStack } from "@loginapp/ui";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 import { loginByOTT } from "@loginapp/api-client";
 
@@ -19,13 +19,13 @@ export default class OttLoginScreen extends React.Component<
   };
   render() {
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {this.renderContent()}
           </VStack>
         </Card>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

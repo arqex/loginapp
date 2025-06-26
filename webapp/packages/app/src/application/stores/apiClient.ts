@@ -1,6 +1,6 @@
 import { ApiClient, type ResponseMiddleware } from "@loginapp/api-client";
 import { logout } from "../auth/auth.service";
-import { getContextUser } from "../auth/auth.context";
+import { getAuthenticatedId } from "../auth/auth.context";
 
 // Instancia del ApiClient configurada para la app
 export function createApiClient() {
@@ -24,7 +24,7 @@ export function setApiClient(apiClient: ApiClient) {
 }
 
 const expiredSessionMiddleware: ResponseMiddleware = (res) => {
-  if (res.status === 401 && getContextUser()) {
+  if (res.status === 401 && getAuthenticatedId()) {
     console.log("Expired session detected, logging out");
     logout();
   }

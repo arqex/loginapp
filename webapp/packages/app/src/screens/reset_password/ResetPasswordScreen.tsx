@@ -12,7 +12,7 @@ import {
   VStack,
 } from "@loginapp/ui";
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 import { resetPassword } from "@loginapp/api-client";
 
@@ -38,7 +38,7 @@ export default class ResetPasswordScreen extends React.Component<
   render() {
     const { areParametersOk } = this.state;
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {areParametersOk ? this.renderForm() : this.renderInvalidLink()}
@@ -47,7 +47,7 @@ export default class ResetPasswordScreen extends React.Component<
         <Box mt="2" textAlign="center" fontSize="sm">
           <Link href="/login">I don't want to reset my password</Link>
         </Box>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

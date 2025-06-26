@@ -16,7 +16,7 @@ import {
 } from "@loginapp/ui";
 import { signup, type ApiError } from "@loginapp/api-client";
 import { redirectToOauth } from "../../application/auth/auth.service";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 
 interface SignupScreenProps {}
@@ -42,13 +42,13 @@ export default class SignupScreen extends React.Component<
   render() {
     const { isSuccess } = this.state;
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {isSuccess ? this.renderSuccess() : this.renderForm()}
           </VStack>
         </Card>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

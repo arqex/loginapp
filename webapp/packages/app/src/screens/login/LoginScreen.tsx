@@ -13,10 +13,11 @@ import {
   Button,
   Link,
 } from "@loginapp/ui";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { login, type ApiError } from "@loginapp/api-client";
 import { redirectToOauth } from "../../application/auth/auth.service";
 import { getApiClient } from "../../application/stores/apiClient";
+import { setAuthenticatedId } from "../../application/auth/auth.context";
 
 interface LoginScreenProps {}
 interface LoginScreenState {
@@ -40,7 +41,7 @@ export default class LoginScreen extends React.Component<
   render() {
     const { email, password, loading, errors } = this.state;
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             <Heading size="sm">Login</Heading>
@@ -73,7 +74,7 @@ export default class LoginScreen extends React.Component<
         <Box mt="2" textAlign="center" fontSize="sm">
           <Link href="/signup">Don't have an account? Sign up</Link>
         </Box>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 
@@ -85,13 +86,16 @@ export default class LoginScreen extends React.Component<
     }
 
     this.setState({ loading: true });
+    const { email, password } = this.state;
     try {
-      await login(getApiClient(), this.state.email, this.state.password);
+      const { data } = await login(getApiClient(), email, password);
+      setAuthenticatedId(data.authenticatedId);
+      getRouter().push("/home");
       this.setState({ loading: false });
     } catch (err) {
       const error = err as ApiError;
       if (error.response?.data?.error === "verification_required") {
-        getRouter()?.push(
+        getRouter().push(
           "/verify_email?email=" + encodeURIComponent(this.state.email)
         );
       } else if (error.response?.status === 401) {

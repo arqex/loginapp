@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from 'src/auth/auth.types';
 import { resForbidden } from '../../utils/respond.utils';
-import { getUserAccounts } from '../../userRole/userRole.db';
+import { getUserAccountsWithDetails } from '../../userRole/userRole.db';
 
 export async function getUserAccountsController(
   req: AuthRequest,
@@ -14,9 +14,10 @@ export async function getUserAccountsController(
     return resForbidden(res);
   }
 
-  // Get all account-role pairs for the user
-  const userAccounts = await getUserAccounts(userId);
+  // Get all accounts with roles and details in one query
+  const userAccounts = (await getUserAccountsWithDetails(userId)).filter(
+    ({ account }) => !!account,
+  );
 
-  // Filter out any nulls (accounts that no longer exist)
   res.json(userAccounts);
 }

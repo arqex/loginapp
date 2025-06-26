@@ -1,15 +1,15 @@
 import type { ResponseMiddleware } from "@loginapp/api-client";
 import { getApiClient } from "../stores/apiClient";
-import { setContextUser, getContextUser } from "./auth.context";
 import { logout as apiLogout } from "@loginapp/api-client";
+import { getAuthenticatedId, setAuthenticatedId } from "./auth.context";
 
 export async function logout() {
-  setContextUser(undefined);
+  setAuthenticatedId(undefined);
   await apiLogout(getApiClient());
 }
 
 export const expiredSessionMiddleware: ResponseMiddleware = (res) => {
-  if (res.status === 401 && getContextUser()) {
+  if (res.status === 401 && getAuthenticatedId()) {
     console.log("Expired session detected, logging out");
     logout();
   }

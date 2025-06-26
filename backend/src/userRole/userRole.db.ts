@@ -55,3 +55,10 @@ export async function getAccountMemberList(accountId: string) {
     select: { userId: true, role: true },
   });
 }
+
+export async function getUserAccountsWithDetails(userId: string) {
+  return await getPrismaClient().usersOnAccount.findMany({
+    where: { userId },
+    include: { account: true },
+  });
+}

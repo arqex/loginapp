@@ -7,6 +7,7 @@ import SignupScreen from "../../screens/signup/SignupScreen";
 import VerifyEmailScreen from "../../screens/verify_email/VerifyEmailScreen";
 import OttLoginScreen from "../../screens/ott_login/OttLoginScreen";
 import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScreen";
+import HomeScreen from "../../screens/home/HomeScreen";
 
 export const routes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
@@ -16,6 +17,8 @@ export const routes: ReactRoute[] = [
   { path: "/verify_email", cb: VerifyEmailScreen },
   { path: "/ott_login", cb: OttLoginScreen },
   { path: "/reset_password", cb: ResetPasswordScreen },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { path: "/home", cb: HomeScreen as any },
   { path: "/", cb: LoginScreen },
   { path: "/*", cb: NotFoundScreen }, // Page not found?
 ];

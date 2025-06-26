@@ -12,7 +12,7 @@ import {
 import { isValidEmailAddress } from "../../application/utils/validation.utils";
 import { requestEmailLogin, type ApiError } from "@loginapp/api-client";
 import { getApiClient } from "../../application/stores/apiClient";
-import LoginScreenLayout from "../../components/LoginScreenLayout/LoginScreenLayout";
+import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 
 interface RequestEmailLoginScreenProps {}
 interface RequestEmailLoginScreenState {
@@ -36,13 +36,13 @@ export default class RequestEmailLoginScreen extends React.Component<
     const { isSuccess } = this.state;
 
     return (
-      <LoginScreenLayout>
+      <UnauthenticatedLayout>
         <Card padding="md" width="100%" maxW="400px">
           <VStack alignItems="stretch" gap="4">
             {isSuccess ? this.renderSuccess() : this.renderForm()}
           </VStack>
         </Card>
-      </LoginScreenLayout>
+      </UnauthenticatedLayout>
     );
   }
 

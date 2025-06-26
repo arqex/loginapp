@@ -1,6 +1,6 @@
 import { ApiClient } from "../ApiClient";
 import { CachedResponse, ResponseWithData } from "../apiClient.types";
-import { ApiUser, EmptyObject } from "./api.types";
+import type { ApiUser, EmptyObject, UserAccount } from "./api.types";
 
 export async function loadUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.get(
@@ -12,6 +12,18 @@ export function loadUserWithCache(apiClient: ApiClient, id: string) {
   return apiClient.requester.getCached(
     `/users/${id}`
   ) as CachedResponse<ApiUser>;
+}
+
+export async function loadUserAccounts(apiClient: ApiClient, id: string) {
+  return (await apiClient.requester.get(
+    `/users/${id}/accounts`
+  )) as ResponseWithData<UserAccount[]>;
+}
+
+export function loadUserAccountsWithCache(apiClient: ApiClient, id: string) {
+  return apiClient.requester.getCached(
+    `/users/${id}/accounts`
+  ) as CachedResponse<UserAccount[]>;
 }
 
 export async function updateUser(
