@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from 'src/auth/auth.types';
 import { resForbidden } from '../../utils/respond.utils';
 import { getUserAccountsWithDetails } from '../../userRole/userRole.db';
+import { JsonObject } from '@prisma/client/runtime/library';
 
 export async function getUserAccountsController(
   req: AuthRequest,
@@ -15,9 +16,15 @@ export async function getUserAccountsController(
   }
 
   // Get all accounts with roles and details in one query
-  const userAccounts = (await getUserAccountsWithDetails(userId)).filter(
-    ({ account }) => !!account,
-  );
+  const userAccounts = (await getUserAccountsWithDetails(userId))
+    .filter(({ account }) => !!account)
+    .map((userAccount) => ({
+      ...userAccount,
+      account: {
+        ...userAccount.account,
+        ...(userAccount.account.meta as JsonObject),
+      },
+    }));
 
   res.json(userAccounts);
 }

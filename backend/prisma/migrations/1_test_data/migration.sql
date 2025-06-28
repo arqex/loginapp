@@ -2,10 +2,10 @@
 
 -- Insert Users
 INSERT INTO `User` (`id`, `createdAt`, `updatedAt`, `email`, `meta`) VALUES
-  ('user1', NOW(), NOW(), 'admin@example.com', '{}'),
-  ('user2', NOW(), NOW(), 'editor@example.com', '{}'),
-  ('user3', NOW(), NOW(), 'contributor@example.com', '{}'),
-  ('user4', NOW(), NOW(), 'simple@example.com', '{}');
+  ('user1', NOW(), NOW(), 'admin@example.com', '{"name": "Admin Rodriguez"}'),
+  ('user2', NOW(), NOW(), 'editor@example.com', '{"name": "Editor Rodriguez"}'),
+  ('user3', NOW(), NOW(), 'contributor@example.com', '{"name": "Contributor Rodriguez"}'),
+  ('user4', NOW(), NOW(), 'simple@example.com', '{"name": "Simple Rodriguez"}');
 
 -- Insert Accounts
 INSERT INTO `Account` (`id`, `createdAt`, `updatedAt`, `meta`) VALUES

@@ -1,0 +1,16 @@
+.titleBar {
+  position: sticky;
+  top:0;
+  background-color: var(--surface);
+  z-index: 10;
+  padding: 8px 1.5rem;
+  margin: 0 -1.5rem;
+}
+
+.contentCard {
+  margin: 0 0 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--content_bg);
+}

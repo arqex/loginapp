@@ -1,0 +1,57 @@
+.desktopLayout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.desktopLayout * {
+  box-sizing: border-box;
+}
+
+.appMenuBar {
+  width: 254px;
+  transition: width 0.3s ease;
+  border-inline-end: 1px solid var(--card_border);
+  background-color: var(--card);
+  flex-shrink: 0;
+}
+
+.appMenuBarContent {
+  width: 254px;
+}
+
+.userMenuBar {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.collapsed {
+  width: 0px;
+  overflow: hidden;
+}
+
+.animating {
+  overflow: hidden;
+}
+
+
+.centerColumn {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.screenContent {
+  margin: 0 auto;
+  padding: 0 1.5rem 1.5rem;
+  max-width: 1200px;
+}
+
+.screenContent.width_full {
+  max-width: 100%;
+}
+
+.button {
+  display: block;
+  margin: 10px;
+}

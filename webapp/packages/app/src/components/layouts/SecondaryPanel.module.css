@@ -1,0 +1,48 @@
+.wrapper {
+  transition: width 0.3s ease;
+  background-color: var(--shaded);
+  border-inline-start: 1px solid var(--card_border);
+  position: relative;
+  overflow-x: hidden;
+  flex-shrink: 0;
+}
+
+.wrapper.resizing {
+  transition: none;
+}
+
+.colapsed {
+  overflow: hidden;
+}
+
+.resizer {
+  cursor: ew-resize;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  width: 5px
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.mobile {
+  background-color: red;
+}
+
+.contentWrapper {
+}
+
+.content {
+  padding: 48px 1.5rem 1.5rem 1.5rem;
+}
+
+:global(.secondaryMobile) .content {
+  padding: 0;
+}

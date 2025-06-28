@@ -1,0 +1,43 @@
+.item {
+  flex-grow: 1;
+  display:block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: 4px
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: var(--nav_hover_bg);
+}
+
+.item_active {
+  border-left: 3px solid var(--nav_active_accent);
+  padding-left: 13px;
+  font-weight: 600;
+}
+
+.itemIcon {
+  color: var(--nav_active_accent);
+  opacity: var(--nav_inactive_icon_opacity);
+  line-height: 1em;
+}
+
+.item_active .itemIcon {
+  opacity: 1;
+}
+
+.title {
+  font-weight: 600;
+  margin: 0 16px 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 0 8px;
+}
+
+.titleText {
+  display: block;
+
+}
