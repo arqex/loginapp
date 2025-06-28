@@ -8,6 +8,12 @@ import type { Router } from "./application/routing/router";
 import type { I18next } from "./application/i18n/i18n.types";
 import { i18nLoader } from "./application/i18n/i18n";
 import { Theme, Toaster } from "@loginapp/ui";
+import PermissionErrorModal from "./components/PermissionErrorModal/PermissionErrorModal";
+import {
+  setGlobalPermissionErrorHandler,
+  setupGlobalErrorHandlers,
+  removeGlobalErrorHandlers,
+} from "./application/utils/permissionErrorHandler";
 
 interface RootProps {
   router: Router;
@@ -18,6 +24,10 @@ interface RootProps {
 }
 
 export default class Root extends React.Component<RootProps> {
+  state = {
+    showPermissionError: false,
+  };
+
   render() {
     const { i18n, uiStore } = this.props;
     const { isLoading } = i18nLoader(i18n, () => uiStore.emitChange());
@@ -30,10 +40,22 @@ export default class Root extends React.Component<RootProps> {
         <Theme>
           {Screen ? <Screen /> : <div>404</div>}
           <Toaster />
+          <PermissionErrorModal
+            isOpen={this.state.showPermissionError}
+            onClose={this._handleClosePermissionError}
+          />
         </Theme>
       </>
     );
   }
+
+  _handleShowPermissionError = () => {
+    this.setState({ showPermissionError: true });
+  };
+
+  _handleClosePermissionError = () => {
+    this.setState({ showPermissionError: false });
+  };
 
   rerenderTimeout: NodeJS.Timeout | null = null;
   _rerender = () => {
@@ -47,6 +69,12 @@ export default class Root extends React.Component<RootProps> {
   };
 
   componentDidMount() {
+    // Set up global permission error handler
+    setGlobalPermissionErrorHandler(this._handleShowPermissionError);
+
+    // Set up global error handlers for uncaught exceptions and promise rejections
+    setupGlobalErrorHandlers();
+
     this.props.router.onChange(() => {
       console.log("router changed");
       this._rerender();
@@ -73,5 +101,10 @@ export default class Root extends React.Component<RootProps> {
       prevProps.ls.removeChangeListener(this._rerender);
       this.props.ls.addChangeListener(this._rerender);
     }
+  }
+
+  componentWillUnmount() {
+    // Clean up global error handlers
+    removeGlobalErrorHandlers();
   }
 }

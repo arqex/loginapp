@@ -1,5 +1,5 @@
-# Create a middleware to check permissions based on roles
+# Catch permission errors in the frontend
 
-Need to create an easy way of protecting the endpoints by adding a middleware that check if the user has enough permissions to do the required action.
+The UI displays all the buttons for all users no matter what roles they have. But some users can't perform all operations, so when the webapp make the request to the API, it might fail returning an error 403.
 
-By creating a middleware we can extract the permission checks out of the logic of the endpoint making the code cleaner.
+That will throw an error from the api-client that the webapp need to catch in a global way, no matter where it happens, and open a modal that says that the user doesn't have permissions to perform the action.

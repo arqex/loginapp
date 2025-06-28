@@ -62,8 +62,6 @@ class TodoListScreen extends React.Component<
       this.setState({ newItemTitle: "" });
       // Invalidate cache to reload items
       invalidateTodoListItems(getApiClient(), this.todoListId);
-    } catch (error) {
-      console.error("Failed to create item:", error);
     } finally {
       this.setState({ isCreating: false });
     }

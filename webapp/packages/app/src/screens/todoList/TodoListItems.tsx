@@ -43,15 +43,11 @@ class TodoListItems extends React.Component<
   }
 
   handleToggleComplete = async (item: ApiTodoItem) => {
-    try {
-      await updateTodoItem(getApiClient(), item.id, {
-        completed: !item.completed,
-      });
-      // Invalidate cache to reload items
-      invalidateTodoListItems(getApiClient(), this.props.todoListId);
-    } catch (error) {
-      console.error("Failed to update item:", error);
-    }
+    await updateTodoItem(getApiClient(), item.id, {
+      completed: !item.completed,
+    });
+    // Invalidate cache to reload items
+    invalidateTodoListItems(getApiClient(), this.props.todoListId);
   };
 
   handleStartEdit = (item: ApiTodoItem) => {
@@ -65,16 +61,12 @@ class TodoListItems extends React.Component<
     const { editingItemId, editingItemTitle } = this.state;
     if (!editingItemId || !editingItemTitle.trim()) return;
 
-    try {
-      await updateTodoItem(getApiClient(), editingItemId, {
-        title: editingItemTitle.trim(),
-      });
-      this.setState({ editingItemId: null, editingItemTitle: "" });
-      // Invalidate cache to reload items
-      invalidateTodoListItems(getApiClient(), this.props.todoListId);
-    } catch (error) {
-      console.error("Failed to update item:", error);
-    }
+    await updateTodoItem(getApiClient(), editingItemId, {
+      title: editingItemTitle.trim(),
+    });
+    this.setState({ editingItemId: null, editingItemTitle: "" });
+    // Invalidate cache to reload items
+    invalidateTodoListItems(getApiClient(), this.props.todoListId);
   };
 
   handleCancelEdit = () => {
@@ -84,13 +76,9 @@ class TodoListItems extends React.Component<
   handleDeleteItem = async (itemId: string) => {
     if (!confirm("Are you sure you want to delete this item?")) return;
 
-    try {
-      await deleteTodoItem(getApiClient(), itemId);
-      // Invalidate cache to reload items
-      invalidateTodoListItems(getApiClient(), this.props.todoListId);
-    } catch (error) {
-      console.error("Failed to delete item:", error);
-    }
+    await deleteTodoItem(getApiClient(), itemId);
+    // Invalidate cache to reload items
+    invalidateTodoListItems(getApiClient(), this.props.todoListId);
   };
 
   renderTodoItem = (item: ApiTodoItem) => {
