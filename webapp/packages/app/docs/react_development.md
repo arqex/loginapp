@@ -28,3 +28,4 @@ applyTo: "**/*.ts,**/*.tsx
 ## Data loading
 - Use the library provided by the package `@loginapp/api-client` to load data from the API.
 - Components use loaders to declare what data they need and load it on demand. See the [api-client docs to know more](../../packages/api-client/readme.md).
+- The app is already listening to changes when new data is loaded, so there is no need to add listeners to re-render in internal components.
