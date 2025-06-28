@@ -122,6 +122,26 @@ export class ApiRequester {
     this.onLoad();
     return handled;
   }
+  async put(route: string, data: any) {
+    const { url, options } = this.applyRequestMiddleware({
+      url: this.getApiUrl(route),
+      options: {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: this.headers,
+        credentials: this.credentials,
+      },
+    });
+    const res = await efWrapper.extendedFecth(url, options);
+    const handled = await handleResponse(
+      res,
+      true,
+      this.responseMiddleware,
+      options
+    );
+    this.onLoad();
+    return handled;
+  }
   async delete(route: string) {
     const { url, options } = this.applyRequestMiddleware({
       url: this.getApiUrl(route),

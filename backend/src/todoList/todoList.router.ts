@@ -31,7 +31,7 @@ router.get('/:id/items', async (req, res) => {
 router.post('/:id/items', createTodoListItemController);
 
 // Update TodoList
-router.put('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const list = await db.updateTodoList(req.params.id, req.body);
     res.json(list);

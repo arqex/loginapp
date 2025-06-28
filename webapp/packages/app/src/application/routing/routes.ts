@@ -8,6 +8,7 @@ import VerifyEmailScreen from "../../screens/verify_email/VerifyEmailScreen";
 import OttLoginScreen from "../../screens/ott_login/OttLoginScreen";
 import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScreen";
 import HomeScreen from "../../screens/home/HomeScreen";
+import TodoListScreen from "../../screens/todoList/TodoListScreen";
 
 export const routes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
@@ -19,6 +20,8 @@ export const routes: ReactRoute[] = [
   { path: "/reset_password", cb: ResetPasswordScreen },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   { path: "/home", cb: HomeScreen as any },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { path: "/lists/:id", cb: TodoListScreen as any },
   { path: "/", cb: LoginScreen },
   { path: "/*", cb: NotFoundScreen }, // Page not found?
 ];

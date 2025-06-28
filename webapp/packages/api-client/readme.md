@@ -23,6 +23,12 @@ export async function loadUser(apiClient: ApiClient, id: string) {
 }
 ```
 
+Preferred methods are:
+* POST for creation
+* PATCH for updates
+* DELETE for deletion
+* GET for reading
+
 These methods are exported by the `index.ts` file in the library, so they are easily imported in the app.
 
 ## Caching requests

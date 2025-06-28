@@ -16,7 +16,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update TodoItem
-router.put('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const item = await db.updateTodoItem(req.params.id, req.body);
     res.json(item);
