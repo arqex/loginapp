@@ -13,7 +13,7 @@ import {
   setGlobalPermissionErrorHandler,
   setupGlobalErrorHandlers,
   removeGlobalErrorHandlers,
-} from "./application/utils/permissionErrorHandler";
+} from "./application/utils/globalErrorHandler";
 
 interface RootProps {
   router: Router;

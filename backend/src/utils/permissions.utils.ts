@@ -117,11 +117,6 @@ export function requireRoleWithExtractor(
 ) {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      // Check if user is authenticated
-      if (!req.user || !req.user.id) {
-        return resError(res, 'unauthorized', 401);
-      }
-
       // Extract account ID using the provided extractor
       const accountId = await accountIdExtractor(req);
       if (!accountId) {
@@ -198,3 +193,34 @@ export const requireRoleForTodoList = (requiredRole: RequiredRole) =>
  */
 export const requireRoleForTodoItem = (requiredRole: RequiredRole) =>
   requireRoleWithExtractor(requiredRole, getAccountIdFromTodoItem);
+
+/**
+ * Middleware to ensure that the authenticated user can only access their own user data.
+ * Compares the authenticated user's ID with the user ID from the request parameters.
+ *
+ * @param userIdParam The parameter name containing the user ID (defaults to 'id')
+ * @returns Express middleware function
+ */
+export function requireSelfUser(userIdParam: string = 'id') {
+  return async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      // Extract user ID from request parameters
+      const requestedUserId = req.params[userIdParam];
+      if (!requestedUserId) {
+        return resError(res, 'user_id_required', 400, {
+          reason: `User ID parameter '${userIdParam}' is required`,
+        });
+      }
+
+      // Check if the authenticated user is trying to access their own data
+      if (req.user.id !== requestedUserId) {
+        return resForbidden(res);
+      }
+
+      next();
+    } catch (error) {
+      console.error('User permission check error:', error);
+      return resError(res, 'permission_check_failed', 500);
+    }
+  };
+}

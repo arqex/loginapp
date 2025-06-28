@@ -4,6 +4,7 @@ import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { getAccountUserListController } from './controllers/getAccountUserList.controller';
 import { getAccountTodoListController } from './controllers/getAccountTodoList.controller';
 import { createAccountTodoListController } from './controllers/createAccountTodoList.controller';
+import { requireAdmin } from '../utils/permissions.utils';
 
 const accountRouter = Router();
 
@@ -24,6 +25,7 @@ accountRouter.get(
 accountRouter.post(
   '/:accountId/lists',
   withJWTAuth,
+  requireAdmin(),
   createAccountTodoListController,
 );
 
