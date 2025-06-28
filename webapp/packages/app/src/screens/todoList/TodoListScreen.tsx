@@ -142,7 +142,7 @@ class TodoListScreen extends React.Component<
 
   renderTitleBar(todoListName: string) {
     return (
-      <Heading size="sm" lineHeight="1em">
+      <Heading size="md" lineHeight="1em">
         {todoListName}
       </Heading>
     );

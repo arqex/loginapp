@@ -174,7 +174,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
   renderTitleBar() {
     const userName = this.props.authContext.user.name;
     return (
-      <Heading size="sm" lineHeight="1em">
+      <Heading size="md" lineHeight="1em">
         Welcome {userName}!
       </Heading>
     );

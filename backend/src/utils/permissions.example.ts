@@ -1,20 +1,19 @@
-// Router for TodoList CRUD endpoints
+// Example: Updated TodoList router with permissions middleware
 import { Router } from 'express';
 import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { requireRoleForTodoList } from '../utils/permissions.utils';
-import { AuthRequest } from '../auth/auth.types';
-import * as db from './todoList.db';
+import * as db from '../todoList/todoList.db';
 import * as todoItemDb from '../todoItem/todoItem.db';
-import { createTodoListItemController } from './createTodoListItem.controller';
+import { createTodoListItemController } from '../todoList/createTodoListItem.controller';
 
 const router = Router();
 
-// Get single TodoList - requires COLLABORATOR role
+// Get single TodoList - requires COLLABORATOR role (account ID extracted from TodoList)
 router.get(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('COLLABORATOR'),
-  async (req: AuthRequest, res) => {
+  async (req, res) => {
     try {
       const list = await db.getTodoListById(req.params.id);
       if (!list) return res.status(404).json({ error: 'Not found' });
@@ -30,7 +29,7 @@ router.get(
   '/:id/items',
   withJWTAuth,
   requireRoleForTodoList('COLLABORATOR'),
-  async (req: AuthRequest, res) => {
+  async (req, res) => {
     try {
       const items = await todoItemDb.getTodoItemsByList(req.params.id);
       res.json(items);
@@ -53,7 +52,7 @@ router.patch(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('ADMIN'),
-  async (req: AuthRequest, res) => {
+  async (req, res) => {
     try {
       const list = await db.updateTodoList(req.params.id, req.body);
       res.json(list);
@@ -68,7 +67,7 @@ router.delete(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('ADMIN'),
-  async (req: AuthRequest, res) => {
+  async (req, res) => {
     try {
       await db.deleteTodoList(req.params.id);
       res.status(204).end();

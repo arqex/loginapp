@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { UsersOnAccountRole } from '@prisma/client';
 
 export interface LoginPayload {
   username: string;
@@ -16,6 +17,8 @@ export interface AuthRequest extends Request {
   user: {
     id: string;
     permissions: ('all' | 'read' | 'write' | 'delete')[];
+    accountRole?: UsersOnAccountRole;
+    accountId?: string;
   };
 }
 

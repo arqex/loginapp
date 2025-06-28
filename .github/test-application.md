@@ -9,7 +9,7 @@ As an example, this repo contains a collaborative todo-list app for demo purpose
 There are 3 roles for users in an account:
 
 * CONTRIBUTORS: Can read TodoLists and TodoItems in the account. Besides reading capabilities, they can only mark TodoItems as Done or Undone, all other actions are restricted.
-* EDITORS: Can do what contributors do and they can create and edit TodoItems in existing TodoLists.
+* EDITORS: Can do what contributors do and they can create, edit and delete TodoItems in existing TodoLists.
 * ADMIN: Can create, delete and edit TodoLists and TodoItems.
 
 The app also comes with some data created to let developers test how it works.
