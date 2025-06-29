@@ -12,6 +12,8 @@ There are 3 roles for users in an account:
 * EDITORS: Can do what contributors do and they can create, edit and delete TodoItems in existing TodoLists.
 * ADMIN: Can create, delete and edit TodoLists and TodoItems.
 
+Users in an account are called members of the account.
+
 The app also comes with some data created to let developers test how it works.
 
 * 2 accounts: simple and collaboration accounts

@@ -20,46 +20,9 @@ export function requireRole(
   requiredRole: RequiredRole,
   accountIdParam: string = 'accountId',
 ) {
-  return async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      // Check if user is authenticated
-      if (!req.user || !req.user.id) {
-        return resError(res, 'unauthorized', 401);
-      }
-
-      // Extract account ID from request parameters
-      const accountId = req.params[accountIdParam];
-      if (!accountId) {
-        return resError(res, 'account_id_required', 400, {
-          reason: `Account ID parameter '${accountIdParam}' is required`,
-        });
-      }
-
-      // Get user's role in the account
-      const userRole = await getUsersOnAccountRoleOnAccount(
-        req.user.id,
-        accountId,
-      );
-
-      if (!userRole) {
-        return resForbidden(res);
-      }
-
-      // Check if user has sufficient permissions
-      if (!hasRequiredRole(userRole, requiredRole)) {
-        return resForbidden(res);
-      }
-
-      // Add role information to request for use in controllers
-      req.user.accountRole = userRole;
-      req.user.accountId = accountId;
-
-      next();
-    } catch (error) {
-      console.error('Permission check error:', error);
-      return resError(res, 'permission_check_failed', 500);
-    }
-  };
+  return requireRoleWithExtractor(requiredRole, (req: Request) =>
+    Promise.resolve(req.params[accountIdParam]),
+  );
 }
 
 /**
@@ -131,12 +94,8 @@ export function requireRoleWithExtractor(
         accountId,
       );
 
-      if (!userRole) {
-        return resForbidden(res);
-      }
-
       // Check if user has sufficient permissions
-      if (!hasRequiredRole(userRole, requiredRole)) {
+      if (!userRole || !hasRequiredRole(userRole, requiredRole)) {
         return resForbidden(res);
       }
 
