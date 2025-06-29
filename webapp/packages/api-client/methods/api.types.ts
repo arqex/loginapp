@@ -13,6 +13,15 @@ export interface ApiUser {
 }
 
 export type ApiAccountRole = "ADMIN" | "EDITOR" | "CONTRIBUTOR";
+
+export interface AccountUser {
+  id: string;
+  name: string;
+  role: ApiAccountRole;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserAccount extends ApiAccount {
   account: ApiAccount;
   accountId: string;
@@ -53,4 +62,11 @@ export interface ApiTodoList {
 export interface ListCreationPayload {
   name: string;
   accountId: string;
+}
+
+export interface PaginationResponseData<T> {
+  items: T[];
+  pageSize: number;
+  cursor: string | null;
+  nextCursor: string | null;
 }

@@ -62,3 +62,18 @@ export async function getUserAccountsWithDetails(userId: string) {
     include: { account: true },
   });
 }
+
+export async function getAccountUsersWithRolesPaginated(
+  accountId: string,
+  query: any = {},
+) {
+  return await getPrismaClient().usersOnAccount.findMany({
+    where: { accountId },
+    include: { user: true },
+    orderBy: query.orderBy || { createdAt: 'asc' },
+    take: query.take,
+    skip: query.skip,
+    // Note: cursor-based pagination is more complex with composite keys
+    // For now, we'll use offset-based pagination
+  });
+}

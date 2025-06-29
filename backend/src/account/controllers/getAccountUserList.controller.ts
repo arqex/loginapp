@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from 'src/auth/auth.types';
-import { getUsersByQuery } from '../../users/users.db';
+import { getAccountUsersWithRolesPaginated } from '../../userRole/userRole.db';
 import { getPaginationQuery } from '../../utils/request.utils';
 import { getPaginationResponse } from '../../utils/respond.utils';
 
@@ -11,10 +11,22 @@ export async function getAccountUserListController(
   const { accountId } = req.params;
 
   const query = getPaginationQuery(req, {
-    where: { accounts: { some: { accountId } } },
+    orderBy: { updatedAt: 'desc' },
   });
 
-  const users = await getUsersByQuery(query);
+  const usersWithRoles = await getAccountUsersWithRolesPaginated(
+    accountId,
+    query,
+  );
 
-  return res.json(getPaginationResponse(users, query));
+  // Transform the data to include only specific user fields and role
+  const transformedUsers = usersWithRoles.map((userAccount) => ({
+    id: userAccount.user.id,
+    name: (userAccount.user.meta as any)?.name || '',
+    role: userAccount.role,
+    createdAt: userAccount.createdAt,
+    updatedAt: userAccount.updatedAt,
+  }));
+
+  return res.json(getPaginationResponse(transformedUsers, query));
 }

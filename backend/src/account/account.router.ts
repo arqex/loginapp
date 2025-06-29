@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getAccountController } from './controllers/getAccount.controller';
 import { createAccountController } from './controllers/createAccount.controller';
+import { updateAccountController } from './controllers/updateAccount.controller';
 import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { getAccountUserListController } from './controllers/getAccountUserList.controller';
 import { getAccountTodoListController } from './controllers/getAccountTodoList.controller';
@@ -13,6 +14,13 @@ const accountRouter = Router();
 accountRouter.post('/', withJWTAuth, createAccountController);
 
 accountRouter.get('/:accountId', withJWTAuth, getAccountController);
+
+accountRouter.patch(
+  '/:accountId',
+  withJWTAuth,
+  requireAdmin(),
+  updateAccountController,
+);
 
 accountRouter.get(
   '/:accountId/users',

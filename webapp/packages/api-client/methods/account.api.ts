@@ -1,8 +1,9 @@
 import type {
   ApiAccount,
   ApiTodoList,
-  ApiUser,
+  AccountUser,
   ListCreationPayload,
+  PaginationResponseData,
 } from "./api.types";
 import type { ResponseWithData } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
@@ -13,6 +14,15 @@ export async function createAccount(
   name: string
 ): Promise<ResponseWithData<{ id: string }>> {
   return await apiClient.requester.post(`/accounts`, { name });
+}
+
+// Update account
+export async function updateAccount(
+  apiClient: ApiClient,
+  accountId: string,
+  data: { name?: string }
+): Promise<ResponseWithData<ApiAccount>> {
+  return await apiClient.requester.patch(`/accounts/${accountId}`, data);
 }
 
 export async function loadAccount(
@@ -26,7 +36,7 @@ export async function loadAccount(
 export async function loadAccountUsers(
   apiClient: ApiClient,
   accountId: string
-): Promise<ResponseWithData<ApiUser[]>> {
+): Promise<ResponseWithData<PaginationResponseData<AccountUser>>> {
   return await apiClient.requester.get(`/accounts/${accountId}/users`);
 }
 
@@ -66,4 +76,23 @@ export function loadAccountTodoListsWithCache(
   accountId: string
 ) {
   return apiClient.requester.getCached(`/accounts/${accountId}/lists`);
+}
+
+// Cache invalidation functions
+export function clearAccountCache(apiClient: ApiClient, accountId: string) {
+  apiClient.clearCachedResult(`/accounts/${accountId}`);
+}
+
+export function clearAccountUsersCache(
+  apiClient: ApiClient,
+  accountId: string
+) {
+  apiClient.clearCachedResult(`/accounts/${accountId}/users`);
+}
+
+export function clearAccountTodoListsCache(
+  apiClient: ApiClient,
+  accountId: string
+) {
+  apiClient.clearCachedResult(`/accounts/${accountId}/lists`);
 }

@@ -21,7 +21,7 @@ The invitation list will be loaded by a loader, but we need to catch the errors 
 
 In that invite screen, the user can cancel and delete the invitations, resend them if they are expired and edit them to change the role the user will get when accepting the invite.
 
-When creating an invitation, an email will be sent to the invited email. In the user clicks on the email, they will be taken to the webapp to accept or decline the invitation.
+When creating an invitation, an email will be sent to the invited email. If the user clicks on the email, they will be taken to the webapp to accept or decline the invitation.
 
 At that point the invited user might be:
 * A new user that need to sign up in the application

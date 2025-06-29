@@ -1,5 +1,5 @@
 import { MenuItem, Button } from "@loginapp/ui";
-import { CheckCircle, Add } from "@loginapp/ui/src/icons/svg";
+import { CheckCircle, Add, Settings } from "@loginapp/ui/src/icons/svg";
 import React from "react";
 import { getApiClient } from "../../../application/stores/apiClient";
 import { getAuthContext } from "../../../application/auth/auth.context";
@@ -41,6 +41,15 @@ export default class SidebarNavigation extends React.Component<
 
     return (
       <>
+        {/* Account Settings */}
+        <MenuItem
+          href="/account"
+          startIcon={<Settings />}
+          selected={hash.startsWith("#/account")}
+        >
+          {t("Account Settings")}
+        </MenuItem>
+
         {/* TodoLists Section */}
         {todoLists.map((todoList) => (
           <MenuItem

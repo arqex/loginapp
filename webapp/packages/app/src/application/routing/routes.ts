@@ -10,6 +10,7 @@ import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScree
 import CreateAccountScreen from "../../screens/create_account/CreateAccountScreen";
 import HomeScreen from "../../screens/home/HomeScreen";
 import TodoListScreen from "../../screens/todoList/TodoListScreen";
+import AccountScreen from "../../screens/account/AccountScreen";
 
 export const routes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
@@ -22,6 +23,8 @@ export const routes: ReactRoute[] = [
   { path: "/create_account", cb: CreateAccountScreen },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   { path: "/home", cb: HomeScreen as any },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { path: "/account", cb: AccountScreen as any },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   { path: "/lists/:id", cb: TodoListScreen as any },
   { path: "/", cb: LoginScreen },
