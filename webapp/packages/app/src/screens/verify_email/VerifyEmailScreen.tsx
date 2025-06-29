@@ -15,8 +15,8 @@ import { isValidEmailAddress } from "../../application/utils/validation.utils";
 import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 import { verifyEmail } from "@loginapp/api-client";
+import { setAuthenticatedId } from "../../application/auth/auth.context";
 
-interface VerifyEmailScreenProps {}
 interface VerifyEmailScreenState {
   isEmailOk: boolean;
   isVerifiying: boolean;
@@ -26,7 +26,7 @@ interface VerifyEmailScreenState {
 }
 
 export default class VerifyEmailScreen extends React.Component<
-  VerifyEmailScreenProps,
+  void,
   VerifyEmailScreenState
 > {
   state: VerifyEmailScreenState = {
@@ -135,10 +135,29 @@ export default class VerifyEmailScreen extends React.Component<
     try {
       const { email } = getParams();
       const { verificationCode } = this.state;
-      await verifyEmail(getApiClient(), verificationCode, email);
+
+      this.setState({ isVerifiying: true, error: null });
+
+      // Verify the email and get the authenticated user ID
+      const { data } = await verifyEmail(
+        getApiClient(),
+        verificationCode,
+        email
+      );
+      const authenticatedId = data.authenticatedId;
+
+      // Set the authenticated user in context
+      setAuthenticatedId(authenticatedId);
+
       this.setState({ isVerifiying: false, isSuccess: true });
-      toaster.success("Your email has been validated successfully.");
-    } catch (err) {
+      toaster.success("Your email has been validated successfully!");
+
+      // Redirect to home after a short delay - withAuth HOC will handle account creation if needed
+      setTimeout(() => {
+        getRouter().push("/home");
+      }, 2000);
+    } catch (error) {
+      console.error("Email verification error:", error);
       this.setState({
         isVerifiying: false,
         error: "The verification code is not correct.",

@@ -4,14 +4,14 @@ import { Card, Heading, Link, VStack } from "@loginapp/ui";
 import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
 import { loginByOTT } from "@loginapp/api-client";
+import { setAuthenticatedId } from "../../application/auth/auth.context";
 
-interface OttLoginScreenProps {}
 interface OttLoginScreenState {
   isVerifiying: boolean;
 }
 
 export default class OttLoginScreen extends React.Component<
-  OttLoginScreenProps,
+  void,
   OttLoginScreenState
 > {
   state: OttLoginScreenState = {
@@ -80,17 +80,21 @@ export default class OttLoginScreen extends React.Component<
     if (this.state.isVerifiying) {
       try {
         const { ott, key } = getParams();
-        await loginByOTT(getApiClient(), key, ott);
-      } catch (err) {
+
+        // Login using the OTT token
+        const { data } = await loginByOTT(getApiClient(), key, ott);
+        const authenticatedId = data.authenticatedId;
+
+        // Set the authenticated user in context
+        setAuthenticatedId(authenticatedId);
+
+        // Redirect to home - withAuth HOC will handle account creation if needed
+        getRouter().push("/home");
+      } catch (error) {
+        console.error("OTT login error:", error);
         this.setState({ isVerifiying: false });
       }
-    } else {
-      this.setState({ isVerifiying: false });
     }
-  }
-
-  componentWillUnmount(): void {
-    console.log("UNMOUNTED");
   }
 }
 

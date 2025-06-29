@@ -16,7 +16,8 @@ applyTo: "**/*.ts,**/*.tsx
 ## React Guidelines
 
 - Use class components when state or effects are needed
-- Auto-bound arrow functions names in components should start with `_`
+- Auto-bound arrow method names in components should start with `_`
+- Don't use arrow functions directly in component's callback props, create an autobound method in the class instead
 - Keep components small and focused
 - Use CSS modules for component styling
 - Use `classNames` library for optional styling

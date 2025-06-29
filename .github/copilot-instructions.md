@@ -8,10 +8,9 @@ The code for the database and the API is in the `/backend` folder.
 The code for the web app is in `/webapp`.
 The code for the mobile app is in `/mobile`.
 
-To know more about how the backend works, check the [backend documentation](backend/docs/introduction_backend.md).
+To know more about how the backend works, check the [backend documentation](../backend/docs/introduction_backend.md).
 To know about the test application, check the [test application documentation](./test-application.md).
-To know more about how the data load works in the apps check the [api-client documentation](webapp/packages/api-client/readme.md).
-To know how to develop the web app, check the [webapp documentation](webapp/packages/app/README.md).
+To know more about how the data load works in the apps check the [api-client documentation](../webapp/packages/api-client/readme.md).
+To know how to develop the web app, check the [webapp documentation](../webapp/packages/app/README.md).
 
-
-The task we are working currently is [Reorganization of the webapp](./task-instructions.md).
+[Follow these instructions for the task we are working now](./task-instructions.md).

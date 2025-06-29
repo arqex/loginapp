@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getAccountController } from './controllers/getAccount.controller';
+import { createAccountController } from './controllers/createAccount.controller';
 import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { getAccountUserListController } from './controllers/getAccountUserList.controller';
 import { getAccountTodoListController } from './controllers/getAccountTodoList.controller';
@@ -7,6 +8,9 @@ import { createAccountTodoListController } from './controllers/createAccountTodo
 import { requireAdmin, requireCollaborator } from '../utils/permissions.utils';
 
 const accountRouter = Router();
+
+// Create a new account (authenticated users only)
+accountRouter.post('/', withJWTAuth, createAccountController);
 
 accountRouter.get('/:accountId', withJWTAuth, getAccountController);
 

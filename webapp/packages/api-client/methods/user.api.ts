@@ -1,5 +1,5 @@
 import { ApiClient } from "../ApiClient";
-import { CachedResponse, ResponseWithData } from "../apiClient.types";
+import type { CachedResponse, ResponseWithData } from "../apiClient.types";
 import type { ApiUser, EmptyObject, UserAccount } from "./api.types";
 
 export async function loadUser(apiClient: ApiClient, id: string) {
@@ -41,4 +41,12 @@ export async function deleteUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.delete(
     `/users/${id}`
   )) as ResponseWithData<EmptyObject>;
+}
+
+export function invalidateUserAccountsCache(apiClient: ApiClient, id: string) {
+  apiClient.invalidateCacheResponse(`/users/${id}/accounts`);
+}
+
+export function clearUserAccountsCache(apiClient: ApiClient, id: string) {
+  apiClient.clearCachedResult(`/users/${id}/accounts`);
 }

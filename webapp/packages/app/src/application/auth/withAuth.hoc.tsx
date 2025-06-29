@@ -1,16 +1,14 @@
-import React, { forwardRef, type ComponentType } from "react";
+import { forwardRef, type ComponentType } from "react";
 import {
   getAuthContext,
   getAuthenticatedId,
   setAuthContext,
 } from "./auth.context";
-import type { ApiAccount } from "@loginapp/api-client";
 import { getRouter } from "../routing/router";
 import { getApiClient } from "../stores/apiClient";
 import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
 import type { AuthContext } from "../stores/uiStore";
 import { userLoader, userAccountsLoader } from "../loaders/user.loaders";
-import { accountLoader } from "../loaders/account.loaders";
 
 export type WithAuthProps<T> = T & {
   authContext: AuthContext;
@@ -42,6 +40,12 @@ export default function withAuth<Return, Props>(
     );
 
     if (!user || !userAccounts) {
+      return <SpinnerScreen />;
+    }
+
+    // If user has no accounts, redirect to create account screen
+    if (userAccounts.length === 0) {
+      getRouter().replace("/create_account");
       return <SpinnerScreen />;
     }
 

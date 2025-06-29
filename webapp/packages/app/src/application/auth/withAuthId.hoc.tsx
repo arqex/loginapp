@@ -1,4 +1,7 @@
 import { forwardRef, type ComponentType } from "react";
+import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
+import { getRouter } from "../routing/router";
+import { getAuthenticatedId } from "./auth.context";
 
 /**
  * If you are creating an authenticated screen wrapped by withAuthentication
@@ -13,8 +16,19 @@ export default function withAuthId<Return, Props>(
   type withAuthIdProps = Omit<Props, keyof Return>;
 
   const withAuthId = forwardRef<any, withAuthIdProps>((props, ref) => {
-    const context = restoreAuthContext();
-    return <Component ref={ref} {...(props as Props)} authContext={context} />;
+    const authenticatedId = getAuthenticatedId();
+    if (!authenticatedId) {
+      getRouter().push("/login");
+      return <SpinnerScreen />;
+    }
+
+    return (
+      <Component
+        ref={ref}
+        {...(props as Props)}
+        authenticatedId={authenticatedId}
+      />
+    );
   });
 
   withAuthId.displayName = `withAuthId(${

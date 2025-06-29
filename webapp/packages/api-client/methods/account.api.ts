@@ -7,6 +7,14 @@ import type {
 import type { ResponseWithData } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
 
+// Create a new account
+export async function createAccount(
+  apiClient: ApiClient,
+  name: string
+): Promise<ResponseWithData<{ id: string }>> {
+  return await apiClient.requester.post(`/accounts`, { name });
+}
+
 export async function loadAccount(
   apiClient: ApiClient,
   id: string
