@@ -58,7 +58,7 @@ class AccountScreen extends React.Component<
         return "red";
       case "EDITOR":
         return "blue";
-      case "CONTRIBUTOR":
+      case "COLLABORATOR":
         return "green";
       case "UNKNOWN":
         return "gray";
@@ -207,7 +207,7 @@ class AccountScreen extends React.Component<
                 </Text>
                 <Badge
                   colorScheme={this.getRoleBadgeColor(
-                    authContext.role || "CONTRIBUTOR"
+                    authContext.role || "COLLABORATOR"
                   )}
                 >
                   {authContext.role}
@@ -237,8 +237,13 @@ class AccountScreen extends React.Component<
           <HStack justifyContent="space-between" alignItems="center">
             <Heading size="sm">{t("Account Members")}</Heading>
             {authContext.role === "ADMIN" && (
-              <Button variant="outline" size="sm" disabled>
-                {t("Invite Member")}
+              <Button
+                variant="outline"
+                size="sm"
+                as="a"
+                href="/account/invitations"
+              >
+                {t("Manage Invitations")}
               </Button>
             )}
           </HStack>
@@ -313,7 +318,7 @@ class AccountScreen extends React.Component<
         "View all todo lists and items",
         "View account information",
       ],
-      CONTRIBUTOR: [
+      COLLABORATOR: [
         "Mark todo items as done/undone",
         "View todo lists and items",
         "View account information",

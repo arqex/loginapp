@@ -23,7 +23,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
         return "red";
       case "EDITOR":
         return "blue";
-      case "CONTRIBUTOR":
+      case "COLLABORATOR":
         return "green";
       default:
         return "gray";
@@ -46,7 +46,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
                       <Heading size="sm">Current Account:</Heading>
                       <Badge
                         colorScheme={this.getRoleBadgeColor(
-                          authContext.role || "CONTRIBUTOR"
+                          authContext.role || "COLLABORATOR"
                         )}
                       >
                         {authContext.role}
@@ -90,7 +90,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
                         <VStack alignItems="flex-end" gap="1">
                           <Badge
                             colorScheme={this.getRoleBadgeColor(
-                              authContext.role || "CONTRIBUTOR"
+                              authContext.role || "COLLABORATOR"
                             )}
                           >
                             {authContext.role}
@@ -149,7 +149,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
                             </Text>
                           </>
                         )}
-                        {authContext.role === "CONTRIBUTOR" && (
+                        {authContext.role === "COLLABORATOR" && (
                           <>
                             <Text fontSize="sm">
                               • Mark TodoItems as done/undone

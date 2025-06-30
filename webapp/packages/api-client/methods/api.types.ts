@@ -12,7 +12,7 @@ export interface ApiUser {
   picURL: string;
 }
 
-export type ApiAccountRole = "ADMIN" | "EDITOR" | "CONTRIBUTOR";
+export type ApiAccountRole = "ADMIN" | "EDITOR" | "COLLABORATOR";
 
 export interface AccountUser {
   id: string;
@@ -69,4 +69,40 @@ export interface PaginationResponseData<T> {
   pageSize: number;
   cursor: string | null;
   nextCursor: string | null;
+}
+
+export type ApiInvitationStatus =
+  | "PENDING"
+  | "DECLINED"
+  | "ACCEPTED"
+  | "CANCELLED";
+
+export interface ApiInvitation {
+  id: string;
+  email: string;
+  status: ApiInvitationStatus;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+  isExpired?: boolean;
+  isValid?: boolean;
+  account: {
+    id: string;
+    name: string;
+  };
+  meta: {
+    role: ApiAccountRole;
+    invitedBy?: string;
+  };
+}
+
+export interface CreateInvitationPayload {
+  email: string;
+  role?: ApiAccountRole;
+  expirationDays?: number;
+}
+
+export interface UpdateInvitationPayload {
+  role?: ApiAccountRole;
+  expirationDays?: number;
 }
