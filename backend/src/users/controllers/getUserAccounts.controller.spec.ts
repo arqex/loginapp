@@ -22,7 +22,7 @@ describe('getUserAccounts.controller', () => {
   it('should return user accounts with details, filtering out null accounts', async () => {
     getUserAccountsWithDetails.mockResolvedValue([
       { account: { id: 'acc1' }, role: 'ADMIN' },
-      { account: null, role: 'CONTRIBUTOR' },
+      { account: null, role: 'COLLABORATOR' },
       { account: { id: 'acc2' }, role: 'EDITOR' },
     ]);
 

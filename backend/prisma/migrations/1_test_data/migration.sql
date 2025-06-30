@@ -4,7 +4,7 @@
 INSERT INTO `User` (`id`, `createdAt`, `updatedAt`, `email`, `meta`) VALUES
   ('user1', NOW(), NOW(), 'admin@example.com', '{"name": "Admin Rodriguez"}'),
   ('user2', NOW(), NOW(), 'editor@example.com', '{"name": "Editor Rodriguez"}'),
-  ('user3', NOW(), NOW(), 'contributor@example.com', '{"name": "Contributor Rodriguez"}'),
+  ('user3', NOW(), NOW(), 'collaborator@example.com', '{"name": "Contributor Rodriguez"}'),
   ('user4', NOW(), NOW(), 'simple@example.com', '{"name": "Simple Rodriguez"}');
 
 -- Insert Accounts
@@ -32,5 +32,5 @@ INSERT INTO `TodoItem` (`id`, `todoListId`, `createdAt`, `updatedAt`, `title`, `
 INSERT INTO `AuthToken` (`key`, `createdAt`, `expiresAt`, `type`, `userId`, `meta`) VALUES
   ('admin@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user1', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}'),
   ('editor@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user2', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}'),
-  ('contributor@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user3', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}'),
+  ('collaborator@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user3', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}'),
   ('simple@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user4', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}');
