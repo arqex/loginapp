@@ -8,6 +8,7 @@ import usersRouter from './users/users.router';
 import todoListRouter from './todoList/todoList.router';
 import todoItemRouter from './todoItem/todoItem.router';
 import invitationRouter from './invitation/invitation.router';
+import invitationReplyRouter from './invitation/invitationReply.router';
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use('/users', usersRouter);
 app.use('/lists', todoListRouter);
 app.use('/items', todoItemRouter);
 app.use('/invitations', invitationRouter);
+app.use('/invitation-reply', invitationReplyRouter);
 
 export default app;

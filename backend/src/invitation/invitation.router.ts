@@ -4,27 +4,15 @@ import { requireRoleForInvitation } from '../utils/permissions.utils';
 import { updateInvitationController } from './controllers/updateInvitation.controller';
 import { deleteInvitationController } from './controllers/deleteInvitation.controller';
 import { resendInvitationController } from './controllers/resendInvitation.controller';
-import { acceptInvitationController } from './controllers/acceptInvitation.controller';
-import { declineInvitationController } from './controllers/declineInvitation.controller';
-import { getInvitationController } from './controllers/getInvitation.controller';
+import { invitationReplyAuthenticatedController } from './controllers/invitationReplyAuthenticated.controller';
 
 const invitationRouter = Router();
 
-// Public endpoint to get invitation details (no auth required)
-invitationRouter.get('/:invitationId', getInvitationController);
-
-// Accept an invitation (authenticated user)
+// Reply to an invitation (authenticated user) - unified accept/decline endpoint
 invitationRouter.post(
-  '/:invitationId/accept',
+  '/:invitationId/reply',
   withJWTAuth,
-  acceptInvitationController,
-);
-
-// Decline an invitation (authenticated user)
-invitationRouter.post(
-  '/:invitationId/decline',
-  withJWTAuth,
-  declineInvitationController,
+  invitationReplyAuthenticatedController,
 );
 
 // Admin-only endpoints

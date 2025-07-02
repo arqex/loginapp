@@ -131,3 +131,17 @@ export async function getPendingInvitationsByEmail(email: string) {
     orderBy: { createdAt: 'desc' },
   });
 }
+
+// Get invitation by email and secret
+export async function getInvitationByEmailAndSecret(
+  email: string,
+  secret: string,
+) {
+  const prisma = getPrismaClient();
+  return prisma.invitation.findFirst({
+    where: {
+      email,
+      secret,
+    },
+  });
+}
