@@ -4,6 +4,7 @@ import { createInvitation } from '../invitation.db';
 import { resError, resPayloadError } from '../../utils/respond.utils';
 import { isValidEmailAddress } from '../../utils/validation.utils';
 import { sendInvitationEmail } from '../../email/templates/invitationEmail.template';
+import { generateInvitationSecret } from '../utils/invitation.utils';
 
 export async function createInvitationController(
   req: AuthRequest,
@@ -40,11 +41,15 @@ export async function createInvitationController(
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + expirationDays);
 
+    // Generate a secure secret for the invitation
+    const secret = generateInvitationSecret();
+
     // Create the invitation
     const invitation = await createInvitation({
       email: email.toLowerCase(),
       accountId,
       expiresAt,
+      secret,
       meta: {
         role,
         invitedBy: userId,
@@ -59,6 +64,7 @@ export async function createInvitationController(
         invitationId: invitation.id,
         accountName,
         role,
+        secret,
       });
     } catch (emailError) {
       console.error('Failed to send invitation email:', emailError);

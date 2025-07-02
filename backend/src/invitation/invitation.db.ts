@@ -7,6 +7,7 @@ export interface CreateInvitationData {
   email: string;
   accountId: string;
   expiresAt: Date;
+  secret: string;
   meta: Record<string, any>;
 }
 
@@ -23,6 +24,7 @@ export async function createInvitation(data: CreateInvitationData) {
       email: data.email,
       accountId: data.accountId,
       expiresAt: data.expiresAt,
+      secret: data.secret,
       meta: data.meta,
     },
     include: {
@@ -40,31 +42,6 @@ export async function createInvitation(data: CreateInvitationData) {
 export async function getInvitationById(id: string) {
   return await prisma.invitation.findUnique({
     where: { id },
-    include: {
-      account: {
-        select: {
-          id: true,
-          meta: true,
-        },
-      },
-    },
-  });
-}
-
-// Get invitation by email and account (for accepting invitations)
-export async function getInvitationByEmailAndAccount(
-  email: string,
-  accountId: string,
-) {
-  return await prisma.invitation.findFirst({
-    where: {
-      email,
-      accountId,
-      status: InvitationStatus.PENDING,
-      expiresAt: {
-        gt: new Date(),
-      },
-    },
     include: {
       account: {
         select: {

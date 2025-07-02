@@ -1,19 +1,32 @@
 import { Response, Request } from 'express';
-import { getInvitationById } from '../invitation.db';
 import { resError } from '../../utils/respond.utils';
 import { InvitationStatus } from '@prisma/client';
+import { validateInvitationAccess } from '../utils/invitation.utils';
 
 export async function getInvitationController(req: Request, res: Response) {
   const { invitationId } = req.params;
+  const { email, secret } = req.query;
+
+  // Require email and secret for public invitation access
+  if (!email || !secret) {
+    return resError(res, 'email_and_secret_required', 400);
+  }
 
   try {
-    const invitation = await getInvitationById(invitationId);
+    // Validate invitation access with email and secret
+    const validation = await validateInvitationAccess(
+      invitationId,
+      email as string,
+      secret as string,
+    );
 
-    if (!invitation) {
-      return resError(res, 'invitation_not_found', 404);
+    if (!validation.isValid) {
+      return resError(res, validation.error || 'invalid_invitation', 403);
     }
 
-    // Only return basic info for public access
+    const invitation = validation.invitation;
+
+    // Return basic info for public access
     const publicInvitation = {
       id: invitation.id,
       email: invitation.email,

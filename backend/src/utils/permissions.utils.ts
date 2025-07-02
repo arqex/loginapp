@@ -5,6 +5,7 @@ import { getUsersOnAccountRoleOnAccount } from '../userRole/userRole.db';
 import { resForbidden, resError } from './respond.utils';
 import { getTodoListById } from '../todoList/todoList.db';
 import { getTodoItemById } from '../todoItem/todoItem.db';
+import { getInvitationById } from '../invitation/invitation.db';
 
 export type RequiredRole = 'ADMIN' | 'EDITOR' | 'COLLABORATOR';
 
@@ -142,6 +143,19 @@ export async function getAccountIdFromTodoItem(
 }
 
 /**
+ * Helper function to extract account ID from Invitation ID
+ */
+export async function getAccountIdFromInvitation(
+  req: Request,
+): Promise<string | undefined> {
+  const invitationId = req.params.invitationId;
+  if (!invitationId) return undefined;
+
+  const invitation = await getInvitationById(invitationId);
+  return invitation?.accountId;
+}
+
+/**
  * Middleware for TodoList operations that requires a specific role
  */
 export const requireRoleForTodoList = (requiredRole: RequiredRole) =>
@@ -152,6 +166,12 @@ export const requireRoleForTodoList = (requiredRole: RequiredRole) =>
  */
 export const requireRoleForTodoItem = (requiredRole: RequiredRole) =>
   requireRoleWithExtractor(requiredRole, getAccountIdFromTodoItem);
+
+/**
+ * Middleware for Invitation operations that requires a specific role
+ */
+export const requireRoleForInvitation = (requiredRole: RequiredRole) =>
+  requireRoleWithExtractor(requiredRole, getAccountIdFromInvitation);
 
 /**
  * Middleware to ensure that the authenticated user can only access their own user data.

@@ -5,10 +5,17 @@ export interface InvitationEmailData {
   invitationId: string;
   accountName: string;
   role: string;
+  secret: string;
 }
 
-export function getInvitationEmailTemplate(data: InvitationEmailData): EmailDetails {
-  const inviteLink = `${process.env.APP_URL}/#/invitation/${data.invitationId}`;
+export function getInvitationEmailTemplate(
+  data: InvitationEmailData,
+): EmailDetails {
+  const inviteLink = `${process.env.APP_URL}/#/invitation_accept/${
+    data.invitationId
+  }?email=${encodeURIComponent(data.to)}&account=${encodeURIComponent(
+    data.accountName,
+  )}&secret=${encodeURIComponent(data.secret)}`;
 
   return {
     subject: `You've been invited to join ${data.accountName}`,
@@ -27,6 +34,6 @@ export function getInvitationEmailTemplate(data: InvitationEmailData): EmailDeta
 export async function sendInvitationEmail(data: InvitationEmailData) {
   const { sendEmail } = await import('../sender');
   const emailTemplate = getInvitationEmailTemplate(data);
-  
+
   return await sendEmail(data.to, emailTemplate);
 }

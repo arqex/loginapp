@@ -20,11 +20,6 @@ export async function resendInvitationController(
       return resError(res, 'invitation_not_found', 404);
     }
 
-    // Only allow resending PENDING or expired invitations
-    if (invitation.status !== InvitationStatus.PENDING) {
-      return resError(res, 'can_only_resend_pending_invitations');
-    }
-
     // Update expiration date
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + expirationDays);
@@ -38,12 +33,18 @@ export async function resendInvitationController(
     try {
       const accountName = (invitation.account.meta as any)?.name || 'Account';
       const role = (invitation.meta as any)?.role || 'COLLABORATOR';
+      const secret = invitation.secret;
+
+      if (!secret) {
+        return resError(res, 'invitation_missing_secret');
+      }
 
       await sendInvitationEmail({
         to: invitation.email,
         invitationId: invitation.id,
         accountName,
         role,
+        secret,
       });
     } catch (emailError) {
       console.error('Failed to resend invitation email:', emailError);

@@ -20,11 +20,10 @@ import withAuth, {
 } from "../../application/auth/withAuth.hoc";
 import { getApiClient } from "../../application/stores/apiClient";
 import {
-  createInvitation,
+  createAccountInvitation,
   deleteInvitation,
   updateInvitation,
   resendInvitation,
-  clearAccountInvitationsCache,
   invalidateAccountInvitations,
   type ApiInvitation,
   type CreateInvitationPayload,
@@ -40,7 +39,6 @@ type AccountInvitationsScreenProps = WithAuthProps<void>;
 interface InviteFormData {
   email: string;
   role: "ADMIN" | "EDITOR" | "COLLABORATOR";
-  expirationDays: number;
 }
 
 interface AccountInvitationsScreenState {
@@ -49,7 +47,6 @@ interface AccountInvitationsScreenState {
   editingInvitation: string | null;
   editForm: {
     role: "ADMIN" | "EDITOR" | "COLLABORATOR";
-    expirationDays: number;
   };
   errors: ValidationErrors;
   processingInvitations: Set<string>;
@@ -63,13 +60,11 @@ class AccountInvitationsScreen extends React.Component<
     inviteForm: {
       email: "",
       role: "COLLABORATOR",
-      expirationDays: 7,
     },
     isInviting: false,
     editingInvitation: null,
     editForm: {
       role: "COLLABORATOR",
-      expirationDays: 7,
     },
     errors: {},
     processingInvitations: new Set(),
@@ -134,10 +129,6 @@ class AccountInvitationsScreen extends React.Component<
       errors.role = t("Role is required");
     }
 
-    if (inviteForm.expirationDays < 1 || inviteForm.expirationDays > 30) {
-      errors.expirationDays = t("Expiration days must be between 1 and 30");
-    }
-
     return Object.keys(errors).length > 0 ? errors : null;
   };
 
@@ -159,20 +150,22 @@ class AccountInvitationsScreen extends React.Component<
       const payload: CreateInvitationPayload = {
         email: inviteForm.email.trim().toLowerCase(),
         role: inviteForm.role,
-        expirationDays: inviteForm.expirationDays,
       };
 
-      await createInvitation(getApiClient(), authContext.account.id, payload);
+      await createAccountInvitation(
+        getApiClient(),
+        authContext.account.id,
+        payload
+      );
 
-      // Clear cache to refresh the invitations list
-      clearAccountInvitationsCache(getApiClient(), authContext.account.id);
+      // Invalidate cache to refresh the invitations list
+      invalidateAccountInvitations(getApiClient(), authContext.account.id);
 
       toaster.success(t("Invitation sent successfully!"));
       this.setState({
         inviteForm: {
           email: "",
           role: "COLLABORATOR",
-          expirationDays: 7,
         },
         isInviting: false,
         errors: {},
@@ -202,7 +195,7 @@ class AccountInvitationsScreen extends React.Component<
 
     try {
       await deleteInvitation(getApiClient(), invitationId);
-      clearAccountInvitationsCache(getApiClient(), authContext.account.id);
+      invalidateAccountInvitations(getApiClient(), authContext.account.id);
       toaster.success(t("Invitation deleted successfully"));
     } catch (error: unknown) {
       console.error("Error deleting invitation:", error);
@@ -232,7 +225,7 @@ class AccountInvitationsScreen extends React.Component<
 
     try {
       await resendInvitation(getApiClient(), invitationId, 7);
-      clearAccountInvitationsCache(getApiClient(), authContext.account.id);
+      invalidateAccountInvitations(getApiClient(), authContext.account.id);
       toaster.success(t("Invitation resent successfully"));
     } catch (error: unknown) {
       console.error("Error resending invitation:", error);
@@ -254,7 +247,6 @@ class AccountInvitationsScreen extends React.Component<
       editingInvitation: invitation.id,
       editForm: {
         role: invitation.meta.role,
-        expirationDays: 7,
       },
     });
   };
@@ -264,7 +256,6 @@ class AccountInvitationsScreen extends React.Component<
       editingInvitation: null,
       editForm: {
         role: "COLLABORATOR",
-        expirationDays: 7,
       },
     });
   };
@@ -285,10 +276,9 @@ class AccountInvitationsScreen extends React.Component<
     try {
       await updateInvitation(getApiClient(), invitationId, {
         role: editForm.role,
-        expirationDays: editForm.expirationDays,
       });
 
-      clearAccountInvitationsCache(getApiClient(), authContext.account.id);
+      invalidateAccountInvitations(getApiClient(), authContext.account.id);
       toaster.success(t("Invitation updated successfully"));
       this.setState({ editingInvitation: null });
     } catch (error: unknown) {
@@ -337,24 +327,6 @@ class AccountInvitationsScreen extends React.Component<
                 <option value="EDITOR">{t("Editor")}</option>
                 <option value="ADMIN">{t("Admin")}</option>
               </Select>
-            </FormField>
-
-            <FormField
-              error={errors?.expirationDays}
-              label={t("Expiration (Days)")}
-            >
-              <Input
-                type="number"
-                min="1"
-                max="30"
-                value={inviteForm.expirationDays}
-                onChange={(e) =>
-                  this.handleInviteFormChange(
-                    "expirationDays",
-                    parseInt(e.target.value) || 7
-                  )
-                }
-              />
             </FormField>
 
             <Button
@@ -492,25 +464,6 @@ class AccountInvitationsScreen extends React.Component<
                                 <option value="EDITOR">{t("Editor")}</option>
                                 <option value="ADMIN">{t("Admin")}</option>
                               </Select>
-                            </FormField>
-
-                            <FormField label={t("Expiration (Days)")}>
-                              <Input
-                                type="number"
-                                min="1"
-                                max="30"
-                                value={editForm.expirationDays}
-                                onChange={(e) =>
-                                  this.setState({
-                                    editForm: {
-                                      ...editForm,
-                                      expirationDays:
-                                        parseInt(e.target.value) || 7,
-                                    },
-                                  })
-                                }
-                                size="sm"
-                              />
                             </FormField>
                           </HStack>
 

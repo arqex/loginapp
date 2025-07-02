@@ -4,8 +4,10 @@ import type {
   AccountUser,
   ListCreationPayload,
   PaginationResponseData,
+  ApiInvitation,
+  CreateInvitationPayload,
 } from "./api.types";
-import type { ResponseWithData } from "../apiClient.types";
+import type { ResponseWithData, CachedResponse } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
 
 // Create a new account
@@ -57,6 +59,34 @@ export async function createAccountTodoList(
   return await apiClient.requester.post(`/accounts/${accountId}/lists`, data);
 }
 
+// Load invitations for an account
+export async function loadAccountInvitations(
+  apiClient: ApiClient,
+  accountId: string
+): Promise<ResponseWithData<ApiInvitation[]>> {
+  return await apiClient.requester.get(`/accounts/${accountId}/invitations`);
+}
+
+// Load invitations for an account with caching
+export function loadAccountInvitationsWithCache(
+  apiClient: ApiClient,
+  accountId: string
+): CachedResponse<ApiInvitation[]> {
+  return apiClient.requester.getCached(`/accounts/${accountId}/invitations`);
+}
+
+// Create a new invitation for an account
+export async function createAccountInvitation(
+  apiClient: ApiClient,
+  accountId: string,
+  data: CreateInvitationPayload
+): Promise<ResponseWithData<ApiInvitation>> {
+  return await apiClient.requester.post(
+    `/accounts/${accountId}/invitations`,
+    data
+  );
+}
+
 // Cached: Load account
 export function loadAccountWithCache(apiClient: ApiClient, id: string) {
   return apiClient.requester.getCached(`/accounts/${id}`);
@@ -95,4 +125,19 @@ export function clearAccountTodoListsCache(
   accountId: string
 ) {
   apiClient.clearCachedResult(`/accounts/${accountId}/lists`);
+}
+
+// Cache invalidation functions for invitations
+export function clearAccountInvitationsCache(
+  apiClient: ApiClient,
+  accountId: string
+) {
+  apiClient.clearCachedResult(`/accounts/${accountId}/invitations`);
+}
+
+export function invalidateAccountInvitations(
+  apiClient: ApiClient,
+  accountId: string
+) {
+  apiClient.invalidateCacheResponse(`/accounts/${accountId}/invitations`);
 }

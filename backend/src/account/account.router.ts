@@ -7,6 +7,8 @@ import { getAccountUserListController } from './controllers/getAccountUserList.c
 import { getAccountTodoListController } from './controllers/getAccountTodoList.controller';
 import { createAccountTodoListController } from './controllers/createAccountTodoList.controller';
 import { requireAdmin, requireCollaborator } from '../utils/permissions.utils';
+import { getAccountInvitationsController } from '../invitation/controllers/getAccountInvitations.controller';
+import { createInvitationController } from '../invitation/controllers/createInvitation.controller';
 
 const accountRouter = Router();
 
@@ -41,6 +43,23 @@ accountRouter.post(
   withJWTAuth,
   requireAdmin(),
   createAccountTodoListController,
+);
+
+// Invitation endpoints
+// Get all invitations for an account
+accountRouter.get(
+  '/:accountId/invitations',
+  withJWTAuth,
+  requireAdmin(),
+  getAccountInvitationsController,
+);
+
+// Create a new invitation for an account
+accountRouter.post(
+  '/:accountId/invitations',
+  withJWTAuth,
+  requireAdmin(),
+  createInvitationController,
 );
 
 export default accountRouter;

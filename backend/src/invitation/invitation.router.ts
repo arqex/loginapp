@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { withJWTAuth } from '../auth/strategies/jwt.strategy';
-import { requireAdmin } from '../utils/permissions.utils';
-import { createInvitationController } from './controllers/createInvitation.controller';
-import { getAccountInvitationsController } from './controllers/getAccountInvitations.controller';
+import { requireRoleForInvitation } from '../utils/permissions.utils';
 import { updateInvitationController } from './controllers/updateInvitation.controller';
 import { deleteInvitationController } from './controllers/deleteInvitation.controller';
 import { resendInvitationController } from './controllers/resendInvitation.controller';
@@ -30,27 +28,11 @@ invitationRouter.post(
 );
 
 // Admin-only endpoints
-// Get all invitations for an account
-invitationRouter.get(
-  '/account/:accountId',
-  withJWTAuth,
-  requireAdmin(),
-  getAccountInvitationsController,
-);
-
-// Create a new invitation for an account
-invitationRouter.post(
-  '/account/:accountId',
-  withJWTAuth,
-  requireAdmin(),
-  createInvitationController,
-);
-
 // Update an invitation (change status, role, or expiration)
 invitationRouter.patch(
   '/:invitationId',
   withJWTAuth,
-  requireAdmin(),
+  requireRoleForInvitation('ADMIN'),
   updateInvitationController,
 );
 
@@ -58,7 +40,7 @@ invitationRouter.patch(
 invitationRouter.delete(
   '/:invitationId',
   withJWTAuth,
-  requireAdmin(),
+  requireRoleForInvitation('ADMIN'),
   deleteInvitationController,
 );
 
@@ -66,7 +48,7 @@ invitationRouter.delete(
 invitationRouter.post(
   '/:invitationId/resend',
   withJWTAuth,
-  requireAdmin(),
+  requireRoleForInvitation('ADMIN'),
   resendInvitationController,
 );
 

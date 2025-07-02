@@ -1,39 +1,10 @@
 import type {
   ApiInvitation,
-  CreateInvitationPayload,
   UpdateInvitationPayload,
   EmptyObject,
 } from "./api.types";
-import type { ResponseWithData, CachedResponse } from "../apiClient.types";
+import type { ResponseWithData } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
-
-// Load invitations for an account
-export async function loadAccountInvitations(
-  apiClient: ApiClient,
-  accountId: string
-): Promise<ResponseWithData<ApiInvitation[]>> {
-  return await apiClient.requester.get(`/invitations/account/${accountId}`);
-}
-
-// Load invitations for an account with caching
-export function loadAccountInvitationsWithCache(
-  apiClient: ApiClient,
-  accountId: string
-): CachedResponse<ApiInvitation[]> {
-  return apiClient.requester.getCached(`/invitations/account/${accountId}`);
-}
-
-// Create a new invitation
-export async function createInvitation(
-  apiClient: ApiClient,
-  accountId: string,
-  data: CreateInvitationPayload
-): Promise<ResponseWithData<ApiInvitation>> {
-  return await apiClient.requester.post(
-    `/invitations/account/${accountId}`,
-    data
-  );
-}
 
 // Update an invitation
 export async function updateInvitation(
@@ -87,19 +58,4 @@ export async function declineInvitation(
   invitationId: string
 ): Promise<ResponseWithData<{ message: string }>> {
   return await apiClient.requester.post(`/invitations/${invitationId}/decline`);
-}
-
-// Cache invalidation functions
-export function clearAccountInvitationsCache(
-  apiClient: ApiClient,
-  accountId: string
-) {
-  apiClient.clearCachedResult(`/invitations/account/${accountId}`);
-}
-
-export function invalidateAccountInvitations(
-  apiClient: ApiClient,
-  accountId: string
-) {
-  apiClient.invalidateCacheResponse(`/invitations/account/${accountId}`);
 }

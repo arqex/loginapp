@@ -1,67 +1,103 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DB_URL")
+  provider     = "mysql"
+  url          = env("DB_URL")
   relationMode = "foreignKeys"
 }
 
-enum AuthTokenType {
-  EMAIL_LOGIN // email + password, email validation, password recovery, login token
-  API_KEY
-  OAUTH20
-  PROVIDER_LOGIN
-}
-
 model AuthToken {
-  key       String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  expiresAt DateTime? 
+  key       String        @id @default(cuid())
+  createdAt DateTime      @default(now())
+  expiresAt DateTime?
   type      AuthTokenType
   userId    String
-  owner     User     @relation(fields: [userId], references: [id])
   meta      Json
+  owner     User          @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  email     String           @unique
   meta      Json
   tokens    AuthToken[]
   accounts  UsersOnAccount[]
-  invitations Invitation[]
 }
 
 model Account {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  meta      Json
-  users     UsersOnAccount[]
-  todoLists TodoList[] @relation("AccountTodoLists")
+  id          String           @id @default(cuid())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  meta        Json
   invitations Invitation[]
+  todoLists   TodoList[]       @relation("AccountTodoLists")
+  users       UsersOnAccount[]
 }
 
 model UsersOnAccount {
   userId    String
   accountId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
   role      UsersOnAccountRole
-  user      User     @relation(fields: [userId], references: [id])
-  account   Account  @relation(fields: [accountId], references: [id])
+  account   Account            @relation(fields: [accountId], references: [id])
+  user      User               @relation(fields: [userId], references: [id])
 
   @@id([userId, accountId])
   @@index([accountId])
+}
+
+model Invitation {
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  email     String
+  expiresAt DateTime
+  status    InvitationStatus @default(PENDING)
+  secret    String
+  meta      Json
+  accountId String
+  account   Account          @relation(fields: [accountId], references: [id])
+
+  @@index([accountId])
+  @@index([email])
+}
+
+model TodoList {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String
+  accountId String
+  items     TodoItem[]
+  account   Account    @relation("AccountTodoLists", fields: [accountId], references: [id])
+
+  @@index([accountId], map: "TodoList_accountId_fkey")
+}
+
+model TodoItem {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  title      String
+  completed  Boolean  @default(false)
+  todoListId String
+  todoList   TodoList @relation(fields: [todoListId], references: [id])
+
+  @@index([todoListId], map: "TodoItem_todoListId_fkey")
+}
+
+enum AuthTokenType {
+  EMAIL_LOGIN
+  API_KEY
+  OAUTH20
+  PROVIDER_LOGIN
 }
 
 enum UsersOnAccountRole {
@@ -75,40 +111,4 @@ enum InvitationStatus {
   DECLINED
   ACCEPTED
   CANCELLED
-}
-
-model Invitation {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String
-  expiresAt DateTime
-  status    InvitationStatus @default(PENDING)
-  meta      Json
-  accountId String
-  account   Account  @relation(fields: [accountId], references: [id])
-  user      User?    @relation(fields: [email], references: [email])
-
-  @@index([accountId])
-  @@index([email])
-}
-
-model TodoList {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  accountId String
-  account   Account  @relation("AccountTodoLists", fields: [accountId], references: [id])
-  items     TodoItem[]
-}
-
-model TodoItem {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  completed Boolean  @default(false)
-  todoListId String
-  todoList   TodoList @relation(fields: [todoListId], references: [id])
 }

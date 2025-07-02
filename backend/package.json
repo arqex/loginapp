@@ -11,6 +11,7 @@
     "mysql:install": "bash ./scripts/install-mysql-local.sh",
     "mysql:start": "docker start mysql_local",
     "mysql:stop": "docker stop mysql_local",
+    "migrate:invitation-secrets": "npx ts-node scripts/migrate-invitation-secrets.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
