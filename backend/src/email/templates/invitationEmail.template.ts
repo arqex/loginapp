@@ -11,9 +11,11 @@ export interface InvitationEmailData {
 export function getInvitationEmailTemplate(
   data: InvitationEmailData,
 ): EmailDetails {
-  const inviteLink = `${process.env.APP_URL}/#/invitation_accept/${
-    data.invitationId
-  }?email=${encodeURIComponent(data.to)}&account=${encodeURIComponent(
+  const inviteLink = `${
+    process.env.APP_URL
+  }/#/invitation_reply?email=${encodeURIComponent(
+    data.to,
+  )}&account=${encodeURIComponent(
     data.accountName,
   )}&secret=${encodeURIComponent(data.secret)}`;
 

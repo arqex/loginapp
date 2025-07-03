@@ -4,6 +4,6 @@ import { handleInvitationReplyPublic } from './controllers/invitationReplyPublic
 const invitationReplyRouter = Router();
 
 // POST /invitation_reply
-invitationReplyRouter.post('/invitation_reply', handleInvitationReplyPublic);
+invitationReplyRouter.post('/', handleInvitationReplyPublic);
 
 export default invitationReplyRouter;

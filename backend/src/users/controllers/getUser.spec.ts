@@ -32,12 +32,35 @@ describe('getUser.controller', () => {
     getUserById.mockResolvedValue({
       id: 'dummy_user_id',
       email: 'dummy@email.com',
+      meta: { name: 'Test User' },
+      clientData: { theme: 'dark', language: 'en' },
     });
     const response = await mockAuthGet('/users/dummy_user_id');
     expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       id: 'dummy_user_id',
       email: 'dummy@email.com',
+      name: 'Test User',
+      clientData: { theme: 'dark', language: 'en' },
+      signals: {},
+    });
+  });
+
+  it('should return empty clientData object when user has no clientData', async () => {
+    getUserById.mockResolvedValue({
+      id: 'dummy_user_id',
+      email: 'dummy@email.com',
+      meta: { name: 'Test User' },
+      clientData: null,
+    });
+    const response = await mockAuthGet('/users/dummy_user_id');
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject({
+      id: 'dummy_user_id',
+      email: 'dummy@email.com',
+      name: 'Test User',
+      clientData: {},
+      signals: {},
     });
   });
 });

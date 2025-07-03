@@ -4,7 +4,7 @@ import { requireRoleForInvitation } from '../utils/permissions.utils';
 import { updateInvitationController } from './controllers/updateInvitation.controller';
 import { deleteInvitationController } from './controllers/deleteInvitation.controller';
 import { resendInvitationController } from './controllers/resendInvitation.controller';
-import { invitationReplyAuthenticatedController } from './controllers/invitationReplyAuthenticated.controller';
+import { invitationReplyAuthenticatedController } from './controllers/invitationReply.controller';
 
 const invitationRouter = Router();
 

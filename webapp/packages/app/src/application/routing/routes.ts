@@ -13,6 +13,7 @@ import TodoListScreen from "../../screens/todoList/TodoListScreen";
 import AccountScreen from "../../screens/account/AccountScreen";
 import AccountInvitationsScreen from "../../screens/account_invitations/AccountInvitationsScreen";
 import InvitationScreen from "../../screens/invitation/InvitationScreen";
+import InvitationReplyScreen from "../../screens/invitation_reply/InvitationReplyScreen";
 
 export const routes: ReactRoute[] = [
   { path: "/login", cb: LoginScreen },
@@ -23,6 +24,7 @@ export const routes: ReactRoute[] = [
   { path: "/ott_login", cb: OttLoginScreen },
   { path: "/reset_password", cb: ResetPasswordScreen },
   { path: "/create_account", cb: CreateAccountScreen },
+  { path: "/invitation_reply", cb: InvitationReplyScreen },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   { path: "/home", cb: HomeScreen as any },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

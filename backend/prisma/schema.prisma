@@ -20,14 +20,16 @@ model AuthToken {
   @@index([userId])
 }
 
+/// User model represents application users
 model User {
-  id        String           @id @default(cuid())
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  email     String           @unique
-  meta      Json
-  tokens    AuthToken[]
-  accounts  UsersOnAccount[]
+  id         String           @id @default(cuid())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  email      String           @unique
+  meta       Json             // User BE controlled metadata (name, profile info, etc.)
+  clientData Json             // Client-side preferences and settings stored as JSON
+  tokens     AuthToken[]
+  accounts   UsersOnAccount[]
 }
 
 model Account {

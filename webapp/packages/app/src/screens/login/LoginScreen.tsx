@@ -90,7 +90,16 @@ export default class LoginScreen extends React.Component<
     try {
       const { data } = await login(getApiClient(), email, password);
       setAuthenticatedId(data.authenticatedId);
-      getRouter().push("/home");
+
+      // Check if there's a stored redirect URL from invitation
+      const redirectUrl = sessionStorage.getItem("redirectAfterAuth");
+      if (redirectUrl) {
+        sessionStorage.removeItem("redirectAfterAuth");
+        window.location.hash = redirectUrl;
+      } else {
+        getRouter().push("/home");
+      }
+
       this.setState({ loading: false });
     } catch (err) {
       const error = err as ApiError;

@@ -10,6 +10,7 @@ import {
   addUserToAccountFromInvitation,
 } from '../utils/invitation.utils';
 import { respondLogin } from '../../auth/controllers/login.controller';
+import { createUser } from '../../users/users.db';
 
 const prisma = getPrismaClient();
 
@@ -36,12 +37,16 @@ export async function handleInvitationReplyPublic(req: Request, res: Response) {
     // If accepting the invitation, add user to the account
     if (reply === 'ACCEPT') {
       // Find the user by email
-      const user = await prisma.user.findUnique({
+      let user = await prisma.user.findUnique({
         where: { email: email },
       });
 
       if (!user) {
-        return resError(res, 'user_not_found', 404);
+        // If user does not exist, create a new user
+        user = await createUser({
+          email: email,
+          meta: {},
+        });
       }
 
       // Add user to account using utility function

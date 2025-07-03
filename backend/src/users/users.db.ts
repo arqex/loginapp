@@ -18,5 +18,18 @@ export async function updateUser(id: string, user: Prisma.UserUpdateInput) {
 }
 
 export async function getUsersByQuery(query: Prisma.UserFindManyArgs) {
-  return await getPrismaClient().user.findMany(query);
+  // Exclude clientData from list queries by default
+  const defaultSelect = {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    email: true,
+    meta: true,
+    // clientData is intentionally excluded from list queries
+  };
+
+  return await getPrismaClient().user.findMany({
+    ...query,
+    select: query.select || defaultSelect,
+  });
 }

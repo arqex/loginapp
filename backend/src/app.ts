@@ -25,6 +25,6 @@ app.use('/users', usersRouter);
 app.use('/lists', todoListRouter);
 app.use('/items', todoItemRouter);
 app.use('/invitations', invitationRouter);
-app.use('/invitation-reply', invitationReplyRouter);
+app.use('/invitation_reply', invitationReplyRouter);
 
 export default app;

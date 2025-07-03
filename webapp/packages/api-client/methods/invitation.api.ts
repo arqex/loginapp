@@ -6,6 +6,20 @@ import type {
 import type { ResponseWithData } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
 
+// Reply to an invitation (public endpoint - no authentication required)
+export async function replyToInvitationPublic(
+  apiClient: ApiClient,
+  email: string,
+  secret: string,
+  reply: "ACCEPT" | "DECLINE"
+): Promise<ResponseWithData<{ authenticatedId?: string; token?: string }>> {
+  return await apiClient.requester.post("/invitation_reply", {
+    email,
+    secret,
+    reply,
+  });
+}
+
 // Update an invitation
 export async function updateInvitation(
   apiClient: ApiClient,
