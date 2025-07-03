@@ -60,6 +60,7 @@ export async function signupByProviderController(req: Request, res: Response) {
     // User is new, create them
     user = await createUser({
       email: email,
+      clientData: { needSetup: true },
       meta: {},
     });
   }

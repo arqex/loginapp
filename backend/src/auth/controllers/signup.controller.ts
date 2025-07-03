@@ -43,6 +43,7 @@ export async function signupController(req: Request, res: Response) {
 
   const user = await createUser({
     email: email,
+    clientData: { needSetup: true },
     meta: {},
   });
 

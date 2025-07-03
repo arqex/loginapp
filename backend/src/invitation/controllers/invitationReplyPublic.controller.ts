@@ -45,6 +45,7 @@ export async function handleInvitationReplyPublic(req: Request, res: Response) {
         // If user does not exist, create a new user
         user = await createUser({
           email: email,
+          clientData: { needSetup: true },
           meta: {},
         });
       }

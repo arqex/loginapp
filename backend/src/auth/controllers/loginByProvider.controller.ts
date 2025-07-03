@@ -76,6 +76,7 @@ export async function loginByProviderController(
   if (provider === 'apple') {
     const user = await createUser({
       email: email,
+      clientData: { needSetup: true },
       meta: {},
     });
     const verificationCode = generateVerificationCode();

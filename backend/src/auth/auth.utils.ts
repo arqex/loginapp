@@ -96,6 +96,7 @@ export async function handleOauthCallback(accessToken, refreshToken, profile) {
     // Register
     user = await createUser({
       email: profile.emails[0].value,
+      clientData: { needSetup: true },
       meta: {
         verified: true,
         name: profile.displayName,
