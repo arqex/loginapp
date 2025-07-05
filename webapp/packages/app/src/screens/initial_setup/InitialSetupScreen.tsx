@@ -47,9 +47,14 @@ class InitialSetupScreen extends React.Component<
   }
 
   _goNextStep = () => {
-    this.setState((prevState) => ({
-      currentStep: prevState.currentStep + 1,
-    }));
+    let nextStep = this.state.currentStep + 1;
+    const { account } = this.props.authContext;
+    if (nextStep === 2 && account?.name) {
+      // if the account has name, skip to the completed step
+      nextStep = 3;
+    }
+
+    this.setState({ currentStep: nextStep });
   };
 }
 

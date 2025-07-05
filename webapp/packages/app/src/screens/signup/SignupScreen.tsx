@@ -72,6 +72,7 @@ export default class SignupScreen extends React.Component<
             type="password"
             value={password}
             onChange={(e) => this.setState({ password: e.target.value })}
+            onKeyDown={this._onKeyDown}
           />
         </FormField>
 
@@ -128,6 +129,12 @@ export default class SignupScreen extends React.Component<
       } else {
         this.setState({ isSigningUp: false });
       }
+    }
+  };
+
+  _onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !this.state.isSigningUp) {
+      this._onSignupClick();
     }
   };
 
