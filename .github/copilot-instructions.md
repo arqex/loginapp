@@ -12,5 +12,6 @@ To know more about how the backend works, check the [backend documentation](../b
 To know about the test application, check the [test application documentation](./test-application.md).
 To know more about how the data load works in the apps check the [api-client documentation](../webapp/packages/api-client/readme.md).
 To know how to develop the web app, check the [webapp documentation](../webapp/packages/app/README.md).
+How to create e2e tests is explained in the [E2E tests documentation](./e2e-tests.md).
 
 [Follow these instructions for the task we are working now](./task-instructions.md).

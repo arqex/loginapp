@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "backend:serve": "cd backend && npm run start:dev",
     "webapp:serve": "cd webapp && npm run dev",
     "android": "cd mobileapp && npm run android",
-    "ios": "cd mobileapp && npm run ios"
+    "ios": "cd mobileapp && npm run ios",
+    "e2e": "playwright test --config=playwright.config.ts"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/runtime": "^7.23.5"
+    "@babel/runtime": "^7.23.5",
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^24.0.10"
   }
 }
