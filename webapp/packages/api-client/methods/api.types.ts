@@ -5,11 +5,20 @@ export interface ApiAccount {
   updatedAt: string;
 }
 
+export interface UserSignals {
+  missingAuth?: boolean;
+}
+export interface UserClientData {
+  needSetup?: boolean;
+}
+
 export interface ApiUser {
   id: string;
   name: string;
   email: string;
   picURL: string;
+  signals: UserSignals;
+  clientData: UserClientData;
 }
 
 export type ApiAccountRole = "ADMIN" | "EDITOR" | "COLLABORATOR";

@@ -4,6 +4,7 @@ import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { getUserListController } from './controllers/getUserList.controller';
 import { getUserAccountsController } from './controllers/getUserAccounts.controller';
 import { updateUserClientDataController } from './controllers/updateUserClientData.controller';
+import { updateUserController } from './controllers/updateUser.controller';
 import { requireSelfUser } from '../utils/permissions.utils';
 
 const usersRouter = Router();
@@ -12,6 +13,7 @@ const usersRouter = Router();
 // delete before publishing the API
 usersRouter.get('/', withJWTAuth, getUserListController);
 usersRouter.get('/:id', withJWTAuth, requireSelfUser(), getUserController);
+usersRouter.patch('/:id', withJWTAuth, requireSelfUser(), updateUserController);
 usersRouter.patch(
   '/:id/client-data',
   withJWTAuth,

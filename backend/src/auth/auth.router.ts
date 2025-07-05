@@ -12,6 +12,8 @@ import { oauthCallbackController } from './controllers/oauthCallback.controller'
 import { oauthStartController } from './controllers/oauthStart.controller';
 import { oauthCallback, oauthStart } from './strategies/oauth.strategy';
 import { signupByProviderController } from './controllers/signupByProvider.controller';
+import { setPasswordController } from './controllers/setPassword.controller';
+import { withJWTAuth } from './strategies/jwt.strategy';
 
 const authRouter = Router();
 
@@ -25,6 +27,7 @@ authRouter
   .get('/oauth_callback', oauthCallback, oauthCallbackController)
   .get('/oauth_start', oauthStart, oauthStartController)
   .post('/reset_password', resetPasswordController)
+  .post('/set_password', withJWTAuth, setPasswordController)
   .post('/verify_email', verifyEmailController)
   .post('/request_email_login', requestEmailLoginController)
   .post('/request_password_recovery', requestPasswordRecoveryController);

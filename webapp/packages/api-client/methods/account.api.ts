@@ -120,11 +120,11 @@ export function clearAccountUsersCache(
   apiClient.clearCachedResult(`/accounts/${accountId}/users`);
 }
 
-export function clearAccountTodoListsCache(
+export function invalidateAccountCache(
   apiClient: ApiClient,
   accountId: string
 ) {
-  apiClient.clearCachedResult(`/accounts/${accountId}/lists`);
+  apiClient.invalidateCacheResponse(`/accounts/${accountId}`);
 }
 
 // Cache invalidation functions for invitations

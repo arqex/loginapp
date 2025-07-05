@@ -14,6 +14,10 @@ export type WithAuthProps<T> = T & {
   authContext: AuthContext;
 };
 
+export type withAuthOptions = {
+  skipIntercept?: boolean; // If true, skips the interception of screens
+};
+
 /**
  * If you are creating an authenticated screen wrapped by withAuth
  * autologin is already performed, no need to use this HOC.
@@ -22,7 +26,8 @@ export type WithAuthProps<T> = T & {
  * E.g the login screen is the user is already authenticated, we redirect them to the home
  */
 export default function withAuth<Return, Props>(
-  Component: ComponentType<Props>
+  Component: ComponentType<Props>,
+  { skipIntercept }: withAuthOptions = {}
 ) {
   type withAuthProps = Omit<Props, keyof Return>;
 
@@ -39,18 +44,30 @@ export default function withAuth<Return, Props>(
       authenticatedId
     );
 
+    if (user && user?.signals.missingAuth && !skipIntercept) {
+      // If the user has missing auth signals, redirect to setup
+      getRouter().replace("/set_password");
+      return <SpinnerScreen />;
+    }
+
+    if (user && user?.clientData.needSetup && !skipIntercept) {
+      // If the user has client data that needs setup, redirect to setup
+      getRouter().replace("/initial_setup");
+      return <SpinnerScreen />;
+    }
+
     if (!user || !userAccounts) {
       return <SpinnerScreen />;
     }
 
     // If user has no accounts, redirect to create account screen
-    if (userAccounts.length === 0) {
+    if (userAccounts.length === 0 && !skipIntercept) {
       getRouter().replace("/create_account");
       return <SpinnerScreen />;
     }
 
     // Setting the context only make changes when user, account or role changes
-    setAuthContext(user, userAccounts[0].account, userAccounts[0].role);
+    setAuthContext(user, userAccounts[0]?.account, userAccounts[0]?.role);
     // Getting the context make sure that the object is the same
     const context = getAuthContext();
 

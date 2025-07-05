@@ -1,6 +1,11 @@
 import { ApiClient } from "../ApiClient";
 import type { CachedResponse, ResponseWithData } from "../apiClient.types";
-import type { ApiUser, EmptyObject, UserAccount } from "./api.types";
+import type {
+  ApiUser,
+  EmptyObject,
+  UserAccount,
+  UserClientData,
+} from "./api.types";
 
 export async function loadUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.get(
@@ -37,6 +42,31 @@ export async function updateUser(
   )) as ResponseWithData<EmptyObject>;
 }
 
+export async function updateUserClientData(
+  apiClient: ApiClient,
+  id: string,
+  clientData: UserClientData
+) {
+  return (await apiClient.requester.patch(`/users/${id}/client-data`, {
+    clientData,
+  })) as ResponseWithData<EmptyObject>;
+}
+
+export async function updateUserClientDataPartial(
+  apiClient: ApiClient,
+  id: string,
+  clientDataUpdate: Partial<UserClientData>
+) {
+  // First get the current user to merge with existing client data
+  const userResponse = await loadUser(apiClient, id);
+  const currentClientData = userResponse.data.clientData || {};
+
+  // Merge the update with existing client data
+  const newClientData = { ...currentClientData, ...clientDataUpdate };
+
+  return updateUserClientData(apiClient, id, newClientData);
+}
+
 export async function deleteUser(apiClient: ApiClient, id: string) {
   return (await apiClient.requester.delete(
     `/users/${id}`
@@ -47,6 +77,17 @@ export function invalidateUserAccountsCache(apiClient: ApiClient, id: string) {
   apiClient.invalidateCacheResponse(`/users/${id}/accounts`);
 }
 
+export function invalidateUserCache(apiClient: ApiClient, id: string) {
+  apiClient.invalidateCacheResponse(`/users/${id}`);
+}
+
 export function clearUserAccountsCache(apiClient: ApiClient, id: string) {
   apiClient.clearCachedResult(`/users/${id}/accounts`);
+}
+
+export function invalidateUserClientDataCache(
+  apiClient: ApiClient,
+  id: string
+) {
+  apiClient.invalidateCacheResponse(`/users/${id}/client-data`);
 }

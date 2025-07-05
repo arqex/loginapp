@@ -59,6 +59,7 @@ export default class LoginScreen extends React.Component<
                 type="password"
                 value={password}
                 onChange={(e) => this.setState({ password: e.target.value })}
+                onKeyDown={this._onPasswordKeyDown}
               />
             </FormField>
             <Button onClick={this._onLoginClick} loading={loading}>
@@ -122,6 +123,12 @@ export default class LoginScreen extends React.Component<
 
   _startGoogleOauth = async () => {
     redirectToOauth("google");
+  };
+
+  _onPasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      this._onLoginClick();
+    }
   };
 
   getValidationErrors() {

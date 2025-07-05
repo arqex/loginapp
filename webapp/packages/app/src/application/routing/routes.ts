@@ -7,6 +7,8 @@ import SignupScreen from "../../screens/signup/SignupScreen";
 import VerifyEmailScreen from "../../screens/verify_email/VerifyEmailScreen";
 import OttLoginScreen from "../../screens/ott_login/OttLoginScreen";
 import ResetPasswordScreen from "../../screens/reset_password/ResetPasswordScreen";
+import SetPasswordScreen from "../../screens/set_password/SetPasswordScreen";
+import InitialSetupScreen from "../../screens/initial_setup/InitialSetupScreen";
 import CreateAccountScreen from "../../screens/create_account/CreateAccountScreen";
 import HomeScreen from "../../screens/home/HomeScreen";
 import TodoListScreen from "../../screens/todoList/TodoListScreen";
@@ -23,6 +25,8 @@ export const routes: ReactRoute[] = [
   { path: "/verify_email", cb: VerifyEmailScreen },
   { path: "/ott_login", cb: OttLoginScreen },
   { path: "/reset_password", cb: ResetPasswordScreen },
+  { path: "/set_password", cb: SetPasswordScreen },
+  { path: "/initial_setup", cb: InitialSetupScreen as any },
   { path: "/create_account", cb: CreateAccountScreen },
   { path: "/invitation_reply", cb: InvitationReplyScreen },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

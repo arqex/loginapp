@@ -141,3 +141,9 @@ export async function signupByProvider(
     }
   )) as ResponseWithData<LoginResponseWithToken>;
 }
+
+export async function setPassword(apiClient: ApiClient, password: string) {
+  return (await apiClient.requester.post("/auth/set_password", {
+    password,
+  })) as ResponseWithData<LoginResponse>;
+}
