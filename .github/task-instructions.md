@@ -1,10 +1,20 @@
-# Refactor the sidebar in webapp
+# Make the home screen more useful
 
-Right now the sidebar is displaying the link to the account settings, and the list of todolists, with a button to create a new todolist.
+Right now the home screen only have information about the user account.
 
-We need to refactor the sidebar to:
-1. Display a loginapp logo at the top
-2. Below, the list of todolists. When there are no todolists, it should display a message saying "No todolists found. Create one to get started."
-3. Below the list of todolists, the menu links with 2 elements: Home and Account Settings.
+We want to make it modular display widgets about different information.
 
-You can use the playwright MCP and the cookie authentication provided by `e2e/utils/playwright.utils.ts` to check how the sidebar is looking and iterate.
+Create a folder widgets in the home screen folder where the widgets will be stored.
+
+One widget should contain the account information:
+* Title: Current Account
+* Then a box like the current one with the account details.
+* Under the box, the user permissions on the account, like the current one.
+
+A second widget should contain the lists of todolists:
+* Title: Todo Lists
+* Then a list of the todo lists, with the name and a link to the todo list
+
+The widgets should be displayed in a grid layout, with two columns.
+
+Every widget need to be self-contained, so they should load their own data.
