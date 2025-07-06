@@ -619,7 +619,7 @@ class AccountInvitationsScreen extends React.Component<
 
     if (!authContext.account) {
       return (
-        <AuthLayout appMenu={<Sidebar />} contentWidth="full">
+        <AuthLayout appMenu={<Sidebar />}>
           <ContentLayout titleBar={this.renderTitleBar()}>
             <Box minH="100vh" bg="gray.50" p="6">
               <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">

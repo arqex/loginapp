@@ -1,4 +1,12 @@
-import { MenuItem, Button, Text, VStack, Box, MenuHeading } from "@loginapp/ui";
+import {
+  MenuItem,
+  Button,
+  Text,
+  VStack,
+  Box,
+  MenuHeading,
+  Separator,
+} from "@loginapp/ui";
 import { CheckCircle, Add, Settings, Home } from "@loginapp/ui/src/icons/svg";
 import React from "react";
 import { getApiClient } from "../../../application/stores/apiClient";
@@ -134,6 +142,11 @@ export default class SidebarNavigation extends React.Component<
             </Box>
           </VStack>
         </VStack>
+
+        {/* Separator */}
+        <Box paddingX="16px">
+          <Separator />
+        </Box>
 
         {/* Menu Links Section */}
         <VStack alignItems="stretch" paddingBottom="16px">

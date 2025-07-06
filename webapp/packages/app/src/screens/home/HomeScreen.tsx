@@ -34,7 +34,7 @@ class HomeScreen extends React.Component<HomeScreenProps> {
     const { authContext } = this.props;
 
     return (
-      <AuthLayout appMenu={<Sidebar />} contentWidth="full">
+      <AuthLayout appMenu={<Sidebar />}>
         <ContentLayout titleBar={this.renderTitleBar()}>
           <Box minH="100vh" bg="gray.50" p="6">
             <VStack maxW="1200px" mx="auto" gap="6" alignItems="stretch">

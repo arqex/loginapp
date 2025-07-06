@@ -77,7 +77,7 @@ class TodoListScreen extends React.Component<
     const todoListName = todoList?.name || "Loading...";
 
     return (
-      <AuthLayout appMenu={<Sidebar />} contentWidth="full">
+      <AuthLayout appMenu={<Sidebar />}>
         <ContentLayout titleBar={this.renderTitleBar(todoListName)}>
           {this.renderContent()}
         </ContentLayout>
