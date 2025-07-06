@@ -73,11 +73,38 @@ class TodoListScreen extends React.Component<
   };
 
   render() {
+    const { data: todoList } = todoListLoader(getApiClient(), this.todoListId);
+    const todoListName = todoList?.name || "Loading...";
+
+    return (
+      <AuthLayout appMenu={<Sidebar />} contentWidth="full">
+        <ContentLayout titleBar={this.renderTitleBar(todoListName)}>
+          {this.renderContent()}
+        </ContentLayout>
+      </AuthLayout>
+    );
+  }
+
+  renderContent() {
     const { authContext } = this.props;
     const { newItemTitle, isCreating } = this.state;
 
+    // Handle invalid TodoList ID
     if (!this.todoListId) {
-      return <div>Invalid TodoList ID</div>;
+      return (
+        <Box
+          minH="100vh"
+          bg="gray.50"
+          p="6"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text fontSize="lg" style={{ color: "#e53e3e" }}>
+            Invalid TodoList ID
+          </Text>
+        </Box>
+      );
     }
 
     const { data: todoList } = todoListLoader(getApiClient(), this.todoListId);
@@ -86,55 +113,63 @@ class TodoListScreen extends React.Component<
       this.todoListId
     );
 
+    // Show loading spinner while data is being fetched
     if (!todoList || !todoItems) {
-      return <SpinnerScreen />;
+      return (
+        <Box
+          minH="100vh"
+          bg="gray.50"
+          p="6"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <SpinnerScreen />
+        </Box>
+      );
     }
 
     return (
-      <AuthLayout appMenu={<Sidebar />} contentWidth="full">
-        <ContentLayout titleBar={this.renderTitleBar(todoList.name)}>
-          <Box minH="100vh" bg="gray.50" p="6">
-            <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
-              {/* Create new item */}
-              <Card padding="md">
-                <VStack alignItems="stretch" gap="3">
-                  <Heading size="sm">Add New Item</Heading>
-                  <HStack gap="3">
-                    <Input
-                      placeholder="Enter todo item title..."
-                      value={newItemTitle}
-                      onChange={(e) =>
-                        this.setState({ newItemTitle: e.target.value })
-                      }
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          this.handleCreateItem();
-                        }
-                      }}
-                      flex="1"
-                    />
-                    <Button
-                      onClick={this.handleCreateItem}
-                      colorScheme="blue"
-                      loading={isCreating}
-                      disabled={!newItemTitle.trim()}
-                    >
-                      Add Item
-                    </Button>
-                  </HStack>
-                </VStack>
-              </Card>
-
-              {/* TodoItems List */}
-              <TodoListItems
-                items={todoItems}
-                todoListId={this.todoListId}
-                userRole={authContext.role || ""}
-              />
+      <Box minH="100vh" bg="gray.50" p="6">
+        <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
+          {/* Create new item */}
+          <Card padding="md">
+            <VStack alignItems="stretch" gap="3">
+              <Heading size="sm">Add New Item</Heading>
+              <HStack gap="3">
+                <Input
+                  placeholder="Enter todo item title..."
+                  value={newItemTitle}
+                  onChange={(e) =>
+                    this.setState({ newItemTitle: e.target.value })
+                  }
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.handleCreateItem();
+                    }
+                  }}
+                  flex="1"
+                />
+                <Button
+                  onClick={this.handleCreateItem}
+                  colorScheme="blue"
+                  loading={isCreating}
+                  disabled={!newItemTitle.trim()}
+                >
+                  Add Item
+                </Button>
+              </HStack>
             </VStack>
-          </Box>
-        </ContentLayout>
-      </AuthLayout>
+          </Card>
+
+          {/* TodoItems List */}
+          <TodoListItems
+            items={todoItems}
+            todoListId={this.todoListId}
+            userRole={authContext.role || ""}
+          />
+        </VStack>
+      </Box>
     );
   }
 

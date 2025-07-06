@@ -1,13 +1,10 @@
-# Create e2e utility to login via cookie before opening the browser
+# Refactor the sidebar in webapp
 
-We can use the Playwright API, and the api-client to create a utility that logs in via cookie before opening the browser, so tests can start with the user already logged in.
+Right now the sidebar is displaying the link to the account settings, and the list of todolists, with a button to create a new todolist.
 
-The folder structure will change. `/e2e` will contain 2 folders:
+We need to refactor the sidebar to:
+1. Display a loginapp logo at the top
+2. Below, the list of todolists. When there are no todolists, it should display a message saying "No todolists found. Create one to get started."
+3. Below the list of todolists, the menu links with 2 elements: Home and Account Settings.
 
-* `tests`: where the tests will be located
-* `utils`: where the utility files will be located
-
-The utility file can be called `playwright.utils.ts`, and will contain a method `cookieLogin` that receives an email and a password, and use the `/login` endpoint of the api-client to get the cookie, and then set the cookie in the browser context.
-
-The `/login` endpoint will also return an `authenticatedId` in the body, which needs to be stored in the browser's local storage under the key `la_AUTH_ID`.
-
+You can use the playwright MCP and the cookie authentication provided by `e2e/utils/playwright.utils.ts` to check how the sidebar is looking and iterate.

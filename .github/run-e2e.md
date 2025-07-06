@@ -4,6 +4,8 @@ This application uses Playwright for end-to-end testing. It's recommended to ins
 
 The webapp is already running in `http://localhost:5173` and the backend in `http://localhost:3000` for the tests to work correctly.
 
+There is a playwright MCP available to let copilot interact with playwright. The way you can create the tests is by using the playwright MCP to run the app and inspect the elements that need to be tested. 
+
 ## Test Structure
 
 The e2e directory is organized as follows:
@@ -31,26 +33,6 @@ test('authenticated test', async ({ context }) => {
 });
 ```
 
-### `loginAndNavigate(context, email, password, path)`
-
-Logs in a user and navigates to a specific page, returning both the page and the authenticated user ID.
-
-```typescript
-import { loginAndNavigate } from '../utils/playwright.utils';
-
-test('authenticated test with navigation', async ({ context }) => {
-  const { page, authenticatedId } = await loginAndNavigate(
-    context, 
-    'admin@example.com', 
-    'Apptest0',
-    '/dashboard'
-  );
-  
-  // User is logged in and on the /dashboard page
-  expect(page.url()).toContain('/dashboard');
-});
-```
-
 ## Available Test Users
 
 The application comes with pre-configured test accounts:
@@ -74,5 +56,3 @@ npx playwright test --ui
 # Run a specific test file
 npx playwright test e2e/tests/001.render.spec.ts
 ```
-
-There is a playwright MCP available to let copilot interact with playwright. The way you can create the tests is by using the playwright MCP to run the app and inspect the elements that need to be tested. 
