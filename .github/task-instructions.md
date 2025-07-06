@@ -1,7 +1,13 @@
-# Create some playwright tests
+# Create e2e utility to login via cookie before opening the browser
 
-WE want to add some coverage to the app by using playwright tests. These tests should cover the main functionalities of the app, such as login, team member invite, and parent-child invite.
+We can use the Playwright API, and the api-client to create a utility that logs in via cookie before opening the browser, so tests can start with the user already logged in.
 
-The webapp is already running in `http://localhost:5173` and the backend in `http://localhost:3000` for the tests to work correctly.
+The folder structure will change. `/e2e` will contain 2 folders:
 
-The way you can create the tests is by using the playwright MPC to run the app and inspect the elements that need to be tested.
+* `tests`: where the tests will be located
+* `utils`: where the utility files will be located
+
+The utility file can be called `playwright.utils.ts`, and will contain a method `cookieLogin` that receives an email and a password, and use the `/login` endpoint of the api-client to get the cookie, and then set the cookie in the browser context.
+
+The `/login` endpoint will also return an `authenticatedId` in the body, which needs to be stored in the browser's local storage under the key `la_AUTH_ID`.
+

@@ -99,7 +99,7 @@ The application comes with pre-configured test accounts:
   - `admin@example.com` (ADMIN)
   - `editor@example.com` (EDITOR) 
   - `contributor@example.com` (CONTRIBUTOR)
-- All test users have password: `Testapp0`
+- All test users have password: `Apptest0`
 
 ## Getting Started
 

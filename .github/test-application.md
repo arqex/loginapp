@@ -19,4 +19,4 @@ The app also comes with some data created to let developers test how it works.
 * 2 accounts: simple and collaboration accounts
 * simple account has one ADMIN user simple@example.com
 * collaboration account has one ADMIN (admin@example.com), one EDITOR (editor@example.com) and one CONTRIBUTOR (contributor@example.com)
-* The password for all users is `Testapp0`
+* The password for all users is `Apptest0`

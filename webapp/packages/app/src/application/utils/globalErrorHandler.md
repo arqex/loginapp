@@ -61,7 +61,7 @@ const handleDeleteItem = async (itemId: string) => {
 
 To test the permission error handling:
 
-1. Login as a contributor user: `contributor@example.com` (password: `Testapp0`)
+1. Login as a contributor user: `contributor@example.com` (password: `Apptest0`)
 2. Try to perform actions that require higher permissions:
    - Delete a todo item (requires EDITOR role)
    - Create a new todo list (requires ADMIN role)
