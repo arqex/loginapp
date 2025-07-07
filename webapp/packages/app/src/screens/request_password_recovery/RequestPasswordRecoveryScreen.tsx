@@ -13,6 +13,7 @@ import { isValidEmailAddress } from "../../application/utils/validation.utils";
 import { requestPasswordRecovery, type ApiError } from "@loginapp/api-client";
 import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
+import withUnauth from "../../application/auth/withUnauth.hoc";
 
 interface RequestPasswordRecoveryScreenProps {}
 interface RequestPasswordRecoveryScreenState {
@@ -22,7 +23,7 @@ interface RequestPasswordRecoveryScreenState {
   isSuccess: boolean;
 }
 
-export default class RequestPasswordRecoveryScreen extends React.Component<
+class RequestPasswordRecoveryScreen extends React.Component<
   RequestPasswordRecoveryScreenProps,
   RequestPasswordRecoveryScreenState
 > {
@@ -108,3 +109,10 @@ export default class RequestPasswordRecoveryScreen extends React.Component<
     }
   };
 }
+
+const RequestPasswordRecoveryScreenWithUnauth = withUnauth(
+  RequestPasswordRecoveryScreen
+);
+RequestPasswordRecoveryScreenWithUnauth.displayName =
+  "RequestPasswordRecoveryScreen";
+export default RequestPasswordRecoveryScreenWithUnauth;

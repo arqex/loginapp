@@ -13,6 +13,7 @@ import { isValidEmailAddress } from "../../application/utils/validation.utils";
 import { requestEmailLogin, type ApiError } from "@loginapp/api-client";
 import { getApiClient } from "../../application/stores/apiClient";
 import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import withUnauth from "../../application/auth/withUnauth.hoc";
 
 interface RequestEmailLoginScreenProps {}
 interface RequestEmailLoginScreenState {
@@ -22,7 +23,7 @@ interface RequestEmailLoginScreenState {
   isSuccess: boolean;
 }
 
-export default class RequestEmailLoginScreen extends React.Component<
+class RequestEmailLoginScreen extends React.Component<
   RequestEmailLoginScreenProps,
   RequestEmailLoginScreenState
 > {
@@ -109,3 +110,7 @@ export default class RequestEmailLoginScreen extends React.Component<
     }
   };
 }
+
+const RequestEmailLoginScreenWithUnauth = withUnauth(RequestEmailLoginScreen);
+RequestEmailLoginScreenWithUnauth.displayName = "RequestEmailLoginScreen";
+export default RequestEmailLoginScreenWithUnauth;

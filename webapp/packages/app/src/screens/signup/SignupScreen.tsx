@@ -18,6 +18,7 @@ import { signup, type ApiError } from "@loginapp/api-client";
 import { redirectToOauth } from "../../application/auth/auth.service";
 import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { getApiClient } from "../../application/stores/apiClient";
+import withUnauth from "../../application/auth/withUnauth.hoc";
 
 interface SignupScreenProps {}
 interface SignupScreenState {
@@ -28,7 +29,7 @@ interface SignupScreenState {
   isSuccess: boolean;
 }
 
-export default class SignupScreen extends React.Component<
+class SignupScreen extends React.Component<
   SignupScreenProps,
   SignupScreenState
 > {
@@ -154,3 +155,7 @@ export default class SignupScreen extends React.Component<
     if (Object.keys(errors).length > 0) return errors;
   }
 }
+
+const SignupScreenWithUnauth = withUnauth(SignupScreen);
+SignupScreenWithUnauth.displayName = "SignupScreen";
+export default SignupScreenWithUnauth;

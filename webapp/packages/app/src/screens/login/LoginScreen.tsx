@@ -18,6 +18,7 @@ import { login, type ApiError } from "@loginapp/api-client";
 import { redirectToOauth } from "../../application/auth/auth.service";
 import { getApiClient } from "../../application/stores/apiClient";
 import { setAuthenticatedId } from "../../application/auth/auth.context";
+import withUnauth from "../../application/auth/withUnauth.hoc";
 
 interface LoginScreenProps {}
 interface LoginScreenState {
@@ -27,10 +28,7 @@ interface LoginScreenState {
   errors: { [key: string]: string | undefined };
 }
 
-export default class LoginScreen extends React.Component<
-  LoginScreenProps,
-  LoginScreenState
-> {
+class LoginScreen extends React.Component<LoginScreenProps, LoginScreenState> {
   state: LoginScreenState = {
     email: "",
     password: "",
@@ -144,3 +142,7 @@ export default class LoginScreen extends React.Component<
     }
   }
 }
+
+const LoginScreenWithUnauth = withUnauth(LoginScreen);
+LoginScreenWithUnauth.displayName = "LoginScreen";
+export default LoginScreenWithUnauth;
