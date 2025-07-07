@@ -42,6 +42,17 @@ export async function loadAccountUsers(
   return await apiClient.requester.get(`/accounts/${accountId}/users`);
 }
 
+// Remove a user from an account
+export async function deleteAccountMember(
+  apiClient: ApiClient,
+  accountId: string,
+  userId: string
+): Promise<ResponseWithData<{ success: boolean; message: string }>> {
+  return await apiClient.requester.delete(
+    `/accounts/${accountId}/users/${userId}`
+  );
+}
+
 // Load todo lists in an account
 export async function loadAccountTodoLists(
   apiClient: ApiClient,

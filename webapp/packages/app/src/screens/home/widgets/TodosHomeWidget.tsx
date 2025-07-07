@@ -47,7 +47,7 @@ class TodosHomeWidget extends React.Component<TodosHomeWidgetProps> {
                   >
                     <HStack justifyContent="space-between" alignItems="center">
                       <VStack alignItems="flex-start" gap="1">
-                        <Link href={`#/lists/${todoList.id}`} color="action">
+                        <Link href={`/lists/${todoList.id}`} color="action">
                           <Text fontWeight="semibold">{todoList.name}</Text>
                         </Link>
                         <Text fontSize="sm" color="lighter">

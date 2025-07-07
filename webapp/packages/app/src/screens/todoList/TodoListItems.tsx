@@ -138,6 +138,7 @@ class TodoListItems extends React.Component<
             flex="1"
             textDecoration={item.completed ? "line-through" : "none"}
             color={item.completed ? "lighter" : "inherit"}
+            opacity={item.completed ? 0.7 : 1}
           >
             {item.title}
           </Text>

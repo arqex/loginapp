@@ -21,6 +21,7 @@ import {
   updateAccount,
   clearAccountCache,
   clearAccountUsersCache,
+  deleteAccountMember,
 } from "@loginapp/api-client";
 import { accountUsersLoader } from "../../application/loaders";
 import { AuthLayout, ContentLayout } from "../../components/layouts";
@@ -35,6 +36,8 @@ interface AccountScreenState {
   newAccountName: string;
   isSaving: boolean;
   errors: ValidationErrors;
+  removingUserId: string | null;
+  isRemoving: boolean;
 }
 
 class AccountScreen extends React.Component<
@@ -46,6 +49,8 @@ class AccountScreen extends React.Component<
     newAccountName: "",
     isSaving: false,
     errors: {},
+    removingUserId: null,
+    isRemoving: false,
   };
 
   componentDidMount() {
@@ -82,6 +87,44 @@ class AccountScreen extends React.Component<
       newAccountName: "",
       errors: {},
     });
+  };
+
+  handleRemoveUser = (userId: string) => {
+    this.setState({ removingUserId: userId });
+  };
+
+  handleCancelRemove = () => {
+    this.setState({ removingUserId: null });
+  };
+
+  handleConfirmRemove = async () => {
+    const { removingUserId } = this.state;
+    const { authContext } = this.props;
+
+    if (!removingUserId || !authContext.account) return;
+
+    this.setState({ isRemoving: true });
+
+    try {
+      await deleteAccountMember(
+        getApiClient(),
+        authContext.account.id,
+        removingUserId
+      );
+
+      // Clear account users cache to refresh data
+      clearAccountUsersCache(getApiClient(), authContext.account.id);
+
+      toaster.success(t("User removed from account successfully!"));
+      this.setState({
+        removingUserId: null,
+        isRemoving: false,
+      });
+    } catch (error) {
+      console.error("Error removing user from account:", error);
+      toaster.error(t("Failed to remove user from account"));
+      this.setState({ isRemoving: false });
+    }
   };
 
   handleSaveAccountName = async () => {
@@ -222,6 +265,7 @@ class AccountScreen extends React.Component<
 
   renderAccountMembers = () => {
     const { authContext } = this.props;
+    const { removingUserId, isRemoving } = this.state;
 
     if (!authContext.account) return null;
 
@@ -230,6 +274,8 @@ class AccountScreen extends React.Component<
       accountUsersLoader(getApiClient(), authContext.account.id);
 
     const accountUsers = accountUsersResponse?.items || [];
+    const currentUserId = authContext.user?.id;
+    const isCurrentUserAdmin = authContext.role === "ADMIN";
 
     return (
       <Card padding="md">
@@ -272,17 +318,40 @@ class AccountScreen extends React.Component<
                       <Badge colorScheme={this.getRoleBadgeColor(user.role)}>
                         {t(user.role)}
                       </Badge>
-                      {authContext.role === "ADMIN" &&
-                        user.id !== authContext.user.id && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            colorScheme="red"
-                            disabled
-                          >
-                            {t("Remove")}
-                          </Button>
-                        )}
+                      {isCurrentUserAdmin && user.id !== currentUserId && (
+                        <>
+                          {removingUserId === user.id ? (
+                            <HStack gap="1">
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                colorScheme="red"
+                                onClick={this.handleConfirmRemove}
+                                loading={isRemoving}
+                              >
+                                {t("Confirm")}
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={this.handleCancelRemove}
+                                disabled={isRemoving}
+                              >
+                                {t("Cancel")}
+                              </Button>
+                            </HStack>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              colorScheme="red"
+                              onClick={() => this.handleRemoveUser(user.id)}
+                            >
+                              {t("Remove")}
+                            </Button>
+                          )}
+                        </>
+                      )}
                     </VStack>
                   </HStack>
                 </Box>
@@ -294,59 +363,6 @@ class AccountScreen extends React.Component<
               )}
             </VStack>
           )}
-        </VStack>
-      </Card>
-    );
-  };
-
-  renderPermissionsInfo = () => {
-    const { authContext } = this.props;
-
-    if (!authContext.role) return null;
-
-    const permissions = {
-      ADMIN: [
-        "Create, edit, and delete todo lists",
-        "Create, edit, and delete todo items",
-        "Manage account settings",
-        "Invite and remove members",
-        "View all account data",
-      ],
-      EDITOR: [
-        "Create, edit, and delete todo items",
-        "Mark todo items as done/undone",
-        "View all todo lists and items",
-        "View account information",
-      ],
-      COLLABORATOR: [
-        "Mark todo items as done/undone",
-        "View todo lists and items",
-        "View account information",
-      ],
-    };
-
-    return (
-      <Card padding="md">
-        <VStack alignItems="stretch" gap="4">
-          <Heading size="sm">{t("Your Permissions")}</Heading>
-          <Box>
-            <Text mb="3" fontWeight="medium">
-              {t("As")} {authContext.role} {t("in")} "
-              {authContext.account?.name}", {t("you can")}:
-            </Text>
-            <VStack alignItems="flex-start" gap="1">
-              {permissions[authContext.role as keyof typeof permissions]?.map(
-                (permission, index) => (
-                  <HStack key={index} gap="2">
-                    <Text fontSize="sm" color="action">
-                      ✓
-                    </Text>
-                    <Text fontSize="sm">{permission}</Text>
-                  </HStack>
-                )
-              )}
-            </VStack>
-          </Box>
         </VStack>
       </Card>
     );
@@ -365,48 +381,46 @@ class AccountScreen extends React.Component<
     );
   };
 
-  render() {
+  renderContent = () => {
     const { authContext } = this.props;
 
     if (!authContext.account) {
       return (
-        <AuthLayout appMenu={<Sidebar />}>
-          <ContentLayout titleBar={this.renderTitleBar()}>
-            <Box minH="100vh" bg="gray.50" p="6">
-              <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
-                <Card padding="md">
-                  <VStack gap="4">
-                    <Heading size="sm">{t("No Account Found")}</Heading>
-                    <Text textAlign="center" color="lighter">
-                      {t(
-                        "You don't have access to any account. Please contact your administrator."
-                      )}
-                    </Text>
-                  </VStack>
-                </Card>
+        <Box minH="100vh" bg="gray.50" p="6">
+          <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
+            <Card padding="md">
+              <VStack gap="4">
+                <Heading size="sm">{t("No Account Found")}</Heading>
+                <Text textAlign="center" color="lighter">
+                  {t(
+                    "You don't have access to any account. Please contact your administrator."
+                  )}
+                </Text>
               </VStack>
-            </Box>
-          </ContentLayout>
-        </AuthLayout>
+            </Card>
+          </VStack>
+        </Box>
       );
     }
 
     return (
+      <Box minH="100vh" bg="gray.50" p="6">
+        <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
+          {this.renderAccountInfo()}
+
+          <Separator />
+
+          {this.renderAccountMembers()}
+        </VStack>
+      </Box>
+    );
+  };
+
+  render() {
+    return (
       <AuthLayout appMenu={<Sidebar />}>
         <ContentLayout titleBar={this.renderTitleBar()}>
-          <Box minH="100vh" bg="gray.50" p="6">
-            <VStack maxW="800px" mx="auto" gap="6" alignItems="stretch">
-              {this.renderAccountInfo()}
-
-              <Separator />
-
-              {this.renderAccountMembers()}
-
-              <Separator />
-
-              {this.renderPermissionsInfo()}
-            </VStack>
-          </Box>
+          {this.renderContent()}
         </ContentLayout>
       </AuthLayout>
     );

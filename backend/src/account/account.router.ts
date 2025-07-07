@@ -6,6 +6,7 @@ import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { getAccountUserListController } from './controllers/getAccountUserList.controller';
 import { getAccountTodoListController } from './controllers/getAccountTodoList.controller';
 import { createAccountTodoListController } from './controllers/createAccountTodoList.controller';
+import { deleteAccountMemberController } from './controllers/deleteAccountMember.controller';
 import { requireAdmin, requireCollaborator } from '../utils/permissions.utils';
 import { getAccountInvitationsController } from '../invitation/controllers/getAccountInvitations.controller';
 import { createInvitationController } from '../invitation/controllers/createInvitation.controller';
@@ -29,6 +30,14 @@ accountRouter.get(
   withJWTAuth,
   requireCollaborator(),
   getAccountUserListController,
+);
+
+// Remove a user from an account
+accountRouter.delete(
+  '/:accountId/users/:userId',
+  withJWTAuth,
+  requireAdmin(),
+  deleteAccountMemberController,
 );
 
 accountRouter.get(
