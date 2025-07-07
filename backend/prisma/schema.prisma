@@ -90,7 +90,7 @@ model TodoItem {
   title      String
   completed  Boolean  @default(false)
   todoListId String
-  todoList   TodoList @relation(fields: [todoListId], references: [id])
+  todoList   TodoList @relation(fields: [todoListId], references: [id], onDelete: Cascade)
 
   @@index([todoListId], map: "TodoItem_todoListId_fkey")
 }

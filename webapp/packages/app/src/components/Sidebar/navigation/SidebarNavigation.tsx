@@ -199,7 +199,7 @@ export default class SidebarNavigation extends React.Component<
       // The load listener will automatically trigger a re-render
     } catch (error) {
       console.error("Failed to create TodoList:", error);
-      alert("Failed to create TodoList. Please try again.");
+      throw error;
     } finally {
       this.setState({ isCreatingTodoList: false });
     }

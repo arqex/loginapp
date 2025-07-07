@@ -360,7 +360,7 @@ class AccountInvitationsScreen extends React.Component<
 
     if (error) {
       // Check if it's a permission error
-      const isPermissionError = error?.status === 403;
+      const isPermissionError = error?.error === "forbidden";
 
       return (
         <Card padding="md">

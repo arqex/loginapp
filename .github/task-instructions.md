@@ -1,20 +1,3 @@
-# Make the home screen more useful
+# Complete all missing actions for the todolists
 
-Right now the home screen only have information about the user account.
-
-We want to make it modular display widgets about different information.
-
-Create a folder widgets in the home screen folder where the widgets will be stored.
-
-One widget should contain the account information:
-* Title: Current Account
-* Then a box like the current one with the account details.
-* Under the box, the user permissions on the account, like the current one.
-
-A second widget should contain the lists of todolists:
-* Title: Todo Lists
-* Then a list of the todo lists, with the name and a link to the todo list
-
-The widgets should be displayed in a grid layout, with two columns.
-
-Every widget need to be self-contained, so they should load their own data.
+We need to ensure that is possible to edit the name of a todolist and also it's possible to delete. As this is a demo application, those options should be available for all the users, but when a user doesn't have permissions the it should re-throw the error to let the general error handler display the permission modal.

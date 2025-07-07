@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { createAsyncRouter } from '../utils/asyncRouter';
 import { loginController } from './controllers/login.controller';
 import { logoutController } from './controllers/logout.controller';
 import { signupController } from './controllers/signup.controller';
@@ -15,7 +15,7 @@ import { signupByProviderController } from './controllers/signupByProvider.contr
 import { setPasswordController } from './controllers/setPassword.controller';
 import { withJWTAuth } from './strategies/jwt.strategy';
 
-const authRouter = Router();
+const authRouter = createAsyncRouter();
 
 authRouter
   .post('/login', loginController)
@@ -32,4 +32,4 @@ authRouter
   .post('/request_email_login', requestEmailLoginController)
   .post('/request_password_recovery', requestPasswordRecoveryController);
 
-export default authRouter;
+export default authRouter.getRouter();

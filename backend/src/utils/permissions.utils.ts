@@ -84,9 +84,7 @@ export function requireRoleWithExtractor(
       // Extract account ID using the provided extractor
       const accountId = await accountIdExtractor(req);
       if (!accountId) {
-        return resError(res, 'account_id_required', 400, {
-          reason: 'Account ID could not be extracted from request',
-        });
+        return resError(res, 'not_found', 404);
       }
 
       // Get user's role in the account

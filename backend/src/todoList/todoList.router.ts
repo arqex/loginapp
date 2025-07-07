@@ -1,28 +1,21 @@
 // Router for TodoList CRUD endpoints
-import { Router } from 'express';
 import { withJWTAuth } from '../auth/strategies/jwt.strategy';
 import { requireRoleForTodoList } from '../utils/permissions.utils';
-import { AuthRequest } from '../auth/auth.types';
-import * as db from './todoList.db';
-import * as todoItemDb from '../todoItem/todoItem.db';
+import { createAsyncRouter } from '../utils/asyncRouter';
 import { createTodoListItemController } from './createTodoListItem.controller';
+import { getTodoListController } from './controllers/getTodoList.controller';
+import { getTodoListItemsController } from './controllers/getTodoListItems.controller';
+import { updateTodoListController } from './controllers/updateTodoList.controller';
+import { deleteTodoListController } from './controllers/deleteTodoList.controller';
 
-const router = Router();
+const router = createAsyncRouter();
 
 // Get single TodoList - requires COLLABORATOR role
 router.get(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('COLLABORATOR'),
-  async (req: AuthRequest, res) => {
-    try {
-      const list = await db.getTodoListById(req.params.id);
-      if (!list) return res.status(404).json({ error: 'Not found' });
-      res.json(list);
-    } catch (e) {
-      res.status(400).json({ error: e.message });
-    }
-  },
+  getTodoListController,
 );
 
 // Get all TodoItems for a specific TodoList - requires COLLABORATOR role
@@ -30,14 +23,7 @@ router.get(
   '/:id/items',
   withJWTAuth,
   requireRoleForTodoList('COLLABORATOR'),
-  async (req: AuthRequest, res) => {
-    try {
-      const items = await todoItemDb.getTodoItemsByList(req.params.id);
-      res.json(items);
-    } catch (e) {
-      res.status(400).json({ error: e.message });
-    }
-  },
+  getTodoListItemsController,
 );
 
 // Create a new TodoItem for a specific TodoList - requires EDITOR role
@@ -53,14 +39,7 @@ router.patch(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('ADMIN'),
-  async (req: AuthRequest, res) => {
-    try {
-      const list = await db.updateTodoList(req.params.id, req.body);
-      res.json(list);
-    } catch (e) {
-      res.status(400).json({ error: e.message });
-    }
-  },
+  updateTodoListController,
 );
 
 // Delete TodoList - requires ADMIN role
@@ -68,14 +47,7 @@ router.delete(
   '/:id',
   withJWTAuth,
   requireRoleForTodoList('ADMIN'),
-  async (req: AuthRequest, res) => {
-    try {
-      await db.deleteTodoList(req.params.id);
-      res.status(204).end();
-    } catch (e) {
-      res.status(400).json({ error: e.message });
-    }
-  },
+  deleteTodoListController,
 );
 
-export default router;
+export default router.getRouter();

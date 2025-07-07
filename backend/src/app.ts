@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
+import { errorHandler } from './utils/errorHandler.middleware';
 
 import accountRouter from './account/account.router';
 import authRouter from './auth/auth.router';
@@ -26,5 +27,8 @@ app.use('/lists', todoListRouter);
 app.use('/items', todoItemRouter);
 app.use('/invitations', invitationRouter);
 app.use('/invitation_reply', invitationReplyRouter);
+
+// Error handling middleware should be added last
+app.use(errorHandler);
 
 export default app;

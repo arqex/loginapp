@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { createAsyncRouter } from '../utils/asyncRouter';
 import { getAccountController } from './controllers/getAccount.controller';
 import { createAccountController } from './controllers/createAccount.controller';
 import { updateAccountController } from './controllers/updateAccount.controller';
@@ -11,7 +11,7 @@ import { requireAdmin, requireCollaborator } from '../utils/permissions.utils';
 import { getAccountInvitationsController } from '../invitation/controllers/getAccountInvitations.controller';
 import { createInvitationController } from '../invitation/controllers/createInvitation.controller';
 
-const accountRouter = Router();
+const accountRouter = createAsyncRouter();
 
 // Create a new account (authenticated users only)
 accountRouter.post('/', withJWTAuth, createAccountController);
@@ -71,4 +71,4 @@ accountRouter.post(
   createInvitationController,
 );
 
-export default accountRouter;
+export default accountRouter.getRouter();

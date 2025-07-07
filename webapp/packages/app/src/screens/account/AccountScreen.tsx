@@ -93,11 +93,11 @@ class AccountScreen extends React.Component<
     this.setState({ removingUserId: userId });
   };
 
-  handleCancelRemove = () => {
+  _handleCancelRemove = () => {
     this.setState({ removingUserId: null });
   };
 
-  handleConfirmRemove = async () => {
+  _handleConfirmRemove = async () => {
     const { removingUserId } = this.state;
     const { authContext } = this.props;
 
@@ -121,13 +121,12 @@ class AccountScreen extends React.Component<
         isRemoving: false,
       });
     } catch (error) {
-      console.error("Error removing user from account:", error);
-      toaster.error(t("Failed to remove user from account"));
       this.setState({ isRemoving: false });
+      throw error;
     }
   };
 
-  handleSaveAccountName = async () => {
+  _handleSaveAccountName = async () => {
     const { newAccountName } = this.state;
     const { authContext } = this.props;
 
@@ -158,9 +157,8 @@ class AccountScreen extends React.Component<
         errors: {},
       });
     } catch (error) {
-      console.error("Error updating account name:", error);
-      toaster.error(t("Failed to update account name"));
       this.setState({ isSaving: false });
+      throw error;
     }
   };
 
@@ -189,7 +187,7 @@ class AccountScreen extends React.Component<
         <VStack alignItems="stretch" gap="4">
           <HStack justifyContent="space-between" alignItems="center">
             <Heading size="sm">{t("Account Information")}</Heading>
-            {authContext.role === "ADMIN" && !isEditingName && (
+            {!isEditingName && (
               <Button
                 variant="outline"
                 size="sm"
@@ -210,7 +208,7 @@ class AccountScreen extends React.Component<
                     this.setState({ newAccountName: e.target.value })
                   }
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") this.handleSaveAccountName();
+                    if (e.key === "Enter") this._handleSaveAccountName();
                     if (e.key === "Escape") this.handleCancelEdit();
                   }}
                   placeholder={t("Account name")}
@@ -220,7 +218,7 @@ class AccountScreen extends React.Component<
               <HStack gap="2">
                 <Button
                   size="sm"
-                  onClick={this.handleSaveAccountName}
+                  onClick={this._handleSaveAccountName}
                   loading={isSaving}
                 >
                   {t("Save")}
@@ -282,16 +280,14 @@ class AccountScreen extends React.Component<
         <VStack alignItems="stretch" gap="4">
           <HStack justifyContent="space-between" alignItems="center">
             <Heading size="sm">{t("Account Members")}</Heading>
-            {authContext.role === "ADMIN" && (
-              <Button
-                variant="outline"
-                size="sm"
-                as="a"
-                href="/account/invitations"
-              >
-                {t("Manage Invitations")}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              as="a"
+              href="/account/invitations"
+            >
+              {t("Manage Invitations")}
+            </Button>
           </HStack>
 
           {isLoadingUsers ? (
@@ -318,40 +314,38 @@ class AccountScreen extends React.Component<
                       <Badge colorScheme={this.getRoleBadgeColor(user.role)}>
                         {t(user.role)}
                       </Badge>
-                      {isCurrentUserAdmin && user.id !== currentUserId && (
-                        <>
-                          {removingUserId === user.id ? (
-                            <HStack gap="1">
-                              <Button
-                                variant="primary"
-                                size="sm"
-                                colorScheme="red"
-                                onClick={this.handleConfirmRemove}
-                                loading={isRemoving}
-                              >
-                                {t("Confirm")}
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={this.handleCancelRemove}
-                                disabled={isRemoving}
-                              >
-                                {t("Cancel")}
-                              </Button>
-                            </HStack>
-                          ) : (
+                      <>
+                        {removingUserId === user.id ? (
+                          <HStack gap="1">
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              colorScheme="red"
+                              onClick={this._handleConfirmRemove}
+                              loading={isRemoving}
+                            >
+                              {t("Confirm")}
+                            </Button>
                             <Button
                               variant="outline"
                               size="sm"
-                              colorScheme="red"
-                              onClick={() => this.handleRemoveUser(user.id)}
+                              onClick={this._handleCancelRemove}
+                              disabled={isRemoving}
                             >
-                              {t("Remove")}
+                              {t("Cancel")}
                             </Button>
-                          )}
-                        </>
-                      )}
+                          </HStack>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            colorScheme="red"
+                            onClick={() => this.handleRemoveUser(user.id)}
+                          >
+                            {t("Remove")}
+                          </Button>
+                        )}
+                      </>
                     </VStack>
                   </HStack>
                 </Box>
