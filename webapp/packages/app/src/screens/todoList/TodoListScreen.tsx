@@ -35,6 +35,7 @@ import { AuthLayout, ContentLayout } from "../../components/layouts";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
 import TodoListItems from "./TodoListItems";
+import { TodoListNotFound, InvalidTodoListId } from "./TodoListErrorComponents";
 
 type TodoListScreenProps = WithAuthProps<void>;
 
@@ -192,35 +193,8 @@ class TodoListScreen extends React.Component<
       ) {
         return (
           <AuthLayout appMenu={<Sidebar />}>
-            <ContentLayout titleBar={this.renderTitleBar("TodoList Not Found")}>
-              <Box
-                minH="100vh"
-                bg="gray.50"
-                p="6"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <VStack gap="4" textAlign="center">
-                  <Text
-                    fontSize="xl"
-                    fontWeight="bold"
-                    style={{ color: "#e53e3e" }}
-                  >
-                    TodoList Not Found
-                  </Text>
-                  <Text fontSize="md">
-                    The requested TodoList could not be found. It may have been
-                    deleted or you may not have permission to access it.
-                  </Text>
-                  <Button
-                    onClick={() => getRouter().push("/")}
-                    colorScheme="blue"
-                  >
-                    Go to Home
-                  </Button>
-                </VStack>
-              </Box>
+            <ContentLayout>
+              <TodoListNotFound />
             </ContentLayout>
           </AuthLayout>
         );
@@ -249,20 +223,7 @@ class TodoListScreen extends React.Component<
 
     // Handle invalid TodoList ID
     if (!this.todoListId) {
-      return (
-        <Box
-          minH="100vh"
-          bg="gray.50"
-          p="6"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Text fontSize="lg" style={{ color: "#e53e3e" }}>
-            Invalid TodoList ID
-          </Text>
-        </Box>
-      );
+      return <InvalidTodoListId />;
     }
 
     const todoListResult = withErrors(todoListLoader)(
