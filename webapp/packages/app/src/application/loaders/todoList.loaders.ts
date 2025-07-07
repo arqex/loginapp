@@ -1,45 +1,23 @@
 import {
-  getLoaderResult,
   loadAccountTodoListsWithCache,
   loadTodoListWithCache,
   loadTodoListItemsWithCache,
 } from "@loginapp/api-client";
-import type {
-  ApiClient,
-  LoaderResult,
-  ApiTodoList,
-  ApiTodoItem,
-} from "@loginapp/api-client";
+import { createLoader } from "@loginapp/api-client/loaders";
 
 /**
  * Loader to get account TodoLists by account ID
  */
-export function accountTodoListsLoader(
-  apiClient: ApiClient,
-  accountId: string
-): LoaderResult<ApiTodoList[]> {
-  const cachedResponse = loadAccountTodoListsWithCache(apiClient, accountId);
-  return getLoaderResult(cachedResponse);
-}
+export const accountTodoListsLoader = createLoader(
+  loadAccountTodoListsWithCache
+);
 
 /**
  * Loader to get a specific TodoList by ID
  */
-export function todoListLoader(
-  apiClient: ApiClient,
-  todoListId: string
-): LoaderResult<ApiTodoList> {
-  const cachedResponse = loadTodoListWithCache(apiClient, todoListId);
-  return getLoaderResult(cachedResponse);
-}
+export const todoListLoader = createLoader(loadTodoListWithCache);
 
 /**
  * Loader to get TodoItems for a specific TodoList
  */
-export function todoListItemsLoader(
-  apiClient: ApiClient,
-  todoListId: string
-): LoaderResult<ApiTodoItem[]> {
-  const cachedResponse = loadTodoListItemsWithCache(apiClient, todoListId);
-  return getLoaderResult(cachedResponse);
-}
+export const todoListItemsLoader = createLoader(loadTodoListItemsWithCache);

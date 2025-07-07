@@ -1,3 +1,6 @@
-# Complete all missing actions for the todolists
+# Use withErrors helper to handle errors in data loaders
 
-We need to ensure that is possible to edit the name of a todolist and also it's possible to delete. As this is a demo application, those options should be available for all the users, but when a user doesn't have permissions the it should re-throw the error to let the general error handler display the permission modal.
+When the web app uses loaders, like the todoListItemsLoader, it can encounter errors in the data loading process. The `withErrors` helper is designed to handle these errors gracefully. Right now it might be that specific loaders to handle the errors that are named like `todoListItemsLoaderWithErrors`.
+
+Stop using those and delete them, in their place use the existing loaders without errors and wrap them with the `withErrors` helper. This will ensure that any errors encountered during data loading are handled properly, allowing the application to display appropriate error messages or fallback content.
+

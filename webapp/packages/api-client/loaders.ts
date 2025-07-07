@@ -1,4 +1,4 @@
-import {
+import type {
   CachedResponse,
   LoaderResult,
   LoaderResultWithErrors,
@@ -27,12 +27,18 @@ export function createLoader<RES, Args extends any[]>(
   return loader as LoaderFunction<Args, RES>;
 }
 
+export type LoaderFunctionWithErrors<Args extends any[] = any[], RES = any> = (
+  ...args: Args
+) => LoaderResultWithErrors<RES>;
+
 export function withErrors<Args extends any[] = any[], RES = any>(
   loader: LoaderFunction<Args, RES>
-): LoaderFunction<Args, RES> {
-  const loaderWithErrors: LoaderFunction<Args, RES> = (...args: Args) => {
+): LoaderFunctionWithErrors<Args, RES> {
+  const loaderWithErrors: LoaderFunctionWithErrors<Args, RES> = (
+    ...args: Args
+  ) => {
     try {
-      return loader(...args);
+      return loader(...args) as LoaderResultWithErrors<RES>;
     } catch (error) {
       return { isLoading: false, error } as LoaderResultWithErrors<RES>;
     }

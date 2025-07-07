@@ -25,14 +25,15 @@ import {
   updateInvitation,
   resendInvitation,
   invalidateAccountInvitations,
+  withErrors,
   type ApiInvitation,
   type CreateInvitationPayload,
 } from "@loginapp/api-client";
-import { accountInvitationsLoaderWithErrors } from "../../application/loaders";
 import { AuthLayout, ContentLayout } from "../../components/layouts";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { t } from "../../application/i18n/i18n.service";
 import { type ValidationErrors } from "../../application/utils/validation.utils";
+import { accountInvitationsLoader } from "../../application/loaders";
 
 type AccountInvitationsScreenProps = WithAuthProps<void>;
 
@@ -353,7 +354,7 @@ class AccountInvitationsScreen extends React.Component<
       data: invitations,
       isLoading,
       error,
-    } = accountInvitationsLoaderWithErrors(
+    } = withErrors(accountInvitationsLoader)(
       getApiClient(),
       authContext.account.id
     );
