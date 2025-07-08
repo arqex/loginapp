@@ -19,15 +19,6 @@ INSERT INTO `UsersOnAccount` (`userId`, `accountId`, `role`, `createdAt`, `updat
   ('user3', 'account1', 'COLLABORATOR', NOW(), NOW()),
   ('user4', 'account2', 'ADMIN', NOW(), NOW());
 
--- Insert TodoList
-INSERT INTO `TodoList` (`id`, `accountId`, `createdAt`, `updatedAt`, `name`) VALUES
-  ('list1', 'account1', NOW(), NOW(), 'Demo List');
-
--- Insert TodoItems
-INSERT INTO `TodoItem` (`id`, `todoListId`, `createdAt`, `updatedAt`, `title`, `completed`) VALUES
-  ('item1', 'list1', NOW(), NOW(), 'First task', false),
-  ('item2', 'list1', NOW(), NOW(), 'Second task', true);
-
 -- Insert AuthTokens for test users
 INSERT INTO `AuthToken` (`key`, `createdAt`, `expiresAt`, `type`, `userId`, `meta`) VALUES
   ('admin@example.com', NOW(), NULL, 'EMAIL_LOGIN', 'user1', '{"hash": "30e783ada2a00b2f5f61a4fb462b8e30b619d3b49d4e1b1b55b102ccd7fcef53","salt": "6f1ed61087925e839ed482912995b81d87d592d5a780ca109e940ebd8b361236"}'),

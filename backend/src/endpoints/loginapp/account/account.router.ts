@@ -12,6 +12,8 @@ import {
   requireAdmin,
   requireCollaborator,
 } from '../../../utils/permissions.utils';
+
+// Delete imports below when cleaning up the testapp
 import { createAccountTodoListController } from '../../todo/createAccountTodoList.controller';
 import { getAccountTodoListController } from '../../todo/getAccountTodoList.controller';
 
@@ -44,20 +46,6 @@ accountRouter.delete(
   deleteAccountMemberController,
 );
 
-accountRouter.get(
-  '/:accountId/lists',
-  withJWTAuth,
-  requireCollaborator(),
-  getAccountTodoListController,
-);
-
-accountRouter.post(
-  '/:accountId/lists',
-  withJWTAuth,
-  requireAdmin(),
-  createAccountTodoListController,
-);
-
 // Invitation endpoints
 // Get all invitations for an account
 accountRouter.get(
@@ -76,3 +64,18 @@ accountRouter.post(
 );
 
 export default accountRouter.getRouter();
+
+// Delete controllers below when cleaning up the testapp
+accountRouter.get(
+  '/:accountId/lists',
+  withJWTAuth,
+  requireCollaborator(),
+  getAccountTodoListController,
+);
+
+accountRouter.post(
+  '/:accountId/lists',
+  withJWTAuth,
+  requireAdmin(),
+  createAccountTodoListController,
+);

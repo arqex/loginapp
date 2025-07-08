@@ -38,8 +38,9 @@ model Account {
   updatedAt   DateTime         @updatedAt
   meta        Json
   invitations Invitation[]
-  todoLists   TodoList[]       @relation("AccountTodoLists")
   users       UsersOnAccount[]
+  // Delete line below to clean up the test app
+  todoLists   TodoList[]       @relation("AccountTodoLists")
 }
 
 model UsersOnAccount {
@@ -71,6 +72,27 @@ model Invitation {
   @@index([email])
 }
 
+enum AuthTokenType {
+  EMAIL_LOGIN
+  API_KEY
+  OAUTH20
+  PROVIDER_LOGIN
+}
+
+enum UsersOnAccountRole {
+  ADMIN
+  EDITOR
+  COLLABORATOR
+}
+
+enum InvitationStatus {
+  PENDING
+  DECLINED
+  ACCEPTED
+  CANCELLED
+}
+
+// Delete everything below to clean up the test app
 model TodoList {
   id        String     @id @default(cuid())
   createdAt DateTime   @default(now())
@@ -93,24 +115,4 @@ model TodoItem {
   todoList   TodoList @relation(fields: [todoListId], references: [id], onDelete: Cascade)
 
   @@index([todoListId], map: "TodoItem_todoListId_fkey")
-}
-
-enum AuthTokenType {
-  EMAIL_LOGIN
-  API_KEY
-  OAUTH20
-  PROVIDER_LOGIN
-}
-
-enum UsersOnAccountRole {
-  ADMIN
-  EDITOR
-  COLLABORATOR
-}
-
-enum InvitationStatus {
-  PENDING
-  DECLINED
-  ACCEPTED
-  CANCELLED
 }
