@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import { errorHandler } from './utils/errorHandler.middleware';
+import { requestLogger } from './utils/requestLogger.middleware';
 
 import accountRouter from './account/account.router';
 import authRouter from './auth/auth.router';
@@ -13,6 +14,8 @@ import invitationReplyRouter from './invitation/invitationReply.router';
 
 const app = express();
 
+// Request logging middleware should be added early to capture all requests
+app.use(requestLogger);
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));

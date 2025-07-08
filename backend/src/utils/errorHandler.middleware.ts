@@ -23,14 +23,18 @@ export function errorHandler(
   req: Request | AuthRequest,
   res: Response,
 ): void {
+  // Extract request IDs from header
+  const requestIds = req.headers['x-request-ids'] as string;
+
   // Log error for debugging
-  console.error('Error occurred:', {
+  console.error('UNEXPECTED_ERR:', {
     message: err.message,
     stack: err.stack,
     statusCode: err.statusCode,
     path: req.path,
     method: req.method,
     userId: 'user' in req ? (req as AuthRequest).user?.id : undefined,
+    requestIds: requestIds || 'N/A',
   });
 
   resError(res, 'unexpected_error', 500);

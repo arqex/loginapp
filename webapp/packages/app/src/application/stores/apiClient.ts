@@ -1,4 +1,8 @@
-import { ApiClient, type ResponseMiddleware } from "@loginapp/api-client";
+import {
+  ApiClient,
+  type ResponseMiddleware,
+  requestIdsMiddleware,
+} from "@loginapp/api-client";
 import { logout } from "../auth/auth.service";
 import { getAuthenticatedId } from "../auth/auth.context";
 
@@ -7,6 +11,7 @@ export function createApiClient() {
   return new ApiClient({
     apiURL: "http://localhost:3000",
     responseMiddleware: [expiredSessionMiddleware],
+    requestMiddleware: [requestIdsMiddleware],
   });
 }
 
