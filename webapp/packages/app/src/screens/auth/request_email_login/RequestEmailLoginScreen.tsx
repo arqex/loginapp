@@ -9,11 +9,11 @@ import {
   Link,
   VStack,
 } from "@loginapp/ui";
-import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import { isValidEmailAddress } from "../../../application/utils/validation.utils";
 import { requestEmailLogin, type ApiError } from "@loginapp/api-client";
-import { getApiClient } from "../../application/stores/apiClient";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import withUnauth from "../../application/auth/withUnauth.hoc";
+import { getApiClient } from "../../../application/stores/apiClient";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import withUnauth from "../../../application/auth/withUnauth.hoc";
 
 interface RequestEmailLoginScreenProps {}
 interface RequestEmailLoginScreenState {

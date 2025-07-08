@@ -11,7 +11,7 @@ import {
   Checkbox,
 } from "@loginapp/ui";
 import { Edit, Delete, Check, Cancel } from "@loginapp/ui/src/icons/svg";
-import { getApiClient } from "../../application/stores/apiClient";
+import { getApiClient } from "../../../application/stores/apiClient";
 import {
   updateTodoItem,
   deleteTodoItem,

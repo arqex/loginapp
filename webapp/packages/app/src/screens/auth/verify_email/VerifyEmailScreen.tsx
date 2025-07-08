@@ -1,5 +1,5 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import {
   Button,
   Card,
@@ -11,11 +11,11 @@ import {
   Text,
   toaster,
 } from "@loginapp/ui";
-import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
+import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
 import { verifyEmail } from "@loginapp/api-client";
-import { setAuthenticatedId } from "../../application/auth/auth.context";
+import { setAuthenticatedId } from "../../../application/auth/auth.context";
 
 interface VerifyEmailScreenState {
   isEmailOk: boolean;

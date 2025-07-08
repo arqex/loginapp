@@ -1,6 +1,5 @@
 import type {
   ApiAccount,
-  ApiTodoList,
   AccountUser,
   ListCreationPayload,
   PaginationResponseData,
@@ -9,6 +8,9 @@ import type {
 } from "./api.types";
 import type { ResponseWithData, CachedResponse } from "../apiClient.types";
 import { ApiClient } from "../ApiClient";
+
+// Delete the import below when cleaning up the test app
+import type { ApiTodoList } from "./api.types";
 
 // Create a new account
 export async function createAccount(
@@ -51,23 +53,6 @@ export async function deleteAccountMember(
   return await apiClient.requester.delete(
     `/accounts/${accountId}/users/${userId}`
   );
-}
-
-// Load todo lists in an account
-export async function loadAccountTodoLists(
-  apiClient: ApiClient,
-  accountId: string
-): Promise<ResponseWithData<ApiTodoList[]>> {
-  return await apiClient.requester.get(`/accounts/${accountId}/lists`);
-}
-
-// Create a new todo list in an account
-export async function createAccountTodoList(
-  apiClient: ApiClient,
-  accountId: string,
-  data: ListCreationPayload
-): Promise<ResponseWithData<ApiTodoList>> {
-  return await apiClient.requester.post(`/accounts/${accountId}/lists`, data);
 }
 
 // Load invitations for an account
@@ -151,4 +136,23 @@ export function invalidateAccountInvitations(
   accountId: string
 ) {
   apiClient.invalidateCacheResponse(`/accounts/${accountId}/invitations`);
+}
+
+// Delete all code below when cleaning up the test app
+
+// Load todo lists in an account
+export async function loadAccountTodoLists(
+  apiClient: ApiClient,
+  accountId: string
+): Promise<ResponseWithData<ApiTodoList[]>> {
+  return await apiClient.requester.get(`/accounts/${accountId}/lists`);
+}
+
+// Create a new todo list in an account
+export async function createAccountTodoList(
+  apiClient: ApiClient,
+  accountId: string,
+  data: ListCreationPayload
+): Promise<ResponseWithData<ApiTodoList>> {
+  return await apiClient.requester.post(`/accounts/${accountId}/lists`, data);
 }

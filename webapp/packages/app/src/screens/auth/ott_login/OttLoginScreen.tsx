@@ -1,10 +1,10 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import { Card, Heading, Link, VStack } from "@loginapp/ui";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
 import { loginByOTT } from "@loginapp/api-client";
-import { setAuthenticatedId } from "../../application/auth/auth.context";
+import { setAuthenticatedId } from "../../../application/auth/auth.context";
 
 interface OttLoginScreenState {
   isVerifiying: boolean;

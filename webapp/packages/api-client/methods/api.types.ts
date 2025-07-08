@@ -51,23 +51,6 @@ export interface LoginResponseWithToken {
 
 export type EmptyObject = Record<string, never>;
 
-export interface ApiTodoItem {
-  id: string;
-  title: string;
-  completed: boolean;
-  createdAt: string;
-  updatedAt: string;
-  todoListId: string;
-}
-
-export interface ApiTodoList {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  accountId: string;
-}
-
 export interface ListCreationPayload {
   name: string;
   accountId: string;
@@ -114,4 +97,22 @@ export interface CreateInvitationPayload {
 export interface UpdateInvitationPayload {
   role?: ApiAccountRole;
   expirationDays?: number;
+}
+
+// Delete the export below when cleaning up the test app
+export interface ApiTodoItem {
+  id: string;
+  title: string;
+  completed: boolean;
+  createdAt: string;
+  updatedAt: string;
+  todoListId: string;
+}
+
+export interface ApiTodoList {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  accountId: string;
 }

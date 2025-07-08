@@ -1,6 +1,6 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
-import { isValidEmailAddress } from "../../application/utils/validation.utils";
+import { getRouter } from "../../../application/routing/router";
+import { isValidEmailAddress } from "../../../application/utils/validation.utils";
 
 import {
   Card,
@@ -13,12 +13,12 @@ import {
   Button,
   Link,
 } from "@loginapp/ui";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import { login, type ApiError } from "@loginapp/api-client";
-import { redirectToOauth } from "../../application/auth/auth.service";
-import { getApiClient } from "../../application/stores/apiClient";
-import { setAuthenticatedId } from "../../application/auth/auth.context";
-import withUnauth from "../../application/auth/withUnauth.hoc";
+import { redirectToOauth } from "../../../application/auth/auth.service";
+import { getApiClient } from "../../../application/stores/apiClient";
+import { setAuthenticatedId } from "../../../application/auth/auth.context";
+import withUnauth from "../../../application/auth/withUnauth.hoc";
 
 interface LoginScreenProps {}
 interface LoginScreenState {

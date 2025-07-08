@@ -1,9 +1,9 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import {
   type ValidationErrors,
   isValidEmailAddress,
-} from "../../application/utils/validation.utils";
+} from "../../../application/utils/validation.utils";
 import {
   FormField,
   Card,
@@ -15,10 +15,10 @@ import {
   Link,
 } from "@loginapp/ui";
 import { signup, type ApiError } from "@loginapp/api-client";
-import { redirectToOauth } from "../../application/auth/auth.service";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
-import withUnauth from "../../application/auth/withUnauth.hoc";
+import { redirectToOauth } from "../../../application/auth/auth.service";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
+import withUnauth from "../../../application/auth/withUnauth.hoc";
 
 interface SignupScreenProps {}
 interface SignupScreenState {

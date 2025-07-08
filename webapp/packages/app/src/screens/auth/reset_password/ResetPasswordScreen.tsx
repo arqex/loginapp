@@ -1,5 +1,5 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import {
   Box,
   Button,
@@ -11,9 +11,9 @@ import {
   toaster,
   VStack,
 } from "@loginapp/ui";
-import { isValidEmailAddress } from "../../application/utils/validation.utils";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
+import { isValidEmailAddress } from "../../../application/utils/validation.utils";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
 import { resetPassword } from "@loginapp/api-client";
 
 interface ResetPasswordScreenProps {}

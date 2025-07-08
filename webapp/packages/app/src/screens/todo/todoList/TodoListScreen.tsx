@@ -14,12 +14,12 @@ import {
 import { Edit, Delete } from "@loginapp/ui/icons";
 import withAuth, {
   type WithAuthProps,
-} from "../../application/auth/withAuth.hoc";
-import { getApiClient } from "../../application/stores/apiClient";
+} from "../../../application/auth/withAuth.hoc";
+import { getApiClient } from "../../../application/stores/apiClient";
 import {
   todoListLoader,
   todoListItemsLoader,
-} from "../../application/loaders/todoList.loaders";
+} from "../../../application/loaders/todoList.loaders";
 import {
   createTodoItem,
   invalidateTodoListItems,
@@ -29,11 +29,11 @@ import {
   withErrors,
   ApiError,
 } from "@loginapp/api-client";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 
-import { AuthLayout, ContentLayout } from "../../components/layouts";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
+import { AuthLayout, ContentLayout } from "../../../components/layouts";
+import Sidebar from "../../../components/Sidebar/Sidebar";
+import SpinnerScreen from "../../../components/SpinnerScreen/SpinnerScreen";
 import TodoListItems from "./TodoListItems";
 import { TodoListNotFound, InvalidTodoListId } from "./TodoListErrorComponents";
 
