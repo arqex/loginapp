@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { Request } from 'jest-express/lib/request';
 import { Response } from 'jest-express/lib/response';
 import { Response as OriResponse } from 'express';
-import { AuthRequest } from 'src/auth/auth.types';
+import { AuthRequest } from '../src/endpoints/loginapp/auth/auth.types';
 import * as request from 'supertest';
 import app from '../src/app';
 

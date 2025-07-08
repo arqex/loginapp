@@ -1,7 +1,7 @@
 // Example test for permissions middleware
 import { UsersOnAccountRole } from '@prisma/client';
 import { requireRole, requireAdmin } from './permissions.utils';
-import { getUsersOnAccountRoleOnAccount } from '../userRole/userRole.db';
+import { getUsersOnAccountRoleOnAccount } from '../endpoints/loginapp/userRole/userRole.db';
 
 // Mock the dependencies
 jest.mock('../userRole/userRole.db');

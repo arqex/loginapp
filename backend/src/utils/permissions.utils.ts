@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthRequest } from '../auth/auth.types';
+import { AuthRequest } from '../endpoints/loginapp/auth/auth.types';
 import { UsersOnAccountRole } from '@prisma/client';
-import { getUsersOnAccountRoleOnAccount } from '../userRole/userRole.db';
+import { getUsersOnAccountRoleOnAccount } from '../endpoints/loginapp/userRole/userRole.db';
 import { resForbidden, resError } from './respond.utils';
-import { getTodoListById } from '../todoList/todoList.db';
-import { getTodoItemById } from '../todoItem/todoItem.db';
-import { getInvitationById } from '../invitation/invitation.db';
+import { getTodoListById } from '../endpoints/todo/todoList/todoList.db';
+import { getTodoItemById } from '../endpoints/todo/todoItem/todoItem.db';
+import { getInvitationById } from '../endpoints/loginapp/invitation/invitation.db';
 
 export type RequiredRole = 'ADMIN' | 'EDITOR' | 'COLLABORATOR';
 

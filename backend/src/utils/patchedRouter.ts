@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { AuthRequest } from '../auth/auth.types';
+import { AuthRequest } from '../endpoints/loginapp/auth/auth.types';
 
 type AsyncRouteHandler = (
   req: Request | AuthRequest,

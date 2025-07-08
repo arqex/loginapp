@@ -4,13 +4,13 @@ import * as cors from 'cors';
 import { errorHandler } from './utils/errorHandler.middleware';
 import { requestLogger } from './utils/requestLogger.middleware';
 
-import accountRouter from './account/account.router';
-import authRouter from './auth/auth.router';
-import usersRouter from './users/users.router';
-import todoListRouter from './todoList/todoList.router';
-import todoItemRouter from './todoItem/todoItem.router';
-import invitationRouter from './invitation/invitation.router';
-import invitationReplyRouter from './invitation/invitationReply.router';
+import accountRouter from './endpoints/loginapp/account/account.router';
+import authRouter from './endpoints/loginapp/auth/auth.router';
+import usersRouter from './endpoints/loginapp/users/users.router';
+import todoListRouter from './endpoints/todo/todoList/todoList.router';
+import todoItemRouter from './endpoints/todo/todoItem/todoItem.router';
+import invitationRouter from './endpoints/loginapp/invitation/invitation.router';
+import invitationReplyRouter from './endpoints/loginapp/invitation/invitationReply.router';
 
 const app = express();
 

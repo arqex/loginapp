@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { AuthRequest } from '../auth/auth.types';
+import { AuthRequest } from '../endpoints/loginapp/auth/auth.types';
 
 /**
  * Express.js does not automatically catch errors thrown by async route handlers.

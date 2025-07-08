@@ -1,10 +1,10 @@
 // Example: Updated TodoList router with permissions middleware
 import { Router } from 'express';
-import { withJWTAuth } from '../auth/strategies/jwt.strategy';
+import { withJWTAuth } from '../endpoints/loginapp/auth/strategies/jwt.strategy';
 import { requireRoleForTodoList } from '../utils/permissions.utils';
-import * as db from '../todoList/todoList.db';
-import * as todoItemDb from '../todoItem/todoItem.db';
-import { createTodoListItemController } from '../todoList/createTodoListItem.controller';
+import * as db from '../endpoints/todo/todoList/todoList.db';
+import * as todoItemDb from '../endpoints/todo/todoItem/todoItem.db';
+import { createTodoListItemController } from '../endpoints/todo/todoList/createTodoListItem.controller';
 
 const router = Router();
 

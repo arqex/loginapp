@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthRequest } from '../auth/auth.types';
+import { AuthRequest } from '../endpoints/loginapp/auth/auth.types';
 import { resError } from './respond.utils';
 
 export interface AppError extends Error {
