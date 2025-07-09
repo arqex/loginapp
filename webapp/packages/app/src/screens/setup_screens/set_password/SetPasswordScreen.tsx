@@ -1,5 +1,5 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import {
   Box,
   Button,
@@ -11,15 +11,15 @@ import {
   toaster,
   VStack,
 } from "@loginapp/ui";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
 import { setPassword, invalidateUserCache } from "@loginapp/api-client";
-import { setAuthenticatedId } from "../../application/auth/auth.context";
+import { setAuthenticatedId } from "../../../application/auth/auth.context";
 import type { ApiError } from "@loginapp/api-client";
 import withAuth, {
   type WithAuthProps,
-} from "../../application/auth/withAuth.hoc";
-import SpinnerScreen from "../../components/SpinnerScreen/SpinnerScreen";
+} from "../../../application/auth/withAuth.hoc";
+import SpinnerScreen from "../../../components/SpinnerScreen/SpinnerScreen";
 
 type SetPasswordScreenProps = WithAuthProps<void>;
 interface SetPasswordScreenState {

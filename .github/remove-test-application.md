@@ -13,3 +13,8 @@ In the webapp, in the api-client package:
 * Delete the types marked with testapp comments in the `api.types.ts` file
 * Delete the `todoList.api.ts` file
 
+In the webapp, in the app package:
+* Delete the `todo_screens`
+* Remove the lines marked with testapp comments in the `routes.ts` file
+* Delete the TodosHomeWidget component and the import from the `HomeScreen.tsx` file
+* Remove the todo lists from the `SidebarNavigation.tsx` file along with the `isCreatingTodoList` state and the `_createTodoList` method

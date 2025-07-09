@@ -46,6 +46,7 @@ function Logo() {
 }
 
 interface SidebarNavigationState {
+  // Delete this attribute when cleaning up the test application
   isCreatingTodoList: boolean;
 }
 
@@ -90,7 +91,7 @@ export default class SidebarNavigation extends React.Component<
             <Logo />
           </Box>
 
-          {/* TodoLists Section */}
+          {/* TodoLists Section, delete when cleaning up the test application */}
           <VStack alignItems="stretch" gap="2">
             {/* Section heading */}
             <Box paddingX="16px" paddingY="4px">
@@ -174,6 +175,7 @@ export default class SidebarNavigation extends React.Component<
     );
   }
 
+  // Delete this method when cleaning up the test application
   _createTodoList = async () => {
     const authContext = getAuthContext();
     if (!authContext?.account) return;

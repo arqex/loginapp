@@ -6,7 +6,7 @@ import {
   updateUser,
   type ApiUser,
 } from "@loginapp/api-client";
-import { getApiClient } from "../../../application/stores/apiClient";
+import { getApiClient } from "../../../../application/stores/apiClient";
 
 interface UserNameProps {
   user: ApiUser;

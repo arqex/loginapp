@@ -1,11 +1,19 @@
-import type { FunctionComponent, ComponentClass } from "react";
+import type {
+  FunctionComponent,
+  ComponentClass,
+  ForwardRefExoticComponent,
+} from "react";
 import { Urlhub, HashStrategy, type UrlhubRoute } from "urlhub";
 
-export type ReactRoute = UrlhubRoute<FunctionComponent | ComponentClass>;
-export type Router = Urlhub<FunctionComponent | ComponentClass>;
+type ScreenType =
+  | FunctionComponent
+  | ComponentClass
+  | ForwardRefExoticComponent<any>;
+export type ReactRoute = UrlhubRoute<ScreenType>;
+export type Router = Urlhub<ScreenType>;
 
 export function createRouter(routes: ReactRoute[]) {
-  const router = new Urlhub<FunctionComponent | ComponentClass>({
+  const router = new Urlhub<ScreenType>({
     // @ts-ignore
     strategy: HashStrategy,
   });

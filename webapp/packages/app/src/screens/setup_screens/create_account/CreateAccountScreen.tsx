@@ -1,5 +1,5 @@
 import React from "react";
-import { getRouter } from "../../application/routing/router";
+import { getRouter } from "../../../application/routing/router";
 import {
   Button,
   Card,
@@ -9,13 +9,13 @@ import {
   VStack,
   toaster,
 } from "@loginapp/ui";
-import { type ValidationErrors } from "../../application/utils/validation.utils";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { getApiClient } from "../../application/stores/apiClient";
+import { type ValidationErrors } from "../../../application/utils/validation.utils";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { getApiClient } from "../../../application/stores/apiClient";
 import { createAccount, clearUserAccountsCache } from "@loginapp/api-client";
-import { userLoader } from "../../application/loaders/user.loaders";
-import { t } from "../../application/i18n/i18n.service";
-import withAuthId from "../../application/auth/withAuthId.hoc";
+import { userLoader } from "../../../application/loaders/user.loaders";
+import { t } from "../../../application/i18n/i18n.service";
+import withAuthId from "../../../application/auth/withAuthId.hoc";
 
 interface CreateAccountScreenProps {
   authenticatedId: string;

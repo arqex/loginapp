@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, VStack } from "@loginapp/ui";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
 import withAuth, {
   type WithAuthProps,
-} from "../../application/auth/withAuth.hoc";
+} from "../../../application/auth/withAuth.hoc";
 import { UserNameStep, AccountNameStep, CompletedStep } from "./steps";
 
 type InitialSetupScreenProps = WithAuthProps<void>;

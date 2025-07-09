@@ -10,11 +10,11 @@ import {
   Link,
   toaster,
 } from "@loginapp/ui";
-import { getApiClient } from "../../application/stores/apiClient";
-import { getRouter } from "../../application/routing/router";
+import { getApiClient } from "../../../application/stores/apiClient";
+import { getRouter } from "../../../application/routing/router";
 import { replyToInvitationPublic, ApiError } from "@loginapp/api-client";
-import UnauthenticatedLayout from "../../components/UnauthenticatedLayout/UnauthenticatedLayout";
-import { setAuthenticatedId } from "../../application/auth/auth.context";
+import UnauthenticatedLayout from "../../../components/UnauthenticatedLayout/UnauthenticatedLayout";
+import { setAuthenticatedId } from "../../../application/auth/auth.context";
 
 interface InvitationReplyScreenState {
   isProcessing: boolean;
@@ -67,10 +67,6 @@ export default class InvitationReplyScreen extends React.Component<
     // Get invitation details from URL parameters
     const accountName = params.account;
     const invitedEmail = params.email;
-
-    // Parse role from URL if available (could be passed as a separate parameter)
-    // For now, we'll show "member" as a generic role
-    const role = "member";
 
     return (
       <UnauthenticatedLayout>

@@ -9,7 +9,7 @@ import {
   type ApiAccount,
   type ApiUser,
 } from "@loginapp/api-client";
-import { getApiClient } from "../../../application/stores/apiClient";
+import { getApiClient } from "../../../../application/stores/apiClient";
 
 interface AccountNameStepProps {
   user: ApiUser;
