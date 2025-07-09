@@ -57,10 +57,10 @@ export async function prepareTestAuthToken() {
       permissions: ['all'],
       accountId: testAccountId,
     };
-    token = await jwt.sign(signObject, process.env.JWT_SECRET, {
+    token = jwt.sign(signObject, process.env.JWT_SECRET!, {
       expiresIn: '1h',
       algorithm: 'RS256',
-    });
+    } as jwt.SignOptions);
   }
   return token;
 }

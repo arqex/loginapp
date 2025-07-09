@@ -33,7 +33,7 @@ export async function signupByProviderController(req: Request, res: Response) {
     }
 
     // The user already exists, we can just login
-    return await respondLogin(auth.userId, res, useCookie !== 'false');
+    return respondLogin(auth.userId, res, useCookie !== 'false');
   }
 
   // Apple only send the email with the first registration
@@ -75,5 +75,5 @@ export async function signupByProviderController(req: Request, res: Response) {
     },
   });
 
-  return await respondLogin(user.id, res, useCookie !== 'false');
+  return respondLogin(user.id, res, useCookie !== 'false');
 }

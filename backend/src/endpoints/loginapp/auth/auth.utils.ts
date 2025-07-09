@@ -31,15 +31,15 @@ async function hashPassword(password: string, salt: string) {
   return hash.toString('hex');
 }
 
-export async function createJWT(userId: string, permissions: string[]) {
-  const token = await jwt.sign(
-    { userId, permissions },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-      algorithm: 'RS256',
-    },
-  );
+export function createJWT(userId: string, permissions: string[]): string {
+  const payload = { userId, permissions };
+  const secret = process.env.JWT_SECRET!;
+  const expiresIn = process.env.JWT_EXPIRES_IN!;
+
+  const token = jwt.sign(payload, secret, {
+    expiresIn,
+    algorithm: 'RS256',
+  } as jwt.SignOptions);
   return token;
 }
 

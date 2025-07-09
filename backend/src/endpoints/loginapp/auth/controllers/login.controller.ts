@@ -27,23 +27,23 @@ export async function loginController(req: Request, res: Response) {
     return resError(res, 'verification_required', 400);
   }
 
-  await respondLogin(auth.userId, res, useCookie !== 'false');
+  respondLogin(auth.userId, res, useCookie !== 'false');
 }
 
-export async function respondLogin(
+export function respondLogin(
   authenticatedId: string,
   res: Response,
   useCookie: boolean = true,
 ) {
   if (useCookie) {
-    res.cookie(AUTH_COOKIE_NAME, await createJWT(authenticatedId, ['all']), {
+    res.cookie(AUTH_COOKIE_NAME, createJWT(authenticatedId, ['all']), {
       httpOnly: true,
     });
     res.status(201).json({ authenticatedId });
   } else {
     res.status(201).json({
       authenticatedId,
-      token: await createJWT(authenticatedId, ['all']),
+      token: createJWT(authenticatedId, ['all']),
     });
   }
 }
