@@ -8,6 +8,8 @@ import {
   Text,
   Badge,
   Button,
+  IconButton,
+  Icon,
   Input,
   FormField,
   toaster,
@@ -15,6 +17,7 @@ import {
   Select,
   Spinner,
 } from "@loginapp/ui";
+import { Arrow } from "@loginapp/ui/src/icons/svg";
 import withAuth, {
   type WithAuthProps,
 } from "../../application/auth/withAuth.hoc";
@@ -603,9 +606,15 @@ class AccountInvitationsScreen extends React.Component<
     return (
       <HStack justifyContent="space-between" alignItems="center" p="4">
         <HStack gap="3">
-          <Button variant="outline" size="sm" as="a" href="#account">
-            {t("← Back to Account")}
-          </Button>
+          <IconButton
+            variant="secondary"
+            size="sm"
+            href="#account"
+            tooltip={t("Back to Account")}
+            direction="back"
+          >
+            <Arrow />
+          </IconButton>
           <Heading size="md">{t("Account Invitations")}</Heading>
         </HStack>
         {authContext.account && (

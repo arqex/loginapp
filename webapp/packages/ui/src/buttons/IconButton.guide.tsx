@@ -54,7 +54,9 @@ class IconButtonBase extends React.Component<
             className={cn}
             ref={buttonRef as React.Ref<HTMLAnchorElement>}
           >
-            <Icon size={this.getIconSize(size)}>{icon}</Icon>
+            <Icon size={this.getIconSize(size)} direction={direction}>
+              {icon}
+            </Icon>
           </a>
         ) : (
           <button
