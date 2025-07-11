@@ -7,6 +7,7 @@ In the backend, before running prisma migrations:
 In the backend src file:
 * Delete the `endpoints/todo` folder
 * Delete the code marked with comments in the `account.router.ts` file
+* Delete all Todo methods from the `permissions.utils.ts` file
 
 In the webapp, in the api-client package:
 * Delete the lines marked with testapp comments in the `account.api.ts` file
@@ -17,4 +18,5 @@ In the webapp, in the app package:
 * Delete the `todo_screens`
 * Remove the lines marked with testapp comments in the `routes.ts` file
 * Delete the TodosHomeWidget component and the import from the `HomeScreen.tsx` file
+* Remove all references to `Todo`s in the AccountHomeWidget.
 * Remove the todo lists from the `SidebarNavigation.tsx` file along with the `isCreatingTodoList` state and the `_createTodoList` method
